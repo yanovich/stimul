@@ -41,34 +41,27 @@ class Board extends React.Component{
                         {  data.columns.map((cols, i, arr) => {
                             return(
                                 <div className="column" key={i} order={cols.order}>
-                                {cols.name}
+                                <div className="colHeader">
+                                    <div className="colName">{cols.name}</div>
                                     <div className="small">id: {cols.id}</div>
-                                              <Query query={GTSK_BID} variables={{id: cols.id}}>
-                                                    {({ loading, error, data, refetch }) => {
-                                                    if (loading) return "Loading...";
-                                                    if (error) return `Error! ${error.message}`;
-                                                        return (
-                                                            <Fragment>
-                                                            { data.tasks.map((task, i, arr) => {
-                                                                  return(
-                                                                      <div className="task" key={i+i}>
-                                                                          <div className="name">{task.name}</div>
+                                </div>
+                                        {
+                                            cols.tasks.map((task, i, arr)=>{
+                                                return(
+                                                <div className="task" key={'task'+i}>
+                                                <div className="taskHeader">
+                                                    <div className="taskName">{task.name}</div>
+                                                    <div className="small">{task.id}</div>
+                                                </div>
+                                                    <div className="taskDescr">{task.description}</div>
+                                                </div>
+                                                )
 
-                                                                          <div className="id">{task.id}</div>
-                                                                      </div>
+                                            })
+                                        }
 
-                                                                  )
-                                                                }
-                                                            )}
-                                                            <CreateTask columnId={cols.id} update={this._parentUp} refetch={() => refetch()}/>
-                                                            </Fragment>
-                                                            
-                                                            )
-                                                    }}
-                                                    
-                                                </Query>
-                    
-                                    
+                                        <CreateTask columnId={cols.id} update={this._parentUp} refetch={() => refetch()}/>
+
                                 </div>
                         
                         )

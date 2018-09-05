@@ -421,3 +421,11 @@ height:100%;
   border-radius: 0px;
   margin:1px;
 }
+.colHeader{
+  background: rgba(22, 34, 44, 0.404);
+  padding:10px;
+}
+.taskHeader{
+  background: rgba(22, 34, 44, 0.137);
+  padding:10px;
+}

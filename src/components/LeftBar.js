@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Appср from '../CHAT/App';
+import Appср from '../chat/App';
 
 class LeftBar extends Component {
   constructor(props) {
