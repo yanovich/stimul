@@ -17,10 +17,10 @@ export class CreateTask extends Component {
       this.setState({status: true});
       this.props.update();
     }
-    close = () => {
+    clickOut = () => {
       this.setState({status: false});
+      //this.props.update();
     }
-
 
   render(){
   let a = this.state.status;
@@ -30,6 +30,7 @@ export class CreateTask extends Component {
     if(!a){
       return(
       <button className="button" onClick={this.clickEvent}>Добавить задачу</button>
+      
       )
     }else{
       
@@ -55,9 +56,10 @@ export class CreateTask extends Component {
                   upd()
                   input0.value = "";
                   input1.value = "";
-                  this.setState({update: true, status: false});
+                  
                   this.props.update();
                   this.props.refetch();
+                  this.setState({update: !this.state.update, status: false});
                   
                 }}
               >
@@ -73,7 +75,9 @@ export class CreateTask extends Component {
                   }}
                   placeholder="Описание"
                 />
+                
                 <button type="submit">Добавить задачу</button>
+                <div className="btn" onClick={this.clickOut}>отмена</div>
               </form>
             </div>
           )}

@@ -9,13 +9,13 @@ export default class CreateCol extends Component {
     super(props);
     this.state = {
       status: false,
-      key: 0
+      update: false,
     };
 
   }
 
   clickEvent = () => {
-    this.setState({status: true});
+    this.setState({status: !this.state.status});
     this.props.update();
   }
 
@@ -30,7 +30,7 @@ export default class CreateCol extends Component {
         mutation={CREATE_COL_MUT}
         >
           {(createColumn, { data }) => (
-            <div className="column-create">
+            <div className="column">
               <form
                 onSubmit={e => {
                   if(!input0.value){
@@ -38,17 +38,18 @@ export default class CreateCol extends Component {
                    return false;
                   }
                   e.preventDefault();
+
+
                   let upd = async () =>{
                     await createColumn({ variables: { name: input0.value, order: 1, projectId: projectId } });
                     await this.props.refetch();
                   }
                   upd()
-                  
                   input0.value = "";
-                  // console.log(this.props);
+                  
+                  this.props.update();
                   this.props.refetch();
-                  
-                  
+                  this.setState({update: !this.state.update, status: false});
                 }}
               >
                 <input
@@ -57,7 +58,7 @@ export default class CreateCol extends Component {
                   }}
                   placeholder="Наименование"
                 />
-                <button type="submit">Добавить колонку</button>
+                <button type="submit">Создать список</button>
               </form>
             </div>
           )}
@@ -65,7 +66,7 @@ export default class CreateCol extends Component {
       );
     }else{
       return(
-        <button onClick={this.clickEvent} className="column-create">добавить новую колонку</button>
+        <div onClick={this.clickEvent} className="button">Добавить список задач</div>
       )
     }
 

@@ -15,12 +15,16 @@ class LeftBar extends Component {
   }
 
   render() {
-      
-    return (
+      if(this.props.lstate){
+        return (
         <div className="left-bar">
             <Appср/>
         </div>
-    )
+        )
+      }else{
+        return true;
+      }
+
   }
 }
 
