@@ -1,266 +1,21 @@
-import React, { Fragment } from 'react';
+import React, { Component, Fragment } from 'react';
+// import styled from 'react-emotion';
 import {CreateTask} from './CreateTask';
 import CreateCol from './CreateCol';
 import DropCol from './DropCol';
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import 'cross-fetch/polyfill';
+import { grid, colors, borderRadius } from '../constants';
+import Card from './Card';
+import Task from './Task';
+import {url} from '../constants';
+//import CardOpen from './CardOpne';
 
 
-
-const reorder = (list, startIndex, endIndex) => {
-    const result = Array.from(list);
-    const [removed] = result.splice(startIndex, 1);
-    result.splice(endIndex, 0, removed);
-
-    return result;
-};
-const move = (source, destination, droppableSource, droppableDestination) => {
-    const sourceClone = Array.from(source);
-    const destClone = Array.from(destination);
-    const [removed] = sourceClone.splice(droppableSource.index, 1);
-
-    destClone.splice(droppableDestination.index, 0, removed);
-
-    const result = {};
-    result[droppableSource.droppableId] = sourceClone;
-    result[droppableDestination.droppableId] = destClone;
-
-    return result;
-};
-
-class Board extends React.Component{
-    constructor(props) {
-        super(props)
-        this._parentUp = this._parentUp.bind(this);
-        this.forceUpdateHandler = this.forceUpdateHandler.bind(this);
-        this.state = {
-            update: false,
-            key: 0,
-            u: 0,
-            taskModule: false,
-            _tasks: [],
-            _cols: [],
-
-        };
-    }
-    u = (refetch)=>{
-        setInterval(()=>{
-            refetch();
-            //this.setState({u: this.state.u+1});
-            //console.log('u')
-          }, 2000);
-      }
-    _addCols = (arr)=>{
-        this.setState({
-            cols: arr,
-        })
-    }
-    _openTask = (data)=>{
-        this.setState({
-            taskModule: true,
-        })
-    }
-    _addTasks = (arr)=>{
-        this.setState({
-            tasks: arr,
-        })
-    }
-    _parentUp = ()=>{
-        //this.forceUpdate();
-    }
-    forceUpdateHandler(){
-        this.forceUpdate();
-    };
-
-    // onDragEnd = (result, items) => {
-    //     if (!result.destination) return;
-    //     const oldIndex = result.source.index;
-    //     const newIndex = result.destination.index;
-
-    //     var item = items.get(oldIndex);
-
-    //     this.setState({
-    //         items: items.delete(oldIndex).insert(newIndex, item),
-    //     });
-    // };
-
-    onDragEnd = result => {
-        const { source, destination } = result;
-
-        // dropped outside the list
-        if (!destination) {
-            return;
-        }
-
-        if (source.droppableId === destination.droppableId) {
-            const items = reorder(
-                source.droppableId,
-                source.index,
-                destination.index
-            );
-            // return(
-            //     <Mutation mutation={VOTE_MUTATION} variables={{ linkId: this.props.link.id }}>
-            //                 {voteMutation => (
-            //                 <div className="ml1 gray f11" onClick={voteMutation}>
-            //                     ▲
-            //                 </div>
-            //                 )}
-            //     </Mutation>
-            // )
-            
-            let state = { items };
-
-            // if (source.droppableId != destination.droppableId) {
-            //     state = { selected: destination.droppableId };
-            // }
-
-            // this.setState(state);
-        } else {
-            const result = move(
-                source.droppableId,
-                destination.droppableId,
-                source,
-                destination
-            );
-
-            // this.setState({
-            //     items: result.droppableId,
-            // });
-        }
-    };
-
-
-    render(){
-        let pid = this.props.match.params.id || 1;
-        console.log(this.props);
-        let _LIST = {
-            cols: {},
-            cards:{}
-        };
-        //let pid = this.props.pid.pid || 1;
-        //let pid = this.props.match.params.id || 1;
-        if(this.state.taskModule === true){
-            return(
-                <div className="taskModule">
-                    <div className="content">
-                    <div className="scroller">
-                        <div className="inner">
-                            Задача
-                        </div>
-                        <div className="inner">
-                            <input type="text" placeholder="" value=""/>
-                            <textarea></textarea>
-                        </div>
-                        <div className="inner">
-
-                        </div>
-                        <div className="inner">
-
-                        </div>
-
-                    </div>
-                    <div className="bottom">
-                    <div className="btn" onClick={()=>{this.setState({taskModule: false})}}>
-                        закрыть
-                    </div>
-                    </div>
-                    </div>
-                </div>
-            )
-        }else{
-            return(
-                <Fragment>
-                <Query query={GCOL_BID} variables={{pid: pid}}>
-                {({ loading, error, data, refetch }) => {
-                  if (loading) return "Loading...";
-                  if (error) return `Error! ${error.message}`;
-                  let howmcols = data.columns.length;
-                    this.u(refetch);
-                    _LIST.cols = data.columns;
-                    // this.setState({
-                    //     _cols: _LIST.cols
-                    // });
-                    // console.log("_LIST");
-                    // console.log(_LIST);
-                    // data.columns.map((cols, i, arr)=>{
-                    //     cols.tasks.map((task, i, arr)=>{
-                    //         _LIST.cards.push(task)
-                    //     })
-                    // });
-                    console.log(_LIST);
-                    return (
-                        <div className="lists">
-                        <DragDropContext onDragEnd={this.onDragEnd}>
-                            {  data.columns.map((cols, i, arr) => {
-
-
-                                
-                                
-                                return(
-                                    <div className="column" key={i} order={cols.order}>
-                                    <div className="colHeader">
-                                        <div className="colName">{cols.name}</div>
-                                        {/* <div className="small">{i}</div> */}
-                                        {/* <div className="small">id: {cols.id}</div> */}
-                                    </div>
-                                    
-                                    <Droppable droppableId={'drop'+cols.id} key={'drop'+i} direction="vertical">
-                                    {provided => (
-                                        <div className="column-content" ref={provided.innerRef} {...provided.droppableProps}
-    
-                                        >
-                                        {
-                                                cols.tasks.map((task, i, arr)=>{
-                                                    return(
-                                                    <Draggable draggableId={cols.id+''+i} key={'drag'+i} index={cols.id+''+i}>
-                                                    {provided => (
-                                                    <div className="task" key={'task'+i} ref={provided.innerRef}
-                                                                                        {...provided.draggableProps}
-                                                                                        {...provided.dragHandleProps}
-                                                    >
-                                                    <div className="taskHeader" onClick={()=>{this._openTask(task.id)}}>
-                                                        <div className="taskName">{task.name}</div>
-                                                        <div className="small">{cols.id+''+i}</div>
-                                                        {/* <div className="micro">id: {task.id}</div> */}
-                                                    </div>
-                                                        <div className="taskDescr">{task.description}</div>
-                                                        <div className="open small">открыть</div>
-                                                        {provided.placeholder}
-                                                    </div>)}
-                                                    </Draggable>
-                                                    )
-    
-                                                })}
-                                                {provided.placeholder}
-                                                </div>
-                                    )}
-                                    </Droppable>
-                                            <CreateTask columnId={cols.id} update={this._parentUp} refetch={() => refetch()}/>
-                                            <DropCol columnId={cols.id} update={this._parentUp} refetch={() => refetch()}/>
-                                    </div>
-                            
-                            )
-                            }
-                        )}
-                        </DragDropContext>
-                        <CreateCol projectId={pid} update={this._parentUp} refetch={() => refetch()} />
-                        </div>
-                      )
-                }}
-                
-              </Query>
-              </Fragment>
-            )
-        }
-
-    }
-
-}
-
-
-export default Board;
-
+const publishOnDragStart = (result) => console.log('onDragStart',result);
+const publishOnDragEnd = (result) => console.log('onDragEnd',result);
 
 const UPD_TASK = gql`
 mutation updateTask($id: String!, $columnId: Int!, $index: Int){
@@ -283,6 +38,7 @@ query getTasks($id: Int!) {
   }
 `;
 
+
 export const GCOL_BID = gql`
   query getByPid($pid: Int!) {
     columns(projectId: $pid){
@@ -299,4 +55,368 @@ export const GCOL_BID = gql`
       }
     }
   }
+`;
+
+const columns_getter = `
+query getByPid($pid: Int!) {
+  columns(projectId: $pid){
+    name
+    order
+    id
+    project {
+      id
+    }
+    tasks {
+      id
+      name
+      columnId
+      description
+    }
+  }
+}
 `
+
+const quer = (query, vars) =>{
+    return fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: JSON.stringify({
+          query,
+        variables: vars,
+        })
+      })
+        .then(r => r.json())
+        .then(data => data)      
+};
+
+
+let _LIST = {
+    cols: {},
+    cards: [],
+    colm: [],
+    task: [],
+    tasks: {},
+    pid: 1
+};
+
+const reorder = (list, startIndex, endIndex) => {
+    const result = Array.from(list);
+    const [removed] = result.splice(startIndex, 1);
+    result.splice(endIndex, 0, removed);
+
+    return result;
+};
+
+const move0 = (source, destination, droppableSource, droppableDestination) => {
+    const sourceClone = Array.from(source);
+    const destClone = Array.from(destination);
+    const [removed] = sourceClone.splice(droppableSource.index, 1);
+
+    destClone.splice(droppableDestination.index, 0, removed);
+
+    const result = {};
+    result[droppableSource.droppableId] = sourceClone;
+    result[droppableDestination.droppableId] = destClone;
+
+    return result;
+};
+
+const move = (source, destination, droppableSource, droppableDestination) => {
+    const sourceClone = Array.from(source);
+    const destClone = Array.from(destination);
+    const [removed] = sourceClone.splice(droppableSource.index, 1);
+
+    destClone.splice(droppableDestination.index, 0, removed);
+
+    const result = {};
+    result[droppableSource.droppableId] = sourceClone;
+    result[droppableDestination.droppableId] = destClone;
+
+    return result;
+};
+
+const removefa = (arr, index)=>{
+    if (index > -1) {
+        arr.splice(index, 1);
+        return arr;
+    }
+}
+const appendta = (arr, index, el)=>{
+    if (index > -1) {
+        arr.splice(index, 0, el);
+        return arr;
+    }
+}
+
+const newMove = (arr, from, to)=>{
+arr.move(from,to);
+return arr;
+}
+const array_move = (arr, old_index, new_index) => {
+    if (new_index >= arr.length) {
+        var k = new_index - arr.length + 1;
+        while (k--) {
+            arr.push(undefined);
+        }
+    }
+    arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
+    return arr; // for testing
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+export default class Board extends React.Component{
+    constructor(props) {
+        super(props)
+        this._parentUp = this._parentUp.bind(this);
+        this.forceUpdateHandler = this.forceUpdateHandler.bind(this);
+        this.state = {
+            open: false,
+            openId: "",
+            newquery: true,
+            _task: [],
+            _cols: [],
+            pid: 1,
+        };
+    }
+    u = (refetch)=>{
+        setInterval(()=>{
+            refetch();
+          }, 2000);
+      }
+    _addCols = (arr)=>{
+        this.setState({
+            cols: arr,
+        })
+    }
+    _openTask = (data)=>{
+        console.log(data)
+        
+        this.setState({
+            openId: data,
+            open: true,
+        })
+        console.log(this.state);
+    }
+    _closeCard = ()=>{
+        //console.log(data)
+        
+        this.setState({
+            openId: "",
+            open: false,
+            newquery: true,
+            _task: []
+        })
+        this.updMe();
+        
+        console.log(this.state);
+    }
+    _addTasks = (arr)=>{
+        this.setState({
+            tasks: arr,
+        })
+    }
+    _parentUp = ()=>{
+        //this.forceUpdate();
+    }
+    forceUpdateHandler(){
+        this.forceUpdate();
+    };
+
+    _setnewstate(list){
+        this.setState({_LIST: list})
+    }
+    _setcols(cols){
+        this.setState({_cols: cols})
+    }
+    onDragStart = (initial) => {
+        publishOnDragStart(initial);
+      };
+    
+      onDragEnd = (result) => {
+        publishOnDragEnd(result);
+
+        const { source, destination } = result;
+ 
+        if (!destination) {
+            return;
+        }
+        if (
+            source.droppableId === destination.droppableId &&
+            source.index === destination.index
+          ) {
+            return;
+          }
+        if (result.type === "TASK" && source.index !== destination.index) {
+
+            return;
+          }
+
+        if (result.type === "COLUMN") {
+            if (source.index !== destination.index) {
+
+            }
+            return;
+          }
+
+        if (source.droppableId === destination.droppableId) {
+            console.log(source.index,source.droppableId, '=>', destination.droppableId, destination.index);
+            const items = reorder(
+                source.droppableId,
+                source.index,
+                destination.index
+            );
+            
+            let state = { items };
+            console.log('drag state', state );
+            console.log( state );
+
+         }
+        // else {
+        //     const result = move(
+        //         source.droppableId,
+        //         destination.droppableId,
+        //         source,
+        //         destination
+        //     );
+        // }
+        
+        // if(this.shouldComponentUpdate(this.props, {_cols: newState})){
+        //     this.setState({
+        //         _cols: newState
+        //     })
+        // }
+
+
+    };
+    _updPid(){
+        let pid = this.props.match.params.id || 1;
+        _LIST.pid = pid;
+    }
+    
+    componentDidMount(){
+
+    }
+    
+    updMe(){
+            let pid = this.props.match.params.id || 1;
+            _LIST.pid = pid;            
+            quer(columns_getter, { pid: pid } )
+            .then((a)=>{
+                _LIST.colm = [];
+                _LIST.cards = [];
+                _LIST.task = [];
+                this.setState({
+                    _cols: [],
+                    _task: [],
+                    newquery:true,
+                })
+                return a;
+            })
+            .then((a)=>{
+                a.data.columns.map((cols, ci, arr)=>{
+                    let o = 'col-'+cols.id+''+ci;
+
+                    _LIST.colm.push({ iid: o , index: ci, name: cols.name, id: cols.id, order: cols.order, project: cols.project.id, tasks: cols.tasks})
+                    _LIST.cards.push(cols.tasks)
+                    cols.tasks.map((task, i, arr)=>{
+                        _LIST.task.push(['col-'+cols.id+''+ci, Number(cols.id+''+i) , i,task.columnId, task.id, task.name, task.description ])
+                    })
+
+                });
+            }).then(()=>{
+                console.log(_LIST.task)
+                this.setState({
+                    pid: pid,
+                    _cols: _LIST.colm,
+                    _task: _LIST.task,
+                    newquery:false,
+                })
+            });
+
+    }
+
+    componentWillMount(){
+        
+        if(this.state.newquery){
+            this.updMe()
+        }else{
+            return;
+        }
+    }
+    componentWillUpdate(){
+
+    }
+
+
+    render(){
+            let data = this.state._cols;
+            let tasks = this.state._task;
+
+            if(this.state.open && this.state.openId){
+               return(<Card opid={this.state.openId} close={this._closeCard} cols={data} />) 
+            }else{
+            return(
+                <Fragment>
+                        <div className="lists">
+                        <DragDropContext onDragEnd={this.onDragEnd}>
+                            {  data.map((cols, i, arr) => {
+
+                                return(
+                                    <div className="column" key={i} order={cols.order}>
+                                    <div className="colHeader">
+                                        <div className="colName">{cols.name}</div>
+                                        {/* <div className="small">{i}</div> */}
+                                        {/* <div className="small">id: {cols.id}</div> */}
+                                    </div>
+                                        <div className="column-content1" >
+                                        <Droppable droppableId={cols.iid+'|'+i} type="TASK" key={'drop'+i} direction="vertical">
+                                            { provided => (
+                                        <div className="inner" ref={provided.innerRef} {...provided.droppableProps} >
+                                        {
+                                                tasks.map((task, i, arr)=>{
+                                                    if(task[0] === cols.iid){
+                                                        return(
+                                                                <Task key={i} index={task[0]+''+i} name={task[5]} description={task[6]} id={task[4]} open={this._openTask} colId={ cols.id } i={1}/>
+                                                            )
+                                                    }
+                                                })
+                                                }
+                                                {provided.placeholder}
+                                                </div>
+                                                    )}
+                                                    </Droppable>
+                                                </div>
+
+                                            <CreateTask columnId={cols.id} update={this._parentUp} />
+                                            <DropCol columnId={cols.id} update={this._parentUp} />
+                                    </div>
+                            
+                            )
+                            }
+                        )}
+                        </DragDropContext>
+                        <CreateCol projectId={this.state.pid} update={this._parentUp} />
+                        </div>
+              </Fragment>
+            )
+        }
+    }
+}

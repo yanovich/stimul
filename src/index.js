@@ -15,6 +15,9 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { BrowserRouter } from 'react-router-dom';
 import { setContext } from 'apollo-link-context';
 
+
+export const uri = 'http://185.168.187.103:8500/graphql';
+
 const httpLink = new HttpLink({
   uri: 'http://185.168.187.103:8500/graphql'
 });
@@ -39,10 +42,21 @@ const link = split(
   httpLink,
 );
 //const client = new ApolloClient({ uri: 'http://185.168.187.103:8500/graphql' });
-const client = new ApolloClient({
+export const client = new ApolloClient({
   link,
   cache: new InMemoryCache(),
 })
+
+// export function newgql(query, type) {
+//   const data = client.query({query: query, type: type})
+//   return {
+//     type: type,
+//     payload: new Promise((resolve, reject) => {
+//       data.then(response => resolve(response)).catch(error => reject(error))
+//     })
+//   }
+// }
+
 ReactDOM.render(
   <ApolloProvider client={client}>
     <App/>

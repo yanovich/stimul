@@ -8,6 +8,7 @@ import {
   Route,
   Switch,
 } from 'react-router-dom';
+//import { BrowserRouter } from 'react-router-dom'
 // import { ApolloProvider } from 'react-apollo';
 // import ApolloClient from 'apollo-boost';
 // import Draft from './components/Draft';
@@ -19,6 +20,7 @@ import Board from './components/Board';
 // import ProjGr from './components/ProjGr';
 // import GetById from './components/GetById';
 import Home from './components/Home';
+import Card from './components/Card';
 
 import LeftNav from './components/LeftNav'; 
 import LeftBar from './components/LeftBar'; 
@@ -108,6 +110,7 @@ class App extends Component {
               <Route exact path="/projectgroup/:id" component={DraftGroup} />
               <Route exact path="/projects/:id" component={Drafts} />
               <Route exact path="/project/:id" component={Board} />
+              <Route exact path="/card/:id" component={Card} />
               <Route exact path="/profile" component={Profile} />
             </Switch>
           </div>
