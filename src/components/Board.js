@@ -7,11 +7,9 @@ import gql from "graphql-tag";
 //import { Query } from "react-apollo";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import 'cross-fetch/polyfill';
-//import { grid, colors, borderRadius } from '../constants';
 import Card from './Card';
 import Task from './Task';
 import {url} from '../constants';
-//import CardOpen from './CardOpne';
 
 
 const publishOnDragStart = (result) => console.log('onDragStart',result);
