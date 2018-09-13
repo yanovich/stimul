@@ -29,6 +29,7 @@ import LeftBar from './components/LeftBar';
 import gql from 'graphql-tag';
 // import Login from './components/Login';
 import Profile from './components/Profile';
+import { stat } from 'fs';
 
 
 
@@ -74,16 +75,25 @@ class App extends Component {
       name: '',
       logged: false,
       lbar: true,
+      barstate: 'chat',
     };
     this._lbarstate = this._lbarstate.bind(this);
 
   }
 
-  _lbarstate = ()=>{
+  _lbarstate = (state)=>{
     let newState = '';
-    this.setState({
-      lbar: !this.state.lbar
-    })
+    if(this.state.barstate === state){
+      this.setState({
+        lbar: !this.state.lbar,
+        barstate: state,
+      })
+    }else{
+      this.setState({
+        lbar: true,
+        barstate: state,
+      })
+    }
   }
 
   ltrim(){
@@ -134,7 +144,7 @@ class App extends Component {
           <Fragment>
             
           <LeftNav lstate={this._lbarstate} />
-          <LeftBar lstate={this.state.lbar} ltrim={this.ltrim} />
+          <LeftBar lstate={this.state.lbar} barstate={this.state.barstate} ltrim={this.ltrim} />
           <div className={this.state.lbar ? 'main-container':'main-container full'}>
             <Switch>
               <Route exact path="/" component={Home} />

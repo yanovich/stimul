@@ -645,7 +645,7 @@ svg:hover{
 .column:nth-child(2) .task[data-priority="4"] .priority{background: rgba(243, 227, 9, 0.486);}
 .column:nth-child(2) .task[data-priority="5"] .priority{background: rgba(192, 243, 9, 0.541);}
 .column:nth-child(2) .task[data-priority="6"] .priority{background: rgba(9, 243, 134, 0.438);}
-.task .open{
+.task .open, .card .open, .card button{
   border:0px none;
   background: rgb(52, 107, 151);
   color:#FFFFFF;
@@ -654,10 +654,78 @@ svg:hover{
   border-radius: 3px;
   cursor:pointer;
 }
+.card .open, .card button{
+  width:200px;
+  padding:6px 10px;
+}
+
 .task .open:hover{
   background: rgba(47, 96, 136, 0.562);
 }
 .task{
   max-height: auto;
   height: auto;
+}
+.card{
+  cursor:pointer;
+}
+.add{
+  text-align: center;
+  padding: 50px;
+}
+.add svg{
+  margin:20px auto;
+  fill: #ffffff;
+}
+
+.left-bar-inner{
+  width:100%;
+  height: 100%;
+  overflow: hidden;
+}
+.left-bar-inner .scroller{
+  width:100%;
+  height: 100%;
+  overflow: auto;
+}
+.left-bar-inner.favor .scroller .favorites{
+  background: rgb(216, 238, 20);
+  border-radius: 5px;
+  margin:5px auto;
+  padding:20px;
+  color:#1B2126; 
+}
+.left-bar-inner.fire .scroller .firetes{
+  background: rgb(233, 98, 98);
+  border-radius: 5px;
+  margin:5px auto;
+  padding:20px;
+  color:#1B2126; 
+}
+.left-bar-inner.favor .scroller,.left-bar-inner.fire .scroller{
+  padding:10px;
+}
+.card{
+  position: relative;
+}
+.add-favorite{
+  fill:rgba(255, 238, 0, 0.37);
+  position: absolute;
+  top:10px;
+  right:10px;
+}
+.add-favorite.in, .add-favorite:hover{
+  fill:rgba(255, 238, 0, 0.952);
+}
+.colHeader, .taskName{position: relative;}
+.taskName svg{
+  width:28px;height:28px;
+  top:-5px;
+  right:0;
+}
+.taskDescr{
+  background: rgba(33, 49, 63, 0);
+  border:1px solid rgba(0, 0, 0, 0.075);
+  padding:5px;
+  margin:2px auto;
 }

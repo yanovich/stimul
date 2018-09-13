@@ -188,6 +188,7 @@ export default class Card extends Component{
             <div className="content">
             <div className="scroller">
                 <div className="inner">
+
                 <div className="">Задача: <h1>{data.name}</h1></div>
                 <div className="description"><span className="left-titles">Описание</span><span>{data.description}</span></div>
                 <div className="id"><span className="left-titles">ID</span><span>{data.id}</span></div>

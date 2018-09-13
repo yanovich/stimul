@@ -3,6 +3,7 @@ import Proj from '../components/Proj';
 //import Drafts from '../components/Drafts';
 import { Query } from 'react-apollo';
 import  { gql } from 'apollo-boost';
+import AddGroup from './AddGroup';
 
 export default class GetDraftsGr extends Component {
   render() {
@@ -27,6 +28,7 @@ export default class GetDraftsGr extends Component {
                       )
                     }
                 )}
+                <AddGroup />
                 </Fragment>
               )
         }}

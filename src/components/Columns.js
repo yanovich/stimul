@@ -24,6 +24,7 @@ handler() {
           return (
             <div className="column" >
                 {this.props.name}
+                
                 <div className="small">id: {this.props.id}</div>
                     { this.props.data.tasks.map((task, i, arr) => {
                             return(
@@ -45,6 +46,7 @@ handler() {
               return (
                 <div className="column" >
                 {this.props.name}
+
                 <div className="small">id: {this.props.id}</div>
                     { data.tasks.map((task, i, arr) => {
                             return(
