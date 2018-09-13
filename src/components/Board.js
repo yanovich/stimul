@@ -27,8 +27,11 @@ export const GCOL_BID = gql`
       }
       tasks {
         id
-        name
-        description
+      name
+      columnId
+      description
+      index
+      priority
       }
     }
   }
@@ -48,6 +51,8 @@ query getByPid($pid: Int!) {
       name
       columnId
       description
+      index
+      priority
     }
   }
 }
@@ -148,7 +153,29 @@ const array_move = (arr, old_index, new_index) => {
 
 
 
-
+const getPriority = `{
+    glossary{
+        priorities{
+          name
+          id
+        }
+      }
+    }
+  `;
+  const query = (query) =>{
+    return fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: JSON.stringify({
+          query
+        })
+      })
+        .then(r => r.json())
+        .then(data => data)
+  };
 
 
 
@@ -171,6 +198,7 @@ export default class Board extends React.Component{
             _task: [],
             _cols: [],
             pid: 1,
+            priority: [],
         };
     }
     u = (refetch)=>{
@@ -289,7 +317,17 @@ export default class Board extends React.Component{
     }
     
     componentDidMount(){
-
+        query(getPriority)
+        .then((a)=>{
+          if(a.data){
+            this.setState({
+                priority: a.data.glossary.priorities
+            })
+            return a.data.glossary.priorities;
+            }else{
+                return true;
+            }
+        })
     }
     
     updMe(){
@@ -314,11 +352,22 @@ export default class Board extends React.Component{
                     _LIST.colm.push({ iid: o , index: ci, name: cols.name, id: cols.id, order: cols.order, project: cols.project.id, tasks: cols.tasks})
                     _LIST.cards.push(cols.tasks)
                     cols.tasks.map((task, i, arr)=>{
-                        _LIST.task.push(['col-'+cols.id+''+ci, Number(cols.id+''+i) , i,task.columnId, task.id, task.name, task.description ])
+                        _LIST.task.push(['col-'+cols.id+''+ci, Number(cols.id+''+i) , i,task.columnId, task.id, task.name, task.description, task, task.priority ])
                     })
 
                 });
             }).then(()=>{
+                _LIST.task.sort(
+                    (a, b)=>{
+                        if (a[8] > b[8]) {
+                          return 1;
+                        }
+                        if (a[8] < b[8]) {
+                          return -1;
+                        }
+                        return 0;
+                      });
+
                 console.log(_LIST.task)
                 this.setState({
                     pid: pid,
@@ -369,9 +418,19 @@ export default class Board extends React.Component{
                                         <div className="inner" ref={provided.innerRef} {...provided.droppableProps} >
                                         {
                                                 tasks.map((task, i, arr)=>{
+                                                    let priorityname = "";
                                                     if(task[0] === cols.iid){
+                                                        if(task[7].priority){
+                                                            this.state.priority.map((a,b,c)=>{
+                                                                if(a.id === task[7].priority){
+                                                                    priorityname = a.name;
+                                                                    return priorityname;
+                                                                }
+                                                            })
+
+                                                        }
                                                         return(
-                                                                <Task key={i} index={task[0]+''+i} name={task[5]} description={task[6]} id={task[4]} open={this._openTask} colId={ cols.id } i={1}/>
+                                                                <Task key={i} index={task[0]+''+i} name={task[5]} description={task[6]} id={task[4]} open={this._openTask} full={task} colId={ cols.id } priorityname={priorityname} i={1}/>
                                                             )
                                                     }
                                                 })

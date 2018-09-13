@@ -36,7 +36,7 @@ const link = split(
     const { kind, operation } = getMainDefinition(query);
     return kind === 'OperationDefinition' && operation === 'subscription';
   },
-//  wsLink,
+  wsLink,
   httpLink,
 );
 //const client = new ApolloClient({ uri: 'http://185.168.187.103:8500/graphql' });

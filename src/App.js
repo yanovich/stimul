@@ -48,12 +48,12 @@ export const qf = (_url, ...params) =>{
       .then(data => data)      
 };
 
-qf("http://185.168.187.103:8500/auth/register", {email: "me@mail.ru", password: "Password"} )
-.then((a)=>{
-  console.log("Reg works");
-  console.log(a)
-  }
-);
+// qf("http://185.168.187.103:8500/auth/register", {email: "me@mail.ru", password: "Password"} )
+// .then((a)=>{
+//   console.log("Reg works");
+//   console.log(a)
+//   }
+// );
 
 
 
