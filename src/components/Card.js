@@ -19,6 +19,7 @@ query getById($id: String!) {
         description
         index
         columnId
+        priority
       }
 }
 `;
@@ -91,39 +92,49 @@ export default class Card extends Component{
             dataGet: false,
             selectNewState: 0,
             priority: [],
-            prior: 1,
+            prior: 0,
             descr: {},
+            card:{},
         };
     }
     selNewState(event){
-        this.setState({
-            selectNewState: event.target.value
-        });
+        if(event.target.name && event.target.name === "columnId"){
+            this.setState({
+                selectNewState: event.target.value
+            });
+        }else if(event.target.name && event.target.name === "priority"){
+            this.setState({
+                prior: event.target.value
+            });
+            
+        }else if(event.target.name && event.target.name === "description"){
 
+        }else{}
+        console.log(event.target.value)
+        let val = event.target.value;
+        console.log(typeof(event.target.value) );
+        console.log(typeof(val) );
         let id = this.state.id;
-        this._mutTask(id, `columnId: ${event.target.value}`)
-    }
-    setNewDescr(event){
-        this.setState({
-            task: event.target.value
-        });
-
-        let id = this.state.id;
-        this._mutTask(id, `description: ${event.target.value}`)
-    }
-    setNew(event){
-        this.setState({
-            task: event.target.value
-        });
-
-        let id = this.state.id;
-        this._mutTask(id, `description: ${event.target.value}`)
+        if(event.target.value === "description"){
+            //val = `"${event.target.value}"`;
+            
+            this._mutTask(id, `${event.target.name}: "${val}"`)
+        }else{
+            this._mutTask(id, `${event.target.name}: ${event.target.value}`)
+        }
     }
 
+    // setNewDescr(event){
+    //     this.setState({
+    //         task: event.target.value
+    //     });
+
+    //     let id = this.state.id;
+    //     this._mutTask(id, `description: ${event.target.value}`)
+    // }
 
     _mutTask(id, input){
         let q = query2(id,`input: {${input}}`);
-        // let q = query(id,input);
         console.log(q)
         quer2(q)
         .then((a)=>{
@@ -152,11 +163,13 @@ export default class Card extends Component{
         const id = this.props.opid;
             quer(getById, { id: id } )
             .then((a)=>{
+                console.log("a log",a)
                 this.setState({
                     id: this.props.opid,
                     task: a.data.task,
                     dataGet: true,
-                    selectNewState: a.data.task.columnId
+                    selectNewState: a.data.task.columnId,
+                    prior: a.data.task.priority,
                 })
             });
             this._qPriority();
@@ -180,7 +193,7 @@ export default class Card extends Component{
                 <div className="id"><span className="left-titles">ID</span><span>{data.id}</span></div>
                 <div className="status">
                 <span className="left-titles">Состояние</span> 
-                <select value={this.state.selectNewState} onChange={this.selNewState.bind(this)}>
+                <select value={this.state.selectNewState} name="columnId" onChange={this.selNewState.bind(this)}>
                     {
                         cols.map((col, i , arr)=>{
                             return(<option key={i} value={col.id}>{col.name}</option>)
@@ -191,10 +204,10 @@ export default class Card extends Component{
                 </div>
                 <div className="status">
                 <span className="left-titles">Важность</span> 
-                <select>
+                <select value={this.state.prior} name="priority" onChange={this.selNewState.bind(this)}>
                     {
                         prior.map((pri, i , arr)=>{
-                            return(<option key={i} value={pri.order}>{pri.name}</option>)
+                            return(<option key={i} value={pri.id}>{pri.name}</option>)
                         })
                     }
                 </select>

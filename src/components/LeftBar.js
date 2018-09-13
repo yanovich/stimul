@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
-//import Appср from '../chat/App';
+import React, { Component } from 'react';
+import Appср from '../chat/App';
 
 class LeftBar extends Component {
   constructor(props) {
@@ -18,7 +18,7 @@ class LeftBar extends Component {
       if(this.props.lstate){
         return (
         <div className="left-bar">
-            {/* <Appср/> */}
+            <Appср/>
         </div>
         )
       }else{
