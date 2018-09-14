@@ -1,13 +1,10 @@
 import React, {Component,Fragment} from 'react';
 //import ReactDOM from 'react-dom';
 import {
-  NavLink,
-  Link,
-  Redirect,
-  BrowserRouter as Router,
   Route,
   Switch,
 } from 'react-router-dom';
+import { withRouter } from 'react-router'
 //import { BrowserRouter } from 'react-router-dom'
 // import { ApolloProvider } from 'react-apollo';
 // import ApolloClient from 'apollo-boost';
@@ -48,23 +45,6 @@ export const qf = (_url, ...params) =>{
       .then(data => data)      
 };
 
-// qf("http://185.168.187.103:8500/auth/register", {email: "me@mail.ru", password: "Password"} )
-// .then((a)=>{
-//   console.log("Reg works");
-//   console.log(a)
-//   }
-// );
-
-
-
-const LOGIN_MUTATION = gql`
-  mutation LoginMutation($email: String!, $password: String!) {
-    login(email: $email, password: $password) {
-      token
-    }
-  }
-`
-
 class App extends Component {
   constructor(props) {
     super(props);
@@ -86,6 +66,11 @@ class App extends Component {
     })
   }
 
+  logState(value) {
+    this.setState({logged: value});
+  }
+
+
   ltrim(){
     
   }
@@ -104,6 +89,7 @@ class App extends Component {
 
   componentDidMount(){
     let user = localStorage.getItem('username');
+    const authToken = localStorage.getItem(AUTH_TOKEN)
     if(!user){
       this.setState({logged: false});
     }else{
@@ -117,20 +103,16 @@ class App extends Component {
     let logged = this.state.logged;
     const authToken = localStorage.getItem(AUTH_TOKEN)
 
-    if(!authToken){
-      return(
-        <Fragment>
-          <Login />
-        </Fragment>
-      )
-    }else{
       return (
-        <Router>
+        <div>
+           {!authToken ? (
+              <Login logged  = {this.state.logged}/>
+                ) : (
           <Fragment>
-            
           <LeftNav lstate={this._lbarstate} />
           <LeftBar lstate={this.state.lbar} ltrim={this.ltrim} />
           <div className={this.state.lbar ? 'main-container':'main-container full'}>
+
             <Switch>
               <Route exact path="/" component={Home} />
               <Route exact path="/projectgroup/:id" component={DraftGroup} />
@@ -139,16 +121,18 @@ class App extends Component {
               <Route exact path="/card/:id" component={Card} />
               <Route exact path="/profile" component={Profile} />
             </Switch>
+                
           </div>
-          
-        </Fragment>
-        </Router>
+          </Fragment>
+          )
+          }
+          </div>
         )
     }
-  }
+  
 }
 
-export default App;
+export default withRouter(App);
 
 
 

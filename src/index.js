@@ -15,12 +15,14 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { AUTH_TOKEN } from './constants'
 import { ApolloLink } from 'apollo-client-preset'
 
-//import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 //import { setContext } from 'apollo-link-context';
 
 
+
+
 const httpLink = new HttpLink({
-  uri: 'http://185.168.187.103:8500/graphql'
+  uri: 'http://localhost:8500/graphql'
 });
 
 const middlewareAuthLink = new ApolloLink((operation, forward) => {
@@ -36,31 +38,39 @@ const middlewareAuthLink = new ApolloLink((operation, forward) => {
 
 const httpLinkWithAuthToken = middlewareAuthLink.concat(httpLink)
 
+const client = new ApolloClient({
+  link: httpLinkWithAuthToken,
+  cache: new InMemoryCache()
+})
+
 // Create a WebSocket link:
-const wsLink = new WebSocketLink({
-  uri: `ws://185.168.187.103:8500/`,
-  options: {
-    reconnect: true,
-    authToken: localStorage.getItem(AUTH_TOKEN),
-  }
-});
+// const wsLink = new WebSocketLink({
+//   uri: `ws://localhost:8500/`,
+//   options: {
+//     reconnect: true,
+//     authToken: localStorage.getItem(AUTH_TOKEN),
+//   }
+// });
 
 // using the ability to split links, you can send data to each link
 // depending on what kind of operation is being sent
-const link = split(
-  // split based on operation type
-  ({ query }) => {
-    const { kind, operation } = getMainDefinition(query);
-    return kind === 'OperationDefinition' && operation === 'subscription';
-  },
-  wsLink,
-  httpLinkWithAuthToken,
-);
+// const link = split(
+//   // split based on operation type
+//   ({ query }) => {
+//     const { kind, operation } = getMainDefinition(query);
+//     return kind === 'OperationDefinition' && operation === 'subscription';
+//   },
+//   // wsLink,
+//   httpLinkWithAuthToken,
+// );
+
+
+
 //const client = new ApolloClient({ uri: 'http://185.168.187.103:8500/graphql' });
-export const client = new ApolloClient({
-  link,
-  cache: new InMemoryCache(),
-})
+// export const client = new ApolloClient({
+//   link,
+//   cache: new InMemoryCache(),
+// })
 
 // export function newgql(query, type) {
 //   const data = client.query({query: query, type: type})
@@ -75,8 +85,10 @@ export const client = new ApolloClient({
 
 
 ReactDOM.render(
-  <ApolloProvider client={client}>
-    <App/>
-  </ApolloProvider>,
+  <BrowserRouter>
+    <ApolloProvider client={client}>
+      <App/>
+    </ApolloProvider>
+  </BrowserRouter>,
   document.getElementById('root'),
 );

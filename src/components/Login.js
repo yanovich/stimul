@@ -4,11 +4,13 @@ import { graphql, compose } from 'react-apollo'
 import gql from 'graphql-tag'
 
 class Login extends Component {
-  state = {
-    login: true, // switch between Login and SignUp
-    email: '',
-    password: '',
-    name: '',
+  constructor(props) {
+    super(props);
+    this.state = {
+      email: '',
+      password: '',
+      name: '',
+    };
   }
 
   render() {
@@ -48,11 +50,13 @@ class Login extends Component {
       const { token } = result.data.signup
       this._saveUserData(token)
     }
-    this.props.history.push(`/`)
+   
   }
   
   _saveUserData = token => {
     localStorage.setItem(AUTH_TOKEN, token)
+    this.props.logged = true
+
   }
 }
 
