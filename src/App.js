@@ -27,11 +27,11 @@ import LeftBar from './components/LeftBar';
 // import localforage from 'localforage';
 // import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
-// import Login from './components/Login';
+import Login from './components/Login';
 import Profile from './components/Profile';
 
 
-
+import { AUTH_TOKEN } from 'constants'
 
 export const qf = (_url, ...params) =>{
   return fetch(_url, {
@@ -115,18 +115,13 @@ class App extends Component {
   render() {
     let username = '';
     let logged = this.state.logged;
+    const authToken = localStorage.getItem(AUTH_TOKEN)
 
-
-    if(!this.state.logged){
+    if(!authToken){
       return(
-        <div className="auth">
-        <div className="logo">
-        <img src=""/>
-        </div>
-          <input type="text" placeholder="Логин или Email" onChange={(e)=>{this.setState({email: e.target.value });console.log(this.state.email)}}/>
-          <input type="password" placeholder="Пароль" onChange={(e)=>{this.setState({password: e.target.value });}}/>
-          <div className="button" onClick={()=>{this.getUserNamePass()}}>Войти</div>
-        </div>
+        <Fragment>
+          <Login />
+        </Fragment>
       )
     }else{
       return (
@@ -150,8 +145,6 @@ class App extends Component {
         </Router>
         )
     }
-
-
   }
 }
 
