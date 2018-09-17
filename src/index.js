@@ -22,7 +22,7 @@ import { BrowserRouter } from 'react-router-dom';
 
 
 const httpLink = new HttpLink({
-  uri: 'http://localhost:8500/graphql'
+  uri: 'http://185.168.187.103:8500/graphql'
 });
 
 const middlewareAuthLink = new ApolloLink((operation, forward) => {
