@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { AUTH_TOKEN } from '../constants'
 import { graphql, compose } from 'react-apollo'
 import gql from 'graphql-tag'
@@ -8,14 +8,17 @@ class Login extends Component {
     super(props);
     this.state = {
       email: '',
-      password: '',
       name: '',
+      login: false
     };
   }
 
   render() {
+    const authToken = localStorage.getItem(AUTH_TOKEN)
     return (
+      
       <div>
+        {!authToken ? (
         <div className="auth">
         <div className="logo">
         <img src=""/>
@@ -23,22 +26,38 @@ class Login extends Component {
           <input type="text" placeholder="Email" onChange={(e)=>{this.setState({email: e.target.value })}}/>
           <input type="password" placeholder="Пароль" onChange={(e)=>{this.setState({password: e.target.value })}}/>
           <div className="button" onClick={()=>{this._confirm()}}>Войти</div>
-        </div>
+        </div>) : (
+                  <div className="auth">
+                  <div className="logo">
+                  <img src=""/>
+                  </div>
+                  <div className="button" onClick={() => {
+                    localStorage.removeItem(AUTH_TOKEN) 
+                    localStorage.removeItem('username') 
+                    this.props.history.push(`/`)
+                  }}
+                  >
+                  Выйти
+                  </div>
+                  </div>
+        )}
       </div>
     )
   }
 
   _confirm = async () => {
     const { name, email, password } = this.state
-    if (this.state.login) {
+    if (!this.state.login) {
       const result = await this.props.loginMutation({
         variables: {
           email,
           password,
         },
       })
-      const { token } = result.data.login
-      this._saveUserData(token)
+      const { token, user } = result.data.login
+      this._saveUserData(token, user.name)
+      console.warn(user.name)
+      
     } else {
       const result = await this.props.signupMutation({
         variables: {
@@ -50,13 +69,13 @@ class Login extends Component {
       const { token } = result.data.signup
       this._saveUserData(token)
     }
-   
+    window.location.reload();
+    // this.props.history.push(`/`)
   }
   
-  _saveUserData = token => {
+  _saveUserData = (token, name) => {
+    localStorage.setItem('username', name);
     localStorage.setItem(AUTH_TOKEN, token)
-    this.props.logged = true
-
   }
 }
 
@@ -71,7 +90,8 @@ const SIGNUP_MUTATION = gql`
 const LOGIN_MUTATION = gql`
   mutation LoginMutation($email: String!, $password: String!) {
     login(email: $email, password: $password) {
-      token
+      token,
+      user {name}
     }
   }
 `

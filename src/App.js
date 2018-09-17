@@ -28,7 +28,7 @@ import Login from './components/Login';
 import Profile from './components/Profile';
 
 
-import { AUTH_TOKEN } from 'constants'
+import { AUTH_TOKEN } from './constants'
 
 export const qf = (_url, ...params) =>{
   return fetch(_url, {
@@ -75,21 +75,20 @@ class App extends Component {
     
   }
 
-  getUserNamePass = () => {
-    if(!this.state.email || this.state.email.length < 3 ){
-      return false;
-    }else{
-      this.setState({logged: true});
-      localStorage.setItem('logged', true)
-      localStorage.removeItem('username')
-      localStorage.setItem('username', this.state.email)
-    }
+  // getUserNamePass = () => {
+  //   if(!this.state.email || this.state.email.length < 3 ){
+  //     return false;
+  //   }else{
+  //     this.setState({logged: true});
+  //     localStorage.setItem('logged', true)
+  //     localStorage.removeItem('username')
+  //     localStorage.setItem('username', this.state.email)
+  //   }
     
-  }
+  // }
 
   componentDidMount(){
     let user = localStorage.getItem('username');
-    const authToken = localStorage.getItem(AUTH_TOKEN)
     if(!user){
       this.setState({logged: false});
     }else{
@@ -106,15 +105,15 @@ class App extends Component {
       return (
         <div>
            {!authToken ? (
-              <Login logged  = {this.state.logged}/>
+              <Login />
                 ) : (
           <Fragment>
           <LeftNav lstate={this._lbarstate} />
           <LeftBar lstate={this.state.lbar} ltrim={this.ltrim} />
           <div className={this.state.lbar ? 'main-container':'main-container full'}>
-
             <Switch>
               <Route exact path="/" component={Home} />
+              <Route exact path="/login" component={Login} />
               <Route exact path="/projectgroup/:id" component={DraftGroup} />
               <Route exact path="/projects/:id" component={Drafts} />
               <Route exact path="/project/:id" component={Board} />
