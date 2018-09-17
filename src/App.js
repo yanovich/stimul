@@ -57,6 +57,7 @@ class App extends Component {
       logged: false,
       lbar: true,
       barstate: 'chat',
+      user: true,
     };
     this._lbarstate = this._lbarstate.bind(this);
 
@@ -81,6 +82,15 @@ class App extends Component {
     this.setState({logged: value});
   }
 
+  lookft(){
+    let authToken = localStorage.getItem(AUTH_TOKEN)
+    if(authToken){
+      this.setState({
+        user: true
+      })
+    }
+
+  }
 
   ltrim(){
     
@@ -116,7 +126,7 @@ class App extends Component {
       return (
         <div>
            {!authToken ? (
-              <Login />
+              <Login lookft={this.lookft} />
                 ) : (
           <Fragment>
           <LeftNav lstate={this._lbarstate} />
