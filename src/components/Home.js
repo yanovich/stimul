@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react'
 import Proj from '../components/Proj'
 import { Query } from 'react-apollo'
 import  { gql } from 'apollo-boost'
+import AddGroup from './AddGroup'
 
 export default class DraftsPage extends Component {
   render() {
@@ -52,6 +53,7 @@ export default class DraftsPage extends Component {
 
                 )}
               {this.props.children}
+              <AddGroup types={"type"} refresh={() => refetch()} />
             </Fragment>
           )
         }}

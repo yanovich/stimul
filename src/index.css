@@ -515,6 +515,8 @@ height:100%;
   overflow: auto;
   padding:10px;
   box-sizing: border-box;
+  text-align: left;
+  vertical-align: top;
 }
 .taskModule > .content > .bottom{
   display:block;
@@ -529,24 +531,55 @@ height:100%;
 }
 .taskModule .inner{
   display: inline-block;
+  vertical-align: top;
   overflow: hidden;
-  width:100%;
+  /* width:100%; */
+  width:auto;
   height:auto;
+  min-height:350px;
   /* min-height: 300px; */
+  overflow: hidden;
   background: rgba(44, 66, 85, 0.911);
   border:1px solid #1B2126;
   margin:2px;
-  padding:50px;
+  padding:20px;
 }
 .taskModule .inner input{
-width:300px;
-margin:10px !important;
+width:200px;
+min-width:200px;
+height:30px;
+min-height:30px;
+margin:5px !important;
+padding:5px 10px;
+box-sizing: border-box;
 }
 .taskModule .inner textarea{
-width:300px;
-margin:10px  !important;
+width:auto;
+max-width:500px;
+min-width:200px;
+margin:5px  !important;
+box-sizing: border-box;
+}
+
+.taskModule .inner .description,.taskModule .inner .task-name,.taskModule .inner .name{
+  background:rgba(27, 33, 38, 0.4);
+  padding:10px 10px;
+  margin:5px auto 10px;
+}
+
+.taskModule .inner .comments{
+  border:1px solid #1B2126;
+  max-height:50% ;
+  
+}
+.taskModule .inner .comments .inn .scroller{
 
 }
+
+
+
+
+
 .column:last-child{
   background: rgb(85, 1, 36);
 }
@@ -566,7 +599,14 @@ select{
   display: inline-block;
   width:160px;
   overflow: hidden;
+  font-size:80%;
 }
+.in-block{
+  margin:5px auto;
+  padding:5px;
+  /* border:1px solid rgba(25, 37, 46, 0.1); */
+}
+
 svg{
   cursor:pointer;
   /* border-radius:999em; */
@@ -645,7 +685,7 @@ svg:hover{
 .column:nth-child(2) .task[data-priority="4"] .priority{background: rgba(243, 227, 9, 0.486);}
 .column:nth-child(2) .task[data-priority="5"] .priority{background: rgba(192, 243, 9, 0.541);}
 .column:nth-child(2) .task[data-priority="6"] .priority{background: rgba(9, 243, 134, 0.438);}
-.task .open{
+.task .open, .card .open, .card button{
   border:0px none;
   background: rgb(52, 107, 151);
   color:#FFFFFF;
@@ -654,6 +694,11 @@ svg:hover{
   border-radius: 3px;
   cursor:pointer;
 }
+.card .open, .card button{
+  width:200px;
+  padding:6px 10px;
+}
+
 .task .open:hover{
   background: rgba(47, 96, 136, 0.562);
 }
@@ -661,3 +706,137 @@ svg:hover{
   max-height: auto;
   height: auto;
 }
+.card{
+  cursor:pointer;
+}
+.add{
+  text-align: center;
+  padding: 50px;
+}
+.add svg{
+  margin:20px auto;
+  fill: #ffffff;
+}
+
+.left-bar-inner{
+  width:100%;
+  height: 100%;
+  overflow: hidden;
+}
+.left-bar-inner .scroller{
+  width:100%;
+  height: 100%;
+  overflow: auto;
+}
+.left-bar-inner.favor .scroller .favorites{
+  background: rgb(216, 238, 20);
+  border-radius: 5px;
+  margin:5px auto;
+  padding:20px;
+  color:#1B2126; 
+}
+.left-bar-inner.fire .scroller .firetes{
+  background: rgb(233, 98, 98);
+  border-radius: 5px;
+  margin:5px auto;
+  padding:20px;
+  color:#1B2126; 
+}
+.left-bar-inner.favor .scroller,.left-bar-inner.fire .scroller{
+  padding:10px;
+}
+.card{
+  position: relative;
+}
+.add-favorite{
+  fill:rgba(255, 238, 0, 0.37);
+  position: absolute;
+  top:10px;
+  right:10px;
+}
+.add-favorite.in, .add-favorite:hover{
+  fill:rgba(255, 238, 0, 0.952);
+}
+.colHeader, .taskName{position: relative;}
+.taskName svg{
+  width:28px;height:28px;
+  top:-5px;
+  right:0;
+}
+.taskDescr{
+  background: rgba(33, 49, 63, 0);
+  border:1px solid rgba(0, 0, 0, 0.075);
+  padding:5px;
+  margin:2px auto;
+}
+.users-list > .user-el{
+
+}
+.users-list .user-name{
+  display: inline-block;
+  width:200px;
+  border-bottom: 1px solid rgba(15, 102, 216, 0.582);
+  margin:5px;
+  padding:5px;
+}
+.users-list .user-svg svg{
+  fill:rgb(206, 8, 8);
+  width:18px;
+  height:18px;
+}
+.svg-add{
+  width:36px;
+  height:36px;
+  fill: rgb(8, 206, 107);
+}
+.errorMessage{
+  background: #08B6CE;
+  padding:10px;
+}
+.card{
+  position: relative;
+}
+.card .hover{
+  display: none;
+  
+}
+.card:hover .delete{
+  display: block;
+  position: absolute;
+  bottom: 10px;
+  left:10px;
+}
+.card:hover .add-favorite{
+  display: block;
+}
+.chkbx-frame{
+  padding:10px 0px;
+}
+.chkbx-label{
+display: inline-block;
+
+width:100px;
+}
+.chkbx{
+  width:22px;
+  height:22px;
+  display: inline-block;
+  border:4px solid;
+  color:rgb(4, 140, 158);
+  box-sizing: border-box;
+  overflow: hidden;
+}
+.chkbx.active:after{
+  display: block;
+  content:" ";
+  width:100%;
+  height:100%;
+  border:3px solid rgba(0, 80, 117, 0.5);
+  box-sizing: border-box;
+  overflow: hidden;
+  background: rgb(255, 255, 255);
+}
+/* .card .open{
+  position: absolute;
+  bottom:10px;
+} */

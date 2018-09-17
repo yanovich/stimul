@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 // import styled from 'react-emotion';
-import {CreateTask} from './CreateTask';
+import { CreateTask } from './CreateTask';
 import CreateCol from './CreateCol';
 import DropCol from './DropCol';
 import gql from "graphql-tag";
@@ -10,7 +10,7 @@ import 'cross-fetch/polyfill';
 //import { grid, colors, borderRadius } from '../constants';
 import Card from './Card';
 import Task from './Task';
-import {url} from '../constants';
+import { url } from '../constants';
 //import CardOpen from './CardOpne';
 
 
@@ -73,7 +73,11 @@ const quer = (query, vars) =>{
         })
       })
         .then(r => r.json())
-        .then(data => data)      
+        .then(data => data)
+        .catch((e)=>{
+            console.log('Cant get quer',e)
+        });
+        
 };
 
 
@@ -150,11 +154,6 @@ const array_move = (arr, old_index, new_index) => {
     return arr; // for testing
 };
 
-
-
-
-
-
 const getPriority = `{
     glossary{
         priorities{
@@ -177,11 +176,11 @@ const getPriority = `{
       })
         .then(r => r.json())
         .then(data => data)
+        .catch((e)=>{
+            console.log('Cant get query',e)
+        });
+        
   };
-
-
-
-
 
 
 
@@ -329,7 +328,9 @@ export default class Board extends React.Component{
             }else{
                 return true;
             }
-        })
+        }).catch((e)=>{
+            console.log('Cant get getPriority',e)
+        });
     }
     
     updMe(){
@@ -337,15 +338,19 @@ export default class Board extends React.Component{
             _LIST.pid = pid;            
             quer(columns_getter, { pid: pid } )
             .then((a)=>{
-                _LIST.colm = [];
-                _LIST.cards = [];
-                _LIST.task = [];
-                this.setState({
-                    _cols: [],
-                    _task: [],
-                    newquery:true,
-                })
-                return a;
+                // if(a.data){
+                    _LIST.colm = [];
+                    _LIST.cards = [];
+                    _LIST.task = [];
+                    this.setState({
+                        _cols: [],
+                        _task: [],
+                        newquery:true,
+                    })
+                    return a;
+                // }else{
+                //     return false;
+                // }
             })
             .then((a)=>{
                 a.data.columns.map((cols, ci, arr)=>{
@@ -370,13 +375,16 @@ export default class Board extends React.Component{
                         return 0;
                       });
 
-                console.log(_LIST.task)
+                // console.log(_LIST.task)
                 this.setState({
                     pid: pid,
                     _cols: _LIST.colm,
                     _task: _LIST.task,
                     newquery:false,
                 })
+            })
+            .catch((e)=>{
+                console.log('Cant get columns_getter',e)
             });
 
     }

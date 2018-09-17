@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
-import {url} from '../constants';
+import {url, quf} from '../constants';
+import {updTask, getPriority, getById} from '../graph/querys';
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import gql from "graphql-tag";
 import {
@@ -9,29 +10,11 @@ import {
     Switch,
   } from 'react-router-dom';
 
-const getById = `
-query getById($id: String!) {
-    task(id: $id) {
-        id
-        name
-        description
-        index
-        columnId
-        priority
-      }
-}
-`;
 
-
-const getPriority = `{
-    glossary{
-        priorities{
-          name
-          id
-        }
-      }
-    }
-`;
+let filename = "file: Card";
+let log =(fun, e)=>{
+    console.log(filename,"func:",fun,e)
+};
 
 /*
 check on backend
@@ -39,43 +22,8 @@ check on backend
 if ColumnIdOld->ProjectIdSame != ColumnIdNew->ProjectIdSame then FuckU
 */
 
-const quer = (query, vars) =>{
-    return fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-        body: JSON.stringify({
-          query,
-        variables: vars,
-        })
-      })
-        .then(r => r.json())
-        .then(data => data)
-      
-};
 
-const quer2 = (query) =>{
-    return fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-        body: JSON.stringify({
-          query
-        })
-      })
-        .then(r => r.json())
-        .then(data => data)
-};
 
-const query2 =(...params)=>{
-    return(`mutation{
-        updateTask(id: "${params[0]}", ${params[1]})
-      }`)
-}
 
 const _DB = {
     priority: []
@@ -93,7 +41,10 @@ export default class Card extends Component{
             prior: 0,
             descr: {},
             card:{},
+            edit: false,
+            editName: false,
         };
+        this.editName = this.editName.bind(this);
     }
     selNewState(event){
         if(event.target.name && event.target.name === "columnId"){
@@ -132,9 +83,9 @@ export default class Card extends Component{
     // }
 
     _mutTask(id, input){
-        let q = query2(id,`input: {${input}}`);
+        let q = updTask(id,`input: {${input}}`);
         console.log(q)
-        quer2(q)
+        quf(q)
         .then((a)=>{
             console.log(a)
         });
@@ -142,7 +93,7 @@ export default class Card extends Component{
 
 
     _qPriority(){
-        quer(getPriority)
+        quf(getPriority)
         .then((a)=>{
             if(a.data){
                 this.setState({
@@ -150,17 +101,20 @@ export default class Card extends Component{
                 })
                 return a.data.glossary.priorities;
             }else{
-                return true;
+                return false;
             }
-
+        })
+        .catch((e)=>{
+            log("getPriority",e);
         });
     }
 
-
     componentWillMount(){
-        const id = this.props.opid;
-            quer(getById, { id: id } )
+        let id = this.props.opid;
+        let q = getById(id);
+            quf(q)
             .then((a)=>{
+                if(a.data){
                 console.log("a log",a)
                 this.setState({
                     id: this.props.opid,
@@ -169,15 +123,59 @@ export default class Card extends Component{
                     selectNewState: a.data.task.columnId,
                     prior: a.data.task.priority,
                 })
+            }else{
+                return false;
+            }
+            })
+            .catch((e)=>{
+                log("getById",e);
             });
             this._qPriority();
     }
 
 
+    editName(){
+        this.setState({
+            editName: true,
+        })
+    }
+    changeName(e){
+        let val = e.target.value;
+        this.setState(prevState => ({
+            task: {
+                ...prevState.task,
+                name: val
+            }
+        }))
+    }
+
+    // changeA(e){
+    //     let val = e.target.value;
+    //     let task = Object.assign({}, this.state.task);
+    //     task.name = 'new';                        
+    //     this.setState({task});
+    // }
+
+    changeDescription(e){
+        let val = e.target.value;
+        this.setState(prevState => ({
+            task: {
+                ...prevState.task,
+                description: val
+            }
+        }))
+    }
+
   render() {
       let data = this.state.task;
       let cols = this.props.cols;
       let prior = this.state.priority;
+      let edit = this.state.edit;
+      let editName = this.state.editName;
+      let users = [
+        {name: "Пользователь О.Д." , id: 1},
+        {name: "Пользователь Д.В." , id: 2},
+      ];
       
       console.log(data)
     if(this.state.dataGet){
@@ -186,11 +184,11 @@ export default class Card extends Component{
             <div className="content">
             <div className="scroller">
                 <div className="inner">
-                <div className="">Задача: <h1>{data.name}</h1></div>
-                <div className="description"><span className="left-titles">Описание</span><span>{data.description}</span></div>
-                <div className="id"><span className="left-titles">ID</span><span>{data.id}</span></div>
-                <div className="status">
-                <span className="left-titles">Состояние</span> 
+                <div className="task-name" onClick={this.editName}>Задача: {editName ? ( <input type="text" value={this.state.task.name} palceholder="Введите название"/> ) : (<h3>{data.name}</h3>) }</div>
+                <div className="description in-block"><span className="left-titles">Описание:</span><div>{data.description}</div></div>
+                <div className="id small"><span className="left-titles">ID:</span><span>{data.id}</span></div>
+                <div className="status in-block">
+                <span className="left-titles">Состояние:</span> 
                 <select value={this.state.selectNewState} name="columnId" onChange={this.selNewState.bind(this)}>
                     {
                         cols.map((col, i , arr)=>{
@@ -200,8 +198,8 @@ export default class Card extends Component{
                 </select>
 
                 </div>
-                <div className="status">
-                <span className="left-titles">Важность</span> 
+                <div className="status in-block">
+                <span className="left-titles">Важность:</span> 
                 <select value={this.state.prior} name="priority" onChange={this.selNewState.bind(this)}>
                     {
                         prior.map((pri, i , arr)=>{
@@ -209,7 +207,6 @@ export default class Card extends Component{
                         })
                     }
                 </select>
-
                 </div>
                 
                 </div>
@@ -217,26 +214,68 @@ export default class Card extends Component{
                     <input type="text" placeholder="" value=""/>
                     <textarea></textarea>
                 </div>
+                
                 <div className="inner">
                     <div className="group">
-                    <h3 className="">Ответственные:</h3>
+                    <h3 className="">Исполнители:</h3>
                     <div className="text">
-                        <ul>
-                            <li>Ответственный И.А.</li>
-                            <li>Ответственов В.Ю.</li>
-                            <li>Отвечаев С.Р.</li>
-
-                        </ul>
-                        <div className="svgOuter">
-                            
-                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24">
+                        <div className="users-list">
+                            {
+                                users.map((el,i,arr)=>{
+                                    return(
+                                        <div className="user-el" data-id={el.id}>
+                                        <span className="user-name">{el.name}</span>
+                                        <span className="user-svg">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                                <path d="M0 0h24v24H0z" fill="none"/>
+                                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11H7v-2h10v2z"/>
+                                            </svg>
+                                        </span>
+                                        </div>
+                                        )
+                                })
+                            }
+                            <svg className="svg-add" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24">
                                 <path d="M0 0h24v24H0z" fill="none"/>
                                 <path d="M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
                             </svg>
-
+                        </div>
+                    </div>
+                    <h3 className="">Ответственные:</h3>
+                    <div className="text">
+                        <div className="users-list">
+                            {
+                                users.map((el,i,arr)=>{
+                                    return(
+                                        <div className="user-el" data-id={el.id}>
+                                        <span className="user-name">{el.name}</span>
+                                        <span className="user-svg">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                                <path d="M0 0h24v24H0z" fill="none"/>
+                                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11H7v-2h10v2z"/>
+                                            </svg>
+                                        </span>
+                                        </div>
+                                        )
+                                })
+                            }
+                            <svg className="svg-add" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24">
+                                <path d="M0 0h24v24H0z" fill="none"/>
+                                <path d="M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                            </svg>
                         </div>
                     </div>
                     </div>
+                </div>
+                <div className="inner">
+                    <div className="comments">
+                            <div className="inn">
+                                <div className="scroller">
+
+                                </div>
+                            </div>
+                    </div>
+                    <textarea></textarea>
                 </div>
     
             </div>

@@ -1,8 +1,17 @@
 {
   "name": "kanban",
   "version": "1.0.0",
+  "description": "guov",
+  "repository": {
+    "type": "internal",
+    "url": "none"
+  },
+  "license": "No",
   "devDependencies": {
-    "react-scripts": "1.1.5"
+    "envify": "^4.1.0",
+    "react-scripts": "1.1.5",
+    "uglify-js": "^3.4.9",
+    "uglifyify": "^5.0.1"
   },
   "dependencies": {
     "apollo-boost": "0.1.15",
@@ -23,6 +32,7 @@
     "react-apollo": "2.1.11",
     "react-beautiful-dnd": "^9.0.2",
     "react-dom": "16.4.2",
+    "react-emotion": "^9.2.8",
     "react-modal": "3.5.1",
     "react-router-dom": "4.3.1",
     "socket.io-client": "^2.1.1",
