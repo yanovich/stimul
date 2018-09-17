@@ -60,6 +60,7 @@ class App extends Component {
       user: true,
     };
     this._lbarstate = this._lbarstate.bind(this);
+    this.lookft = this.lookft.bind(this);
 
   }
 
@@ -86,7 +87,7 @@ class App extends Component {
     let authToken = localStorage.getItem(AUTH_TOKEN)
     if(authToken){
       this.setState({
-        user: true
+        user: true,
       })
     }
 
