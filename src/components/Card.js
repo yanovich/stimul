@@ -7,8 +7,6 @@ import {
     NavLink,
     Link,
     Redirect,
-    BrowserRouter as Router,
-    Route,
     Switch,
   } from 'react-router-dom';
 

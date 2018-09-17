@@ -19,7 +19,7 @@ class LeftNav extends Component {
         <div className="nav-button" name="profile">
         <Link
                 className="link dim black b f6 f5-ns dib mr3"
-                to="/profile"
+                to="/login"
                 title="Root"
               >
         <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24">

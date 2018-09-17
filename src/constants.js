@@ -40,3 +40,5 @@ export const grid = 8;
 export const borderRadius = 2;
 
 export const url = 'http://185.168.187.103:8500/graphql';
+
+export const AUTH_TOKEN = 'auth-token'
