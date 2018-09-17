@@ -58,6 +58,12 @@ class LeftBar extends Component {
                 <div className="date small">добавлено: 10 сен'18<span className="name"> А.Ю. Пугачёвой</span></div>
               </span>
               </div>
+              <div className="message favorites">
+              <span className="body">
+                <div className="content">Проект Строительство Центра ПВО</div>
+                <div className="date small">добавлено: 12 сен'18<span className="name"> Ж.П. Киркоров</span></div>
+              </span>
+              </div>
               </div>
             </div>
           </div>

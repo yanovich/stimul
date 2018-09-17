@@ -53,7 +53,7 @@ export default class DraftsPage extends Component {
 
                 )}
               {this.props.children}
-              <AddGroup/>
+              <AddGroup types={"type"} refresh={() => refetch()} />
             </Fragment>
           )
         }}

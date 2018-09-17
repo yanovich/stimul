@@ -16,17 +16,19 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 //import { setContext } from 'apollo-link-context';
 
 
-export const uri = 'http://localhost:8500/graphql';
+export const uri = 'http://185.168.187.103:8500/graphql';
 
-const httpLink = new HttpLink({ uri });
+const httpLink = new HttpLink({
+  uri: 'http://185.168.187.103:8500/graphql'
+});
 
 // Create a WebSocket link:
-// const wsLink = new WebSocketLink({
-//   uri: `ws://185.168.187.103:8500/`,
-//   options: {
-//     reconnect: true
-//   }
-// });
+const wsLink = new WebSocketLink({
+  uri: `ws://185.168.187.103:8500/`,
+  options: {
+    reconnect: true
+  }
+});
 
 // using the ability to split links, you can send data to each link
 // depending on what kind of operation is being sent

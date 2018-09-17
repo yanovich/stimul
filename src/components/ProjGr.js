@@ -5,6 +5,9 @@ import  { gql } from 'apollo-boost'
 import AddGroup from './AddGroup'
 
 export default class DraftsPage extends Component {
+
+  
+
   render() {
     return (
       <Query query={ALLGR_QUERY} variables={{pid: 1}}>
@@ -16,14 +19,11 @@ export default class DraftsPage extends Component {
               </div>
             )
           }
-
-          if (error) {
-            return (
-              <div className="flex w-100 h-100 items-center justify-center pt7 flex-container">
-                <div>Раздел в разработке</div>
-              </div>
-            )
+          if (error){
+            console.log(error.message);
+            //return(<div className="errorMessage">`Error! in C`</div>);
           }
+          
           return (
             <Fragment>
               {data.projectGroups &&
@@ -50,8 +50,9 @@ export default class DraftsPage extends Component {
                     refresh={() => refetch()}
                   />
                 ))}
+              
+              <AddGroup types={"type"} refresh={() => refetch()} />
               {this.props.children}
-              <AddGroup />
             </Fragment>
           )
         }}

@@ -46,7 +46,8 @@ export const qf = (_url, ...params) =>{
       })
     })
       .then(r => r.json())
-      .then(data => data)      
+      .then(data => console.log("quf data",data))
+      .then(data => data)
 };
 
 // qf("http://185.168.187.103:8500/auth/register", {email: "me@mail.ru", password: "Password"} )

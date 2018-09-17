@@ -14,7 +14,7 @@ export default class Draft extends Component {
         <Query query={GCOL_BID} variables={{pid: this.props.proj.id}}>
         {({ loading, error, data, refetch }) => {
           if (loading) return "Loading...";
-          if (error) return `Error! ${error.message}`;
+          if (error) return(<div className="errorMessage">`Error! ${error.message}`</div>);
           let hmcols = data.columns.length;
           let hmtasks = (data)=>{
             let col = 0;

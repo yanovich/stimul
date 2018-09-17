@@ -41,7 +41,7 @@ handler() {
             <Query query={GETTASKS_BYCID} variables={{id: this.props.id}}>
             {({ loading, error, data }) => {
               if (loading) return "Загрузка...";
-              if (error) return `Error! ${error.message}`;
+              if (error) return(<div className="errorMessage">`Error! ${error.message}`</div>);
         
               return (
                 <div className="column" >
