@@ -28,10 +28,7 @@ export default class Proj extends Component {
 delete(){
   let id = this.props.proj.id;
   let crprg = delPRG(id);
-  quf(crprg);
-  console.log(crprg);
-  console.log(this.props);
-  
+  quf(crprg);  
   this.props.refresh()
 }
 
