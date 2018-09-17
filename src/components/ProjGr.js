@@ -51,7 +51,7 @@ export default class DraftsPage extends Component {
                   />
                 ))}
               
-              <AddGroup {...this.props} refresh={() => refetch()} />
+              <AddGroup pid={this.props.match.params.id} refresh={() => refetch()} />
               {this.props.children}
             </Fragment>
           )

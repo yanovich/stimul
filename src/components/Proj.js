@@ -37,6 +37,10 @@ delete(){
   render() {
     let title = "";
     let __typename = "projectgroup";
+    let projlen = 0;
+    if(this.props.proj.projects && this.props.proj.projects.length > 0 ){
+      projlen = this.props.proj.projects.length;
+    }
       if(this.props.proj.__typename === "ProjectGroup" && this.props.end == 1){__typename = 'projects'}
       else if(this.props.proj.__typename === "ProjectGroup"){__typename = 'projectgroup'}
       else if(this.props.proj.__typename === "Project"){__typename = 'project'}
@@ -64,8 +68,11 @@ delete(){
               <Link className="no-underline ma1" to={`/${__typename}/${this.props.proj.id}`} type={this.props.proj.__typename} end={this.props.end}>
               <h2 className="card-name">{this.props.proj.title}{this.props.proj.name}</h2>
               <p className="card-id small">id {this.props.proj.id}</p>
-  
+              {console.log(projlen)}
+              {projlen ? (<div className="projs">Проектов <span>{projlen}</span></div>) : ""}
+              
               <div className="semafor">
+
               {/* <span className="y">2</span>
               <span className="g">5</span>
               <span className="r">1</span> */}

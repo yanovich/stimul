@@ -16,7 +16,7 @@ const crPrGr = (parentId, name, createdBy) => {
 const crPrj = (title, name, description, createdBy, parentId) => {
     return(
         `mutation{
-            createProject(name: "${name}", title: ${title}, description: ${description}, parentId: ${parentId}, createdBy: ${createdBy}){
+            createProject(name: "${name}", title: "${title}", description: "${description}", parentId: ${parentId}, createdBy: ${createdBy}){
                 id
                 name
             }
@@ -63,12 +63,13 @@ export default class AddGroup extends Component {
     // }
     if(this.state.chk){
         let parent = 1;
+        let pid = Number(this.props.pid);
         let name = this.state.input[0];
         let title = this.state.input[1];
         let description = this.state.input[2];
 
         let createdBy = 1;
-        let crt = crPrj(title, name, description, createdBy, parent);
+        let crt = crPrj(title, name, description, createdBy, pid);
         quf(crt);
         this.props.refresh();
         this.setState({
@@ -77,9 +78,10 @@ export default class AddGroup extends Component {
         });
     }else{
         let parent = 1;
+        let pid = Number(this.props.pid);
         let name = this.state.input;
         let createdBy = 1;
-        let crt = crPrGr(parent,name,createdBy);
+        let crt = crPrGr(pid,name,createdBy);
         quf(crt);
         this.props.refresh()
         this.setState({

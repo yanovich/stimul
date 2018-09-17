@@ -9,6 +9,7 @@ export default class DraftsPage extends Component {
     return (
       <Query query={ALLGR_QUERY} variables={{pid: 1}}>
         {({ data, loading, error, refetch }) => {
+          console.log(data)
           if (loading) {
             return (
               <div className="flex w-100 h-100 items-center justify-center pt7 flex-container">
@@ -34,7 +35,18 @@ export default class DraftsPage extends Component {
                         key={proj.id}
                         proj={proj}
                         refresh={() => refetch()}
-                        type="ProjectGroup"
+                        type={proj.__typename}
+                        end="1"
+                      />
+                    )
+                  }
+                  else if(proj.projects && proj.projects.length > 0){
+                    return (
+                      <Proj
+                        key={proj.id}
+                        proj={proj}
+                        refresh={() => refetch()}
+                        type={proj.__typename}
                         end="1"
                       />
                     )
@@ -45,7 +57,7 @@ export default class DraftsPage extends Component {
                         key={proj.id}
                         proj={proj}
                         refresh={() => refetch()}
-                        type="ProjectGroup"
+                        type={proj.__typename}
                         end="0"
                       />
                     )}
@@ -53,7 +65,7 @@ export default class DraftsPage extends Component {
 
                 )}
               {this.props.children}
-              <AddGroup {...this.props} refresh={() => refetch()} />
+              <AddGroup pid={this.props.match.params.id} refresh={() => refetch()} />
             </Fragment>
           )
         }}
