@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import gql from "graphql-tag";
 import { Mutation } from "react-apollo";
 
@@ -14,34 +14,36 @@ export default class CreateCol extends Component {
   }
 
   clickEvent = () => {
-    this.setState({status: true});
+    this.setState({ status: true });
   }
 
-  render(){
+  render() {
     let input0, input1, input2;
     let parentId = this.props.pid;
     let op = this.state.status;
 
-    if(op){
+    if (op) {
       return (
         <Mutation
-        mutation={CREATE_DRAFT_MUTATION}
+          mutation={CREATE_DRAFT_MUTATION}
 
         >
           {(createProject, { data }) => (
             <div className="card">
               <form
                 onSubmit={e => {
-                  if(!input0.value){
+                  if (!input0.value) {
                     e.preventDefault();
-                   return false;
+                    
+                    return false;
                   }
                   e.preventDefault();
-                  
-                  let upd = async () =>{
+
+                  let upd = async () => {
                     await createProject({ variables: { title: input0.value, parentId: parentId.pid } });
-                    await this.props.refetch();
+                    // await this.props.refetch();
                   }
+
                   upd()
                   input0.value = "";
                 }}
@@ -64,21 +66,21 @@ export default class CreateCol extends Component {
           )}
         </Mutation>
       );
-    }else{
-      return(
-        <div className="card add" onClick={this.clickEvent}>                  
-        <div>
-          <svg className="plus" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-              <path d="M0 0h24v24H0z" fill="none"/>
-              <path d="M13 7h-2v4H7v2h4v4h2v-4h4v-2h-4V7zm-1-5C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
-          </svg>
+    } else {
+      return (
+        <div className="card add" onClick={this.clickEvent}>
+          <div>
+            <svg className="plus" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+              <path d="M0 0h24v24H0z" fill="none" />
+              <path d="M13 7h-2v4H7v2h4v4h2v-4h4v-2h-4V7zm-1-5C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" />
+            </svg>
+          </div>
         </div>
-      </div>
       )
     }
 
   }
-  
+
 };
 
 const CREATE_DRAFT_MUTATION = gql`

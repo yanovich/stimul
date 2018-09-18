@@ -65,7 +65,7 @@ export default class AddGroup extends Component {
       const crt = crPrj(title, name, description, createdBy, pid);
 
       quf(crt);
-      this.props.refresh();
+      // this.props.refresh();
       this.setState({
         closed: true,
         input: [],
@@ -76,7 +76,7 @@ export default class AddGroup extends Component {
       const crt = crPrGr(pid, name, createdBy);
 
       quf(crt);
-      this.props.refresh();
+      // this.props.refresh();
       this.setState({
         closed: true,
         input: [],

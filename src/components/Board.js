@@ -14,8 +14,8 @@ import { url } from '../constants';
 //import CardOpen from './CardOpne';
 
 
-const publishOnDragStart = (result) => console.log('onDragStart', result);
-const publishOnDragEnd = (result) => console.log('onDragEnd', result);
+const publishOnDragStart = (result) => console.warn('onDragStart', result);
+const publishOnDragEnd = (result) => console.warn('onDragEnd', result);
 
 
 export const GCOL_BID = gql`
@@ -75,7 +75,7 @@ const quer = (query, vars) => {
     .then(r => r.json())
     .then(data => data)
     .catch((e) => {
-      console.log('Cant get quer', e)
+      console.warn('Cant get quer', e)
     });
 
 };
@@ -90,13 +90,14 @@ let _LIST = {
   pid: 1
 };
 
-const reorder = (list, startIndex, endIndex) => {
-  const result = Array.from(list);
-  const [removed] = result.splice(startIndex, 1);
-  result.splice(endIndex, 0, removed);
+// const reorder = (list, startIndex, endIndex) => {
+//   const result = Array.from(list);
+//   const [removed] = result.splice(startIndex, 1);
 
-  return result;
-};
+//   result.splice(endIndex, 0, removed);
+
+//   return result;
+// };
 
 // const move0 = (source, destination, droppableSource, droppableDestination) => {
 //   const sourceClone = Array.from(source);
@@ -177,14 +178,10 @@ const query = (query) => {
     .then(r => r.json())
     .then(data => data)
     .catch((e) => {
-      console.log('Cant get query', e)
+      console.warn('Cant get query', e)
     });
 
 };
-
-
-
-
 
 
 export default class Board extends React.Component {
@@ -213,16 +210,16 @@ export default class Board extends React.Component {
     })
   }
   _openTask = (data) => {
-    console.log(data)
+    console.warn(data)
 
     this.setState({
       openId: data,
       open: true,
     })
-    console.log(this.state);
+    console.warn(this.state);
   }
   _closeCard = () => {
-    //console.log(data)
+    //console.warn(data)
 
     this.setState({
       openId: "",
@@ -232,7 +229,7 @@ export default class Board extends React.Component {
     })
     this.updMe();
 
-    console.log(this.state);
+    console.warn(this.state);
   }
   _addTasks = (arr) => {
     this.setState({
@@ -275,26 +272,23 @@ export default class Board extends React.Component {
       return;
     }
 
-    if (result.type === "COLUMN") {
-      if (source.index !== destination.index) {
+    // if (result.type === "COLUMN") {
+    //   if (source.index !== destination.index) {
+    //   }
+    //   return;
+    // }
 
-      }
-      return;
-    }
+    // if (source.droppableId === destination.droppableId) {
+    //   console.warn(source.index, source.droppableId, '=>', destination.droppableId, destination.index);
+    //   const items = reorder(
+    //     source.droppableId,
+    //     source.index,
+    //     destination.index
+    //   );
 
-    if (source.droppableId === destination.droppableId) {
-      console.log(source.index, source.droppableId, '=>', destination.droppableId, destination.index);
-      const items = reorder(
-        source.droppableId,
-        source.index,
-        destination.index
-      );
+    //   let state = { items };
+    // }
 
-      let state = { items };
-      console.log('drag state', state);
-      console.log(state);
-
-          }
     // else {
     //     const result = move(
     //         source.droppableId,
@@ -314,6 +308,7 @@ export default class Board extends React.Component {
   };
   _updPid() {
     let pid = this.props.match.params.id || 1;
+
     _LIST.pid = pid;
   }
 
@@ -324,17 +319,19 @@ export default class Board extends React.Component {
           this.setState({
             priority: a.data.glossary.priorities
           })
+
           return a.data.glossary.priorities;
         } else {
           return true;
         }
       }).catch((e) => {
-        console.log('Cant get getPriority', e)
+        console.warn('Cant get getPriority', e)
       });
   }
 
   updMe() {
     let pid = this.props.match.params.id || 1;
+
     _LIST.pid = pid;
     quer(columns_getter, { pid: pid })
       .then((a) => {
@@ -347,6 +344,7 @@ export default class Board extends React.Component {
           _task: [],
           newquery: true,
         })
+
         return a;
         // }else{
         //     return false;
@@ -372,10 +370,11 @@ export default class Board extends React.Component {
             if (a[8] < b[8]) {
               return -1;
             }
+
             return 0;
           });
 
-        // console.log(_LIST.task)
+        // console.warn(_LIST.task)
         this.setState({
           pid: pid,
           _cols: _LIST.colm,
@@ -384,7 +383,7 @@ export default class Board extends React.Component {
         })
       })
       .catch((e) => {
-        console.log('Cant get columns_getter', e)
+        console.warn('Cant get columns_getter', e)
       });
 
   }
@@ -428,16 +427,19 @@ export default class Board extends React.Component {
                             {
                               tasks.map((task, i, arr) => {
                                 let priorityname = "";
+
                                 if (task[0] === cols.iid) {
                                   if (task[7].priority) {
                                     this.state.priority.map((a, b, c) => {
                                       if (a.id === task[7].priority) {
                                         priorityname = a.name;
+
                                         return priorityname;
                                       }
                                     })
 
                                   }
+
                                   return (
                                     <Task key={i} index={task[0] + '' + i} name={task[5]} description={task[6]} id={task[4]} open={this._openTask} full={task} colId={cols.id} priorityname={priorityname} i={1} />
                                   )

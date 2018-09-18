@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import gql from "graphql-tag";
 import { Mutation } from "react-apollo";
 
@@ -15,41 +15,43 @@ export default class CreateCol extends Component {
   }
 
   clickEvent = () => {
-    this.setState({status: !this.state.status});
+    this.setState({ status: !this.state.status });
     this.props.update();
   }
 
-  render(){
+  render() {
     let input0, input1, input2;
     let projectId = this.props.projectId;
     let op = this.state.status;
 
-    if(op){
+    if (op) {
       return (
         <Mutation
-        mutation={CREATE_COL_MUT}
+          mutation={CREATE_COL_MUT}
         >
           {(createColumn, { data }) => (
             <div className="column">
               <form
                 onSubmit={e => {
-                  if(!input0.value){
+                  if (!input0.value) {
                     e.preventDefault();
-                   return false;
+
+                    return false;
                   }
                   e.preventDefault();
 
 
-                  let upd = async () =>{
+                  let upd = async () => {
                     await createColumn({ variables: { name: input0.value, order: 1, projectId: projectId } });
-                    await this.props.refetch();
+                    // await this.props.refetch();
                   }
+                  
                   upd()
                   input0.value = "";
-                  
+
                   this.props.update();
-                  this.props.refetch();
-                  this.setState({update: !this.state.update, status: false});
+                  // this.props.refetch();
+                  this.setState({ update: !this.state.update, status: false });
                 }}
               >
                 <input
@@ -64,14 +66,14 @@ export default class CreateCol extends Component {
           )}
         </Mutation>
       );
-    }else{
-      return(
+    } else {
+      return (
         <div onClick={this.clickEvent} className="button">Добавить список задач</div>
       )
     }
 
   }
-  
+
 };
 
 

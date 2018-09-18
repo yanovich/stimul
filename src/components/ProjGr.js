@@ -20,7 +20,7 @@ export default class DraftsPage extends Component {
             )
           }
           if (error){
-            console.log(error.message);
+            console.warn(error.message);
             //return(<div className="errorMessage">`Error! in C`</div>);
           }
           

@@ -20,19 +20,19 @@ export const colors = {
   purple: 'rebeccapurple',
 };
 
-export const quf = (query) =>{
+export const quf = (query) => {
   return fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      },
-      body: JSON.stringify({
-        query
-      })
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    },
+    body: JSON.stringify({
+      query
     })
-      .then(r => r.json())
-      .then(data => data)
+  })
+    .then(r => r.json())
+    .then(data => data)
 };
 
 export const grid = 8;

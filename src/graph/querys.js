@@ -1,6 +1,5 @@
-
-export const updTask =(...params)=>{
-    return(`mutation{
+export const updTask = (...params) => {
+  return (`mutation{
         updateTask(id: "${params[0]}", ${params[1]})
       }`)
 };
@@ -15,8 +14,8 @@ export const getPriority = () => `{
 `;
 
 export const getById = (id) => {
-    return(
-        `{
+  return (
+    `{
             task(id: ${id}) {
                 id
                 name

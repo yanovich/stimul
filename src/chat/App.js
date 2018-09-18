@@ -10,9 +10,10 @@ class Appср extends Component {
     this.usernameChangeHandler = this.usernameChangeHandler.bind(this)
     this.usernameSubmitHandler = this.usernameSubmitHandler.bind(this)
   }
-  componentDidMount(){
+  componentDidMount() {
     let user = localStorage.getItem('username');
-    this.setState({username: user});
+
+    this.setState({ username: user });
   }
 
   usernameChangeHandler = event => {
@@ -24,7 +25,7 @@ class Appср extends Component {
   }
 
   render() {
-       return <ChatApp username={this.state.username} />
+    return <ChatApp username={this.state.username} />
   }
 }
 Appср.defaultProps = {}

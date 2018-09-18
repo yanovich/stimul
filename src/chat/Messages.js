@@ -4,6 +4,7 @@ import Message from './Message'
 class Messages extends React.Component {
   componentDidUpdate() {
     const objDiv = document.getElementById('messageList')
+
     objDiv.scrollTop = objDiv.scrollHeight
   }
   componentDidMount(){
@@ -22,6 +23,7 @@ class Messages extends React.Component {
         />
       )
     })
+    
     return (
       <div className='messages' id='messageList'>
         {messages}

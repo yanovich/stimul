@@ -27,7 +27,7 @@ module.exports = {
           2
       ],
       "linebreak-style":0,
-      "max-len": ["error", 140],
+      "max-len": ["warn", 200],
       "no-console": ["error", { allow: ["warn", "error"] }],
       "react/no-deprecated": ["off"],
       "padding-line-between-statements": [

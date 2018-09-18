@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 //import { Link } from 'react-router-dom';
 
 
@@ -11,9 +11,9 @@ class Img extends Component {
   }
   render() {
     return (
-        <div className="profile-image">
-            <img src={this.props.src} />
-        </div>
+      <div className="profile-image">
+        <img src={this.props.src} />
+      </div>
     )
   }
 }

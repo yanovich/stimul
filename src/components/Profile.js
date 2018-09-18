@@ -26,7 +26,7 @@ class Profile extends Component {
     let user = localStorage.getItem('username');
 
     if (!user) {
-      // console.log('no usr', user )
+      // console.warn('no usr', user )
       this.setState({ logged: false });
     } else {
       this.setState({ email: user });
@@ -40,7 +40,7 @@ class Profile extends Component {
         <div>Вы можете изменить своё имя</div>
         <input type="text" placeholder="новый Логин или Email" onChange={(e) => {
           this.setState({ email: e.target.value });
-          console.log(this.state.email)
+          console.warn(this.state.email)
         }} />
         <div className="button" onClick={() => { this.getUserNamePass() }}>изменить имя</div>
       </div>

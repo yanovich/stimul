@@ -55,7 +55,7 @@ export default class Proj extends Component {
         {({ loading, error, data, refetch }) => {
           if (loading) return "Loading...";
           if (error) {
-            console.log(error.message);
+            console.warn(error.message);
             //return(<div className="errorMessage">`Error! in C`</div>);
           }
 
@@ -74,7 +74,7 @@ export default class Proj extends Component {
                 <h2 className="card-name">{this.props.proj.title}{this.props.proj.name}</h2>
                 <p className="card-id small">id {this.props.proj.id}</p>
               </Link>
-              {/* {console.log(projlen)} */}
+              {/* {console.warn(projlen)} */}
               {projlen ? (<div className="projs">Проектов <span>{projlen}</span></div>) : ""}
 
               <div className="semafor">

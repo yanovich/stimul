@@ -19,8 +19,9 @@ class Login extends Component {
 
   render() {
     const { login, email, password, name } = this.state
+    
     return (
-        <div className="auth">
+      <div className="auth">
         <h3>ОАО ГУОВ</h3>
         <div className="flex flex-column">
           <input
@@ -49,9 +50,9 @@ class Login extends Component {
               </div>
             )}
           </Mutation> */}
-              <div className="button" onClick={() => this._confirm(this.state.email)}>
-                {'Вход'}
-              </div>
+          <div className="button" onClick={() => this._confirm(this.state.email)}>
+            {'Вход'}
+          </div>
         </div>
       </div>
     )
@@ -60,17 +61,17 @@ class Login extends Component {
   _confirm = async data => {
     let token = this.state.email;//data.login
     // console.log(this.state);
-    
+
     this._saveUserData(token)
     // console.log('token',token)
     // console.log(this.props)
-    
+
     this.props.history.replace(`/`)
   }
 
   _saveUserData = token => {
     localStorage.setItem('user', token)
-    localStorage.getItem('user', (val)=>{
+    localStorage.getItem('user', (val) => {
       // console.log(val)
     })
   }

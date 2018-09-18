@@ -14,19 +14,19 @@ export default class CreateCol extends Component {
   }
 
   clickEvent = () => {
-    this.setState({status: true});
+    this.setState({ status: true });
     this.props.update();
   }
 
-  render(){
+  render() {
     let input0, input1, input2;
     let projectId = this.props.projectId;
     let op = this.state.status;
 
-    if(op){
+    if (op) {
       return (
         <Mutation
-        mutation={CREATE_COL_MUT}
+          mutation={CREATE_COL_MUT}
         >
           {(createColumn, { data }) => (
             <div className="column-create">
@@ -49,14 +49,14 @@ export default class CreateCol extends Component {
           )}
         </Mutation>
       );
-    }else{
-      return(
+    } else {
+      return (
         <button onClick={this.clickEvent} className="column-create">добавить новую колонку</button>
       )
     }
 
   }
-  
+
 };
 
 

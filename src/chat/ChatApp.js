@@ -26,9 +26,10 @@ class ChatApp extends Component {
       username: this.props.username,
       message
     }
-    if(message == "history"){
+
+    if (message == "history") {
       this.socket.emit('client:history')
-    }else{
+    } else {
       this.socket.emit('client:message', messageObject)
       messageObject.fromMe = true
       this.addMessage(messageObject)
@@ -37,6 +38,7 @@ class ChatApp extends Component {
 
   addMessage = message => {
     const messages = this.state.messages
+    
     messages.push(message)
     this.setState({ message })
   }

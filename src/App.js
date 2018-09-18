@@ -8,10 +8,10 @@ import Home from './components/Home';
 import Card from './components/Card';
 import LeftNav from './components/LeftNav';
 import LeftBar from './components/LeftBar';
-import gql from 'graphql-tag';
+// import gql from 'graphql-tag';
 import Login from './components/Login';
 import Profile from './components/Profile';
-import { stat } from 'fs';
+// import { stat } from 'fs';
 
 import { AUTH_TOKEN } from './constants'
 
@@ -27,7 +27,7 @@ export const qf = (_url, ...params) => {
     })
   })
     .then(r => r.json())
-    .then(data => console.log("quf data", data))
+    .then(data => console.warn("quf data", data))
     .then(data => data)
 };
 
@@ -49,7 +49,7 @@ class App extends Component {
   }
 
   _lbarstate = (state) => {
-    let newState = '';
+    // let newState = '';
 
     if (this.state.barstate === state) {
       this.setState({
@@ -95,8 +95,8 @@ class App extends Component {
 
 
   render() {
-    let username = '';
-    let logged = this.state.logged;
+    // let username = '';
+    // let logged = this.state.logged;
     const authToken = localStorage.getItem(AUTH_TOKEN)
 
     return (

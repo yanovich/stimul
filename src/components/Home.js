@@ -1,15 +1,15 @@
 import React, { Component, Fragment } from 'react'
 import Proj from '../components/Proj'
 import { Query } from 'react-apollo'
-import  { gql } from 'apollo-boost'
+import { gql } from 'apollo-boost'
 import AddGroup from './AddGroup'
 
 export default class DraftsPage extends Component {
   render() {
     return (
-      <Query query={ALLGR_QUERY} variables={{pid: 1}}>
+      <Query query={ALLGR_QUERY} variables={{ pid: 1 }}>
         {({ data, loading, error, refetch }) => {
-          console.log(data)
+          console.warn(data)
           if (loading) {
             return (
               <div className="flex w-100 h-100 items-center justify-center pt7 flex-container">
@@ -25,11 +25,12 @@ export default class DraftsPage extends Component {
               </div>
             )
           }
+          
           return (
             <Fragment>
               {data.projectGroups &&
                 data.projectGroups.map(proj => {
-                  if(data.projects && data.projects.length > 0){
+                  if (data.projects && data.projects.length > 0) {
                     return (
                       <Proj
                         key={proj.id}
@@ -40,7 +41,7 @@ export default class DraftsPage extends Component {
                       />
                     )
                   }
-                  else if(proj.projects && proj.projects.length > 0){
+                  else if (proj.projects && proj.projects.length > 0) {
                     return (
                       <Proj
                         key={proj.id}
@@ -51,8 +52,8 @@ export default class DraftsPage extends Component {
                       />
                     )
                   }
-                  else{
-                    return(
+                  else {
+                    return (
                       <Proj
                         key={proj.id}
                         proj={proj}
@@ -60,8 +61,9 @@ export default class DraftsPage extends Component {
                         type={proj.__typename}
                         end="0"
                       />
-                    )}
+                    )
                   }
+                }
 
                 )}
               {this.props.children}
