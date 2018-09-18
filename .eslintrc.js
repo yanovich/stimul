@@ -1,17 +1,27 @@
 module.exports = {
-    "extends": "airbnb",
-    "rules": {
-      "padding-line-between-statements": [
-        "error",
-        { "blankLine": "always", "prev": "*", "next": "return" },
-        { blankLine: "always", prev: ["const", "let", "var"], next: "*"},
-        { blankLine: "any", prev: ["const", "let", "var"], next: ["const", "let", "var"]}
+  "env": {
+      "browser": true,
+      "commonjs": true,
+      "es6": true
+  },
+  "extends": "eslint:recommended",
+  "parserOptions": {
+      "ecmaFeatures": {
+          "experimentalObjectRestSpread": true,
+          "jsx": true
+      },
+      "sourceType": "module"
+  },
+  "plugins": [
+      "react"
+  ],
+  "rules": {
+      "indent": [
+          "error",
+          2
       ],
-      "max-len": ["error", 140],
-      "linebreak-style": [
-        "error",
-        "unix"
-      ],
-      "func-names": ["off"]
-    }
-  };
+      "linebreak-style":0,
+      "no-console": ["error", { allow: ["warn", "error"] }],
+      "react/no-deprecated": ["off"]
+  }
+};

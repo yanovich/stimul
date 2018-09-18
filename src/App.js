@@ -1,4 +1,4 @@
-import React, {Component,Fragment} from 'react';
+import React, { Component, Fragment } from 'react';
 //import ReactDOM from 'react-dom';
 import {
   Route,
@@ -19,8 +19,8 @@ import Board from './components/Board';
 import Home from './components/Home';
 import Card from './components/Card';
 
-import LeftNav from './components/LeftNav'; 
-import LeftBar from './components/LeftBar'; 
+import LeftNav from './components/LeftNav';
+import LeftBar from './components/LeftBar';
 // import localforage from 'localforage';
 // import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
@@ -31,20 +31,20 @@ import { stat } from 'fs';
 
 import { AUTH_TOKEN } from './constants'
 
-export const qf = (_url, ...params) =>{
+export const qf = (_url, ...params) => {
   return fetch(_url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      },
-      body: JSON.stringify({
-        params
-      })
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    },
+    body: JSON.stringify({
+      params
     })
-      .then(r => r.json())
-      .then(data => console.log("quf data",data))
-      .then(data => data)
+  })
+    .then(r => r.json())
+    .then(data => console.log("quf data", data))
+    .then(data => data)
 };
 
 class App extends Component {
@@ -64,14 +64,14 @@ class App extends Component {
 
   }
 
-  _lbarstate = (state)=>{
+  _lbarstate = (state) => {
     let newState = '';
-    if(this.state.barstate === state){
+    if (this.state.barstate === state) {
       this.setState({
         lbar: !this.state.lbar,
         barstate: state,
       })
-    }else{
+    } else {
       this.setState({
         lbar: true,
         barstate: state,
@@ -80,12 +80,12 @@ class App extends Component {
   }
 
   logState(value) {
-    this.setState({logged: value});
+    this.setState({ logged: value });
   }
 
-  lookft(){
+  lookft() {
     let authToken = localStorage.getItem(AUTH_TOKEN)
-    if(authToken){
+    if (authToken) {
       this.setState({
         user: true,
       })
@@ -93,8 +93,8 @@ class App extends Component {
 
   }
 
-  ltrim(){
-    
+  ltrim() {
+
   }
 
   // getUserNamePass = () => {
@@ -106,15 +106,15 @@ class App extends Component {
   //     localStorage.removeItem('username')
   //     localStorage.setItem('username', this.state.email)
   //   }
-    
+
   // }
 
-  componentDidMount(){
+  componentDidMount() {
     let user = localStorage.getItem('username');
-    if(!user){
-      this.setState({logged: false});
-    }else{
-      this.setState({logged: true});
+    if (!user) {
+      this.setState({ logged: false });
+    } else {
+      this.setState({ logged: true });
     }
   }
 
@@ -124,34 +124,34 @@ class App extends Component {
     let logged = this.state.logged;
     const authToken = localStorage.getItem(AUTH_TOKEN)
 
-      return (
-        <div>
-           {!authToken ? (
-              <Login lookft={this.lookft} />
-                ) : (
-          <Fragment>
-          <LeftNav lstate={this._lbarstate} />
-          {this.state.lbar ? (<LeftBar lstate={this.state.lbar} barstate={this.state.barstate} ltrim={this.ltrim} />):''}
-          
-          <div className={this.state.lbar ? 'main-container':'main-container full'}>
-            <Switch>
-              <Route exact path="/" component={Home} />
-              <Route exact path="/login" component={Login} />
-              <Route exact path="/projectgroup/:id" component={DraftGroup} />
-              <Route exact path="/projects/:id" component={Drafts} />
-              <Route exact path="/project/:id" component={Board} />
-              <Route exact path="/card/:id" component={Card} />
-              <Route exact path="/profile" component={Profile} />
-            </Switch>
-                
-          </div>
-          </Fragment>
+    return (
+      <div>
+        {!authToken ? (
+          <Login lookft={this.lookft} />
+        ) : (
+            <Fragment>
+              <LeftNav lstate={this._lbarstate} />
+              {this.state.lbar ? (<LeftBar lstate={this.state.lbar} barstate={this.state.barstate} ltrim={this.ltrim} />) : ''}
+
+              <div className={this.state.lbar ? 'main-container' : 'main-container full'}>
+                <Switch>
+                  <Route exact path="/" component={Home} />
+                  <Route exact path="/login" component={Login} />
+                  <Route exact path="/projectgroup/:id" component={DraftGroup} />
+                  <Route exact path="/projects/:id" component={Drafts} />
+                  <Route exact path="/project/:id" component={Board} />
+                  <Route exact path="/card/:id" component={Card} />
+                  <Route exact path="/profile" component={Profile} />
+                </Switch>
+
+              </div>
+            </Fragment>
           )
-          }
-          </div>
-        )
-    }
-  
+        }
+      </div>
+    )
+  }
+
 }
 
 export default withRouter(App);

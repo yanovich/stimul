@@ -1,47 +1,45 @@
-import React, {Fragment} from 'react';
+import React, { Fragment } from 'react';
 import ReactDOM from 'react-dom';
 
 import 'tachyons';
 import './index.css';
-import App from './App';
-import { split } from 'apollo-link';
+// import { split } from 'apollo-link';
 import { HttpLink } from 'apollo-link-http';
-import { WebSocketLink } from 'apollo-link-ws';
-import { getMainDefinition } from 'apollo-utilities';
+// import { WebSocketLink } from 'apollo-link-ws';
+// import { getMainDefinition } from 'apollo-utilities';
 import { ApolloProvider } from 'react-apollo';
 import { ApolloClient } from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
-
-import { AUTH_TOKEN } from './constants'
-import { ApolloLink } from 'apollo-client-preset'
-
+import { ApolloLink } from 'apollo-client-preset';
 import { BrowserRouter } from 'react-router-dom';
-//import { setContext } from 'apollo-link-context';
-
-
+import { AUTH_TOKEN } from './constants';
+import App from './App';
+// import { setContext } from 'apollo-link-context';
 
 
 const httpLink = new HttpLink({
-  uri: 'http://185.168.187.103:8500/graphql'
+  uri: 'http://185.168.187.103:8500/graphql',
 });
 
 const middlewareAuthLink = new ApolloLink((operation, forward) => {
-  const token = localStorage.getItem(AUTH_TOKEN)
-  const authorizationHeader = token ? `Bearer ${token}` : null
+  const token = localStorage.getItem(AUTH_TOKEN);
+  const authorizationHeader = token ? `Bearer ${token}` : null;
+
   operation.setContext({
     headers: {
-      authorization: authorizationHeader
-    }
-  })
-  return forward(operation)
-})
+      authorization: authorizationHeader,
+    },
+  });
 
-const httpLinkWithAuthToken = middlewareAuthLink.concat(httpLink)
+  return forward(operation);
+});
+
+const httpLinkWithAuthToken = middlewareAuthLink.concat(httpLink);
 
 const client = new ApolloClient({
   link: httpLinkWithAuthToken,
-  cache: new InMemoryCache()
-})
+  cache: new InMemoryCache(),
+});
 
 // Create a WebSocket link:
 // const wsLink = new WebSocketLink({
@@ -65,8 +63,7 @@ const client = new ApolloClient({
 // );
 
 
-
-//const client = new ApolloClient({ uri: 'http://185.168.187.103:8500/graphql' });
+// const client = new ApolloClient({ uri: 'http://185.168.187.103:8500/graphql' });
 // export const client = new ApolloClient({
 //   link,
 //   cache: new InMemoryCache(),
@@ -83,11 +80,10 @@ const client = new ApolloClient({
 // }
 
 
-
 ReactDOM.render(
   <BrowserRouter>
     <ApolloProvider client={client}>
-      <App/>
+      <App />
     </ApolloProvider>
   </BrowserRouter>,
   document.getElementById('root'),
