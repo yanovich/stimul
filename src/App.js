@@ -4,30 +4,18 @@ import {
   Route,
   Switch,
 } from 'react-router-dom';
-import { withRouter } from 'react-router'
-//import { BrowserRouter } from 'react-router-dom'
-// import { ApolloProvider } from 'react-apollo';
-// import ApolloClient from 'apollo-boost';
-// import Draft from './components/Draft';
+import { withRouter } from 'react-router';
 import Drafts from './components/Drafts';
 import DraftGroup from './components/DraftGroup';
-// import Create from './components/Create';
 import Board from './components/Board';
-// import Proj from './components/Proj';
-// import ProjGr from './components/ProjGr';
-// import GetById from './components/GetById';
 import Home from './components/Home';
 import Card from './components/Card';
-
 import LeftNav from './components/LeftNav'; 
-import LeftBar from './components/LeftBar'; 
-// import localforage from 'localforage';
-// import { Mutation } from 'react-apollo';
+import LeftBar from './components/LeftBar';
 import gql from 'graphql-tag';
 import Login from './components/Login';
 import Profile from './components/Profile';
 import { stat } from 'fs';
-
 
 import { AUTH_TOKEN } from './constants'
 
@@ -97,18 +85,6 @@ class App extends Component {
     
   }
 
-  // getUserNamePass = () => {
-  //   if(!this.state.email || this.state.email.length < 3 ){
-  //     return false;
-  //   }else{
-  //     this.setState({logged: true});
-  //     localStorage.setItem('logged', true)
-  //     localStorage.removeItem('username')
-  //     localStorage.setItem('username', this.state.email)
-  //   }
-    
-  // }
-
   componentDidMount(){
     let user = localStorage.getItem('username');
     if(!user){
@@ -125,7 +101,7 @@ class App extends Component {
     const authToken = localStorage.getItem(AUTH_TOKEN)
 
       return (
-        <div>
+        <Fragment>
            {!authToken ? (
               <Login lookft={this.lookft} />
                 ) : (
@@ -148,7 +124,7 @@ class App extends Component {
           </Fragment>
           )
           }
-          </div>
+          </Fragment>
         )
     }
   
