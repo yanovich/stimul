@@ -13,6 +13,7 @@ export class GetOth extends Component {
       >
         {({ loading, data }) => {
           if (loading) return <span>loading....</span>
+          
           return (
             <Fragment>
               {data.projects.map(proj => (

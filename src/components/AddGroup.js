@@ -120,6 +120,7 @@ export default class AddGroup extends Component {
         </div>
       )
     }
+
     return (
       <div className="card">
         <div></div>
@@ -131,8 +132,8 @@ export default class AddGroup extends Component {
             <input type="text" name="2" value={this.state.input[2]} placeholder="description" onChange={this.handleChange} />
           </div>
         ) : (
-            ""
-          )}
+          ""
+        )}
 
         <div className="chkbx-frame" onClick={this.chkbx}>
           <span className="chkbx-label">проект?</span><span className={this.state.chk ? "chkbx active" : "chkbx"}></span>

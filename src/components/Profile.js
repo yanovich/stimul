@@ -24,6 +24,7 @@ class Profile extends Component {
 
   componentDidMount() {
     let user = localStorage.getItem('username');
+
     if (!user) {
       // console.log('no usr', user )
       this.setState({ logged: false });

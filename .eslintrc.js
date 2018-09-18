@@ -5,10 +5,12 @@ module.exports = {
       "es6": true
   },
   "extends": "eslint:recommended",
+  "parser": "babel-eslint",
   "parserOptions": {
       "ecmaFeatures": {
           "experimentalObjectRestSpread": true,
-          "jsx": true
+          "jsx": true,
+          "modules": true,
       },
       "sourceType": "module"
   },
@@ -25,7 +27,14 @@ module.exports = {
           2
       ],
       "linebreak-style":0,
+      "max-len": ["error", 140],
       "no-console": ["error", { allow: ["warn", "error"] }],
-      "react/no-deprecated": ["off"]
+      "react/no-deprecated": ["off"],
+      "padding-line-between-statements": [
+        "error",
+        { "blankLine": "always", "prev": "*", "next": "return" },
+        { blankLine: "always", prev: ["const", "let", "var"], next: "*"},
+        { blankLine: "any", prev: ["const", "let", "var"], next: ["const", "let", "var"]}
+      ],
   }
 };
