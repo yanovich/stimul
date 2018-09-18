@@ -131,7 +131,8 @@ class App extends Component {
                 ) : (
           <Fragment>
           <LeftNav lstate={this._lbarstate} />
-          <LeftBar lstate={this.state.lbar} barstate={this.state.barstate} ltrim={this.ltrim} />
+          {this.state.lbar ? (<LeftBar lstate={this.state.lbar} barstate={this.state.barstate} ltrim={this.ltrim} />):''}
+          
           <div className={this.state.lbar ? 'main-container':'main-container full'}>
             <Switch>
               <Route exact path="/" component={Home} />

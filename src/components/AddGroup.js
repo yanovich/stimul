@@ -56,14 +56,11 @@ export default class AddGroup extends Component {
     create(){
 
     //let pid = this.props.match.params.id;
-
-    let pid = 1;
-    // if(!pid){
-    //     pid = 1;
-    // }
+    let pid = Number(this.props.pid);
+    if(!pid){
+        pid = 1;
+    }
     if(this.state.chk){
-        let parent = 1;
-        let pid = Number(this.props.pid);
         let name = this.state.input[0];
         let title = this.state.input[1];
         let description = this.state.input[2];
@@ -77,8 +74,6 @@ export default class AddGroup extends Component {
             input: [],
         });
     }else{
-        let parent = 1;
-        let pid = Number(this.props.pid);
         let name = this.state.input;
         let createdBy = 1;
         let crt = crPrGr(pid,name,createdBy);
@@ -105,16 +100,12 @@ export default class AddGroup extends Component {
         let val = e.target.value;
         let num = Number(e.target.name);
         old[num] = val;
-
         this.setState({
            input: old,
         })
     }
 
     render() {
-        // console.log(this.props)
-        // console.log(this.state)
-
         if(this.state.closed){
             return (
                 <div className="card add" onClick={this.openCard}>
