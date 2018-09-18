@@ -74,7 +74,7 @@ export default class CreateCol extends Component {
 
   }
 
-};
+}
 
 
 const CREATE_COL_MUT = gql`

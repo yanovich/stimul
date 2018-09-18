@@ -2,12 +2,14 @@ import React, { Component, Fragment } from 'react'
 import { Link } from 'react-router-dom'
 import { Query } from 'react-apollo';
 import { gql } from 'apollo-boost';
+import PropTypes from 'prop-types';
+
 export default class Draft extends Component {
   render() {
     // let title = "";
     let __typename = "projectgroup";
 
-    if (this.props.proj.__typename === "ProjectGroup" && this.props.end == 1) { __typename = 'projects' }
+    if (this.props.proj.__typename === "ProjectGroup" && this.props.end === 1) { __typename = 'projects' }
     else if (this.props.proj.__typename === "ProjectGroup") { __typename = 'projectgroup' }
     else if (this.props.proj.__typename === "Project") { __typename = 'project' }
     else { return false }
@@ -74,3 +76,8 @@ query getByPid($pid: Int!) {
   }
 }
 `
+
+Draft.propTypes = {
+  end: PropTypes.number.isRequired,
+  proj: PropTypes.any.isRequired
+};

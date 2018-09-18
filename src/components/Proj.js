@@ -45,7 +45,7 @@ export default class Proj extends Component {
     if (this.props.proj.projects && this.props.proj.projects.length > 0) {
       projlen = this.props.proj.projects.length;
     }
-    if (this.props.proj.__typename === "ProjectGroup" && this.props.end == 1) { __typename = 'projects' }
+    if (this.props.proj.__typename === "ProjectGroup" && this.props.end === 1) { __typename = 'projects' }
     else if (this.props.proj.__typename === "ProjectGroup") { __typename = 'projectgroup' }
     else if (this.props.proj.__typename === "Project") { __typename = 'project' }
     else { return false }
