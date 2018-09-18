@@ -69,7 +69,8 @@ class Login extends Component {
       const { token } = result.data.signup
       this._saveUserData(token)
     }
-    window.location.reload();
+    this.props.lookft();
+    //window.location.reload();
     // this.props.history.push(`/`)
   }
   
