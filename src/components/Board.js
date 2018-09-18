@@ -294,7 +294,7 @@ export default class Board extends React.Component {
       console.log('drag state', state);
       console.log(state);
 
-    }
+          }
     // else {
     //     const result = move(
     //         source.droppableId,
