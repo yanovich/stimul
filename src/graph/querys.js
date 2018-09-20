@@ -3,6 +3,7 @@ export const updTask = (...params) => {
         updateTask(id: "${params[0]}", ${params[1]})
       }`)
 };
+
 export const getPriority = () => `{
     glossary{
         priorities{
@@ -12,6 +13,14 @@ export const getPriority = () => `{
       }
     }
 `;
+
+export const crTask = (...params) => {return(`
+  mutation{
+        createTask(${params}){
+          id
+        }
+      }
+`)};
 
 export const getById = (id) => {
   return (

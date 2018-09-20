@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
+// import default from '../config';
 
 
 export default class Task extends Component {
