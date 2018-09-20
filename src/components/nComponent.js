@@ -154,28 +154,6 @@ export default class CreateCol extends Component {
                   </Fragment>
                 )
               }
-
-              // if(data.projectGroups && data.projectGroups.length > 0){
-              //   data.projectGroups.map((e,i)=>{
-              //     return(
-              //       <div key={i}>{e.name} {e.i} {e.id}</div>
-              //     )
-              //   })
-              // }else{
-              //   return(
-              //     <div className="errorMessage">
-              //     <pre>
-              //       Я встретил путника, он шёл из стран далёких
-
-              //     </pre>
-              //     </div>
-              //     )
-              // }
-              // return(
-              //   <div>DIV</div>
-              // )
-
-            
             }}
           </Query>
           
