@@ -6,9 +6,10 @@
     "type": "internal",
     "url": "none"
   },
-  "license": "No",
+  "license": "AGPL-3.0",
   "devDependencies": {
     "envify": "^4.1.0",
+    "nodemon": "^1.18.4",
     "react-scripts": "1.1.5",
     "uglify-js": "^3.4.9",
     "uglifyify": "^5.0.1"
@@ -40,7 +41,8 @@
     "tachyons": "4.11.1"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "NODE_ENV=development nodemon --ignore src/ app.js",
+    "production": "node app.js",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
