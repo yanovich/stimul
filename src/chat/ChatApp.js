@@ -27,7 +27,7 @@ class ChatApp extends Component {
       message
     }
 
-    if (message == "history") {
+    if (message === "history") {
       this.socket.emit('client:history')
     } else {
       this.socket.emit('client:message', messageObject)

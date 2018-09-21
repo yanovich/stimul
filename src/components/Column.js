@@ -163,11 +163,6 @@ export default class Column extends Component {
 
 
   render(){
-    let type = '';
-    let projgrlen = '';
-    let projlen = '';
-    let collen = '';
-
     return(
       <div className="column">
         <div className="column-name">{this.props.name ? this.props.name : this.props.title }</div>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Appср from '../chat/App';
+import AppComp from '../chat/App';
 
 class LeftBar extends Component {
   constructor(props) {
@@ -21,7 +21,7 @@ class LeftBar extends Component {
     case "chat":
       return (
         <div className="left-bar">
-          <Appср />
+          <AppComp />
         </div>
       )
     case "fire":
@@ -71,7 +71,7 @@ class LeftBar extends Component {
     default:
       return (
         <div className="left-bar">
-          <Appср />
+          <AppComp />
         </div>
       )
     }
@@ -80,7 +80,7 @@ class LeftBar extends Component {
     // if(this.props.lstate){
     //   return (
     //   <div className="left-bar">
-    //       <Appср/>
+    //       <AppComp />
     //   </div>
     //   )
     // }else{

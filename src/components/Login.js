@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import { AUTH_TOKEN } from '../constants'
 import { graphql, compose } from 'react-apollo'
 import gql from 'graphql-tag'
@@ -21,7 +21,7 @@ class Login extends Component {
         {!authToken ? (
           <div className="auth">
             <div className="logo">
-              <img src="" />
+              <img alt="logo" src="" />
             </div>
             <input type="text" placeholder="Email" onChange={(e) => { this.setState({ email: e.target.value }) }} />
             <input type="password" placeholder="Пароль" onChange={(e) => { this.setState({ password: e.target.value }) }} />
@@ -29,7 +29,7 @@ class Login extends Component {
           </div>) : (
             <div className="auth">
               <div className="logo">
-                <img src="" />
+                <img alt="logo" src="" />
               </div>
               <div className="button" onClick={() => {
                 localStorage.removeItem(AUTH_TOKEN)

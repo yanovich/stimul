@@ -1,11 +1,9 @@
 import React, { Component, Fragment } from 'react';
 import { Query } from 'react-apollo';
 import { gql } from 'apollo-boost';
-import PropTypes from 'prop-types';
 import Tile from './Tile';
 import TileCr from './TileCr';
 import Column from './Column';
-import Board from './Board';
 
 
 export default class CreateCol extends Component {
