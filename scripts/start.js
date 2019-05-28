@@ -19,7 +19,6 @@ const fs = require('fs');
 const chalk = require('../utils/chalk');
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
-const clearConsole = require('../utils/clearConsole');
 const checkRequiredFiles = require('../utils/checkRequiredFiles');
 const {
   choosePort,
@@ -27,7 +26,6 @@ const {
   prepareProxy,
   prepareUrls,
 } = require('../utils/WebpackDevServerUtils');
-const openBrowser = require('../utils/openBrowser');
 const paths = require('../config/paths');
 const configFactory = require('../config/webpack.config');
 const createDevServerConfig = require('../config/webpackDevServer.config');
@@ -110,10 +108,6 @@ checkBrowsers(paths.appPath, isInteractive)
       if (err) {
         return console.log(err);
       }
-      if (isInteractive) {
-        clearConsole();
-      }
-
       // We used to support resolving modules according to `NODE_PATH`.
       // This now has been deprecated in favor of jsconfig/tsconfig.json
       // This lets you use absolute paths in imports inside large monorepos:
@@ -127,7 +121,6 @@ checkBrowsers(paths.appPath, isInteractive)
       }
 
       console.log(chalk.cyan('Starting the development server...\n'));
-      openBrowser(urls.localUrlForBrowser);
     });
 
     ['SIGINT', 'SIGTERM'].forEach(function(sig) {
