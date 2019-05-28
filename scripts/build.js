@@ -48,8 +48,18 @@ const config = configFactory('production');
 
 // We require that you explicitly set browsers and do not fall back to
 // browserslist defaults.
-const { checkBrowsers } = require('../utils/browsersHelper');
-checkBrowsers(paths.appPath, isInteractive)
+const browserslist = require('browserslist');
+if (browserslist.findConfig(paths.appPath) == null) {
+  console.log(
+      chalk.red(
+        'As of react-scripts >=2 you must specify targeted browsers.'
+        ));
+  console.log(`Please add a ${chalk.underline('browserslist'
+          )} key to your ${chalk.bold('package.json')}.`);
+  process.exit(1);
+}
+
+Promise.resolve(true)
   .then(() => {
     // First, read the current file sizes in build directory.
     // This lets us display how much they changed later.

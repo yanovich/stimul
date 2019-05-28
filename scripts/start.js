@@ -61,8 +61,7 @@ if (process.env.HOST) {
 
 // We require that you explicitly set browsers and do not fall back to
 // browserslist defaults.
-const { checkBrowsers } = require('../utils/browsersHelper');
-checkBrowsers(paths.appPath, isInteractive)
+Promise.resolve(true)
   .then(() => {
     // We attempt to use the default port but if it is busy, we offer the user to
     // run on a different port. `choosePort()` Promise resolves to the next free port.
