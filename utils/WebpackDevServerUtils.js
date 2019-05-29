@@ -104,7 +104,6 @@ function createCompiler({
   devSocket,
   urls,
   useYarn,
-  useTypeScript,
   webpack,
 }) {
   // "Compiler" is a low-level interface to Webpack.
@@ -132,14 +131,6 @@ function createCompiler({
   let tsMessagesPromise;
   let tsMessagesResolver;
 
-  if (useTypeScript) {
-    compiler.hooks.beforeCompile.tap('beforeCompile', () => {
-      tsMessagesPromise = new Promise(resolve => {
-        tsMessagesResolver = msgs => resolve(msgs);
-      });
-    });
-  }
-
   // "done" event fires when Webpack has finished recompiling the bundle.
   // Whether or not you have warnings or errors, you will get this event.
   compiler.hooks.done.tap('done', async stats => {
@@ -154,33 +145,6 @@ function createCompiler({
       warnings: true,
       errors: true,
     });
-
-    if (useTypeScript && statsData.errors.length === 0) {
-      const delayedMsg = setTimeout(() => {
-        console.log(
-          chalk.yellow(
-            'Files successfully emitted, waiting for typecheck results...'
-          )
-        );
-      }, 100);
-
-      const messages = await tsMessagesPromise;
-      clearTimeout(delayedMsg);
-      statsData.errors.push(...messages.errors);
-      statsData.warnings.push(...messages.warnings);
-
-      // Push errors and warnings into compilation result
-      // to show them after page refresh triggered by user.
-      stats.compilation.errors.push(...messages.errors);
-      stats.compilation.warnings.push(...messages.warnings);
-
-      if (messages.errors.length > 0) {
-        devSocket.errors(messages.errors);
-      } else if (messages.warnings.length > 0) {
-        devSocket.warnings(messages.warnings);
-      }
-
-    }
 
     const messages = formatWebpackMessages(statsData);
     const isSuccessful = !messages.errors.length && !messages.warnings.length;

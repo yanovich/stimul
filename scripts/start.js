@@ -74,7 +74,6 @@ Promise.resolve(true)
     const config = configFactory('development');
     const protocol = process.env.HTTPS === 'true' ? 'https' : 'http';
     const appName = require(paths.appPackageJson).name;
-    const useTypeScript = fs.existsSync(paths.appTsConfig);
     const urls = prepareUrls(protocol, HOST, port);
     const devSocket = {
       warnings: warnings =>
@@ -89,7 +88,6 @@ Promise.resolve(true)
       devSocket,
       urls,
       useYarn,
-      useTypeScript,
       webpack,
     });
     // Load proxy config
