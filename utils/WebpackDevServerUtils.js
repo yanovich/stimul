@@ -113,7 +113,7 @@ function createCompiler({
   try {
     compiler = webpack(config);
   } catch (err) {
-    console.log(chalk.red('Failed to compile.'));
+    console.log(chalk.red('Failed to configure compiler'));
     console.log();
     console.log(err.message || err);
     console.log();
