@@ -223,26 +223,6 @@ function createCompiler({
     }
   });
 
-  // You can safely remove this after ejecting.
-  // We only use this block for testing of Create React App itself:
-  const isSmokeTest = process.argv.some(
-    arg => arg.indexOf('--smoke-test') > -1
-  );
-  if (isSmokeTest) {
-    compiler.hooks.failed.tap('smokeTest', async () => {
-      await tsMessagesPromise;
-      process.exit(1);
-    });
-    compiler.hooks.done.tap('smokeTest', async stats => {
-      await tsMessagesPromise;
-      if (stats.hasErrors() || stats.hasWarnings()) {
-        process.exit(1);
-      } else {
-        process.exit(0);
-      }
-    });
-  }
-
   return compiler;
 }
 
