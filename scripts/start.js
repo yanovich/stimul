@@ -56,7 +56,7 @@ if (process.env.HOST) {
   );
   console.log();
 }
-
+const utils = require('util');
 // We require that you explicitly set browsers and do not fall back to
 // browserslist defaults.
 Promise.resolve(true)
@@ -71,6 +71,7 @@ Promise.resolve(true)
       return;
     }
     const config = configFactory('development');
+    console.log(utils.inspect(config));
     const protocol = process.env.HTTPS === 'true' ? 'https' : 'http';
     const appName = require(paths.appPackageJson).name;
     const urls = prepareUrls(protocol, HOST, port);
