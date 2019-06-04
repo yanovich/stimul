@@ -14,12 +14,15 @@ if (process.env.NODE_ENV === 'development') {
   config.isDevelopment = true
 } else if (process.env.NODE_ENV === 'test') {
   config.isTest = true
+  config.port = 0
+  config.isProduction = true
 } else {
   if (process.env.NODE_ENV !== 'production') {
     console.warn("stimul: running in 'production' mode by default")
     process.env.NODE_ENV = 'production'
   }
-  config.is_production = true
+  config.isProduction = true
+  config.port = 3000
 }
 
 module.exports = config
