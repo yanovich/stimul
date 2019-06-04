@@ -17,7 +17,7 @@ const express = require('express')
 const app = express()
 
 if (process.env.NODE_ENV === 'development') {
-  const config = require('./config/webpack.config')('development');
+  const config = require('./config/webpack.config')('development')
   const compiler = webpack(config)
   app.use(w_dev_middleware(compiler, { color: true }))
   app.use(w_hot_middleware(compiler))
