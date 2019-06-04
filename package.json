@@ -43,10 +43,9 @@
     "webpack-dev-middleware": "^3.7.0",
     "webpack-hot-middleware": "^2.25.0"
   },
+  "main": "app.js",
   "scripts": {
-    "start": "node scripts/start.js",
-    "build": "node scripts/build.js",
-    "test": "node scripts/test.js"
+    "build": "node scripts/build.js"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -72,5 +71,8 @@
     "globals": [
       "it"
     ]
+  },
+  "nodemonConfig": {
+    "ignore": "src"
   }
 }
