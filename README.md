@@ -2,6 +2,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 We ejected and changed some unused stuff for a leaner setup:
 * `webpack-dev-middleware` instead of `webpack-dev-server`
+* use `[standard](https://github.com/standard/standard)` for syntax
 
 ## Available Scripts
 
