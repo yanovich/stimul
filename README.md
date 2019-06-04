@@ -19,4 +19,4 @@ Your app is ready to be deployed!
 
 This is development mode. Changes in React code are hot-reloaded by `webpack-hot-middleware`, the rest is watched by `nodemon`.
 
-**You need to explicitly set node mode (`NODE_ENV`)to development**
+**You need to explicitly set node mode (`NODE_ENV`) to development**
