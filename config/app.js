@@ -11,9 +11,9 @@
 let config = {}
 
 if (process.env.NODE_ENV === 'development') {
-  config.is_development = true
+  config.isDevelopment = true
 } else if (process.env.NODE_ENV === 'test') {
-  config.is_test = true
+  config.isTest = true
 } else {
   if (process.env.NODE_ENV !== 'production') {
     console.warn("stimul: running in 'production' mode by default")
