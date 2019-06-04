@@ -14,9 +14,12 @@ const webpack = require('webpack')
 const webpackDevMiddleware = require('webpack-dev-middleware')
 const webpackHotMiddleware = require('webpack-hot-middleware')
 const express = require('express')
+const graphqlMiddleware = require('express-graphql')
 
 const config = require('./config/app')
 const paths = require('./config/paths')
+const schema = require('./graphql/schema')
+const resolvers = require('./graphql/resolvers')
 
 const app = express()
 
@@ -32,5 +35,11 @@ if (config.isDevelopment) {
   }
   app.use(express.static(path.join(__dirname, 'build/')))
 }
+
+app.use('/graphql', graphqlMiddleware({
+  schema: schema,
+  rootValue: resolvers,
+  graphiql: config.isDevelopment
+}))
 
 app.listen(3000, () => console.info('stimul: listening on port 3000'))
