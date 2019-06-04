@@ -65,11 +65,6 @@ function build (previousFileSizes) {
         return
       }
 
-      console.log(stats.toString({
-        chunks: false, // Makes the build much quieter
-        colors: true // Shows colors in the console
-      }))
-
       return resolve({
         stats
       })

@@ -23,6 +23,8 @@ const resolvers = require('./graphql/resolvers')
 
 const app = express()
 
+app.set('port', config.port)
+
 if (config.isDevelopment) {
   const config = require('./config/webpack.config')('development')
   const compiler = webpack(config)
@@ -42,4 +44,4 @@ app.use('/graphql', graphqlMiddleware({
   graphiql: config.isDevelopment
 }))
 
-app.listen(3000, () => console.info('stimul: listening on port 3000'))
+module.exports = app

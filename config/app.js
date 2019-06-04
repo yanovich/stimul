@@ -12,6 +12,7 @@ let config = {}
 
 if (process.env.NODE_ENV === 'development') {
   config.isDevelopment = true
+  config.port = 3000
 } else if (process.env.NODE_ENV === 'test') {
   config.isTest = true
   config.port = 0
