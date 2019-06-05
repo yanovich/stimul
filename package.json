@@ -76,6 +76,8 @@
     "globals": [
       "describe",
       "it",
+      "before",
+      "after",
       "beforeEach"
     ]
   },
