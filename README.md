@@ -17,8 +17,16 @@ It correctly bundles React in production mode and optimizes the build for the be
 The build is minified and the filenames include the hashes.<br>
 Your app is ready to be deployed!
 
-### `nodemon`
+### `npm run dev`
 
-This is development mode. Changes in React code are hot-reloaded by `webpack-hot-middleware`, the rest is watched by `nodemon`.
+This is development mode. Changes in React code are hot-reloaded by `webpack-hot-middleware`,
+the rest is watched by `nodemon`.
 
-**You need to explicitly set node mode (`NODE_ENV`) to development**
+**You need to explicitly set node mode (`NODE_ENV`) to development**, if you run dev mode manualy.
+
+### `npm test`
+
+This runs a test suite:
+* `standard` check of syntax
+* production build of the web app
+* `mocha` test suite

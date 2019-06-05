@@ -49,7 +49,8 @@
   "main": "server.js",
   "scripts": {
     "build": "node scripts/build.js",
-    "test": "node scripts/build.js && node ./node_modules/.bin/mocha"
+    "dev": "NODE_ENV=development nodemon",
+    "test": "node node_modules/.bin/standard --fix && node scripts/build.js && node node_modules/.bin/mocha"
   },
   "eslintConfig": {
     "extends": "react-app"
