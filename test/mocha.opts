@@ -1,1 +1,1 @@
---exit --require test/support/server.js
+--file test/support/server.js

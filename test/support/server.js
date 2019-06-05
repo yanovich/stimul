@@ -10,14 +10,21 @@
 
 process.env.NODE_ENV = 'test'
 
-var app = require('../../app')
+const http = require('http')
+const app = require('../../app')
+const server = http.createServer(app)
+
 var port = app.get('port')
 
-if (!port) {
-  var http = require('http')
-  var server = http.createServer(app)
-  server.listen(app.get('port'))
-  port = server.address().port
-}
+before(() => {
+  if (!port) {
+    server.listen(app.get('port'))
+    port = server.address().port
 
-global.url = 'http://localhost:' + port
+    global.url = 'http://localhost:' + port
+  }
+})
+
+after(() => {
+  server.close()
+})
