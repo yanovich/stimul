@@ -74,6 +74,7 @@
   },
   "standard": {
     "globals": [
+      "fetch",
       "describe",
       "it",
       "before",

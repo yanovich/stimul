@@ -25,7 +25,22 @@ describe('React App', function () {
 
     it('should render', function () {
       expect(browser.statusCode).to.be(200)
-      expect(browser.text('title')).to.contain('React App')
+      expect(browser.text('title')).to.contain('Hello World')
+      browser.assert.element('#root')
+      browser.assert.element('.hello')
+    })
+
+    it('respond to a greeting', function (done) {
+      browser.pressButton('Hello')
+      browser.once('response', (req, res) => {
+        res._stream.once('end', () => {
+          // response.json() is async and needs some time
+          setTimeout(() => {
+            browser.assert.element('p', 'Hello World!')
+            done()
+          }, 5)
+        })
+      })
     })
   })
 })
