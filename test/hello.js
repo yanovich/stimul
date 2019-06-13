@@ -13,7 +13,7 @@ const Browser = require('zombie')
 
 var browser
 
-describe('React App', function () {
+describe('Stimul', function () {
   beforeEach(function () {
     browser = new Browser({ site: global.url })
   })
@@ -25,7 +25,7 @@ describe('React App', function () {
 
     it('should render', function () {
       expect(browser.statusCode).to.be(200)
-      expect(browser.text('title')).to.contain('Hello World')
+      expect(browser.text('title')).to.contain('Стимул')
       browser.assert.element('#root')
       browser.assert.element('.hello')
     })
