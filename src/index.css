@@ -7,7 +7,7 @@ body {
   height: 100%;
 }
 
-.hello {
+.stimul {
   display: flex;
   position: absolute;
   overflow-x: hidden;
@@ -16,6 +16,6 @@ body {
   height: 100%;
 }
 
-.hello-info {
+.stimul-info {
   margin: auto;
 }

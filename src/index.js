@@ -2,15 +2,37 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
 
-class Hello extends React.Component {
+const SCREENS = {
+  MAIN: Symbol('main'),
+  LOGIN: Symbol('login')
+}
+
+function MainScreen (props) {
+  return (
+    <div className='stimul-info'>
+      <p>{props.response.hello}</p>
+    </div>
+  )
+}
+
+function LoginScreen (props) {
+  return (
+    <div className='stimul-info'>
+      <button onClick={() => props.update('{hello}', SCREENS.MAIN)}>Hello</button>
+    </div>
+  )
+}
+
+class Stimul extends React.Component {
   constructor (props) {
     super(props)
-    this.state = {
+    this.state = window.localStorage.getItem('stimul-state') || {
+      screen: SCREENS.LOGIN,
       response: {}
     }
   }
 
-  update (request) {
+  update (request, nextScreen) {
     fetch('/graphql', {
       method: 'POST',
       headers: {
@@ -25,24 +47,34 @@ class Hello extends React.Component {
       return response.json()
     }).then(response => {
       this.setState({
+        screen: nextScreen,
         response: response.data
       })
     })
   }
 
   render () {
-    let status
-    if (this.state.response && this.state.response.hello) {
-      status = <p>{this.state.response.hello}</p>
-    } else {
-      status = <button onClick={() => this.update('{hello}')}>Hello</button>
+    let screen
+    switch (this.state.screen) {
+      case SCREENS.MAIN:
+        screen = (
+          <MainScreen
+            response={this.state.response}
+            update={this.update.bind(this)}
+          />)
+        break
+      case SCREENS.LOGIN:
+        screen = (
+          <LoginScreen
+            response={this.state.response}
+            update={this.update.bind(this)}
+          />)
+        break
     }
 
     return (
-      <div className='hello'>
-        <div className='hello-info'>
-          {status}
-        </div>
+      <div className='stimul'>
+        {screen}
       </div>
     )
   }
@@ -50,4 +82,4 @@ class Hello extends React.Component {
 
 // ========================================
 
-ReactDOM.render(<Hello />, document.getElementById('root'))
+ReactDOM.render(<Stimul />, document.getElementById('root'))

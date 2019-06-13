@@ -27,7 +27,7 @@ describe('Stimul', function () {
       expect(browser.statusCode).to.be(200)
       expect(browser.text('title')).to.contain('Стимул')
       browser.assert.element('#root')
-      browser.assert.element('.hello')
+      browser.assert.element('.stimul')
     })
 
     it('respond to a greeting', function (done) {
