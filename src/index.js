@@ -63,6 +63,7 @@ class Stimul extends React.Component {
             update={this.update.bind(this)}
           />)
         break
+      default:
       case SCREENS.LOGIN:
         screen = (
           <LoginScreen
