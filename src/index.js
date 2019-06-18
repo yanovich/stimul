@@ -2,12 +2,15 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
 
-const SCREENS = {
-  MAIN: Symbol('main'),
-  LOGIN: Symbol('login')
+const screens = {
+  'main': new MainScreen(),
+  'login': new LoginScreen()
 }
 
-function MainScreen (props) {
+function MainScreen () {
+}
+
+MainScreen.prototype.render = (props) => {
   return (
     <div className='stimul-info'>
       <p>{props.response.hello}</p>
@@ -15,10 +18,17 @@ function MainScreen (props) {
   )
 }
 
-function LoginScreen (props) {
+MainScreen.prototype.query = '{hello}'
+
+function LoginScreen () {
+}
+
+LoginScreen.prototype.render = (props) => {
   return (
     <div className='stimul-info'>
-      <button onClick={() => props.update('{hello}', SCREENS.MAIN)}>Hello</button>
+      <div className='auth'>
+        <button onClick={() => props.update('main')}>Hello</button>
+      </div>
     </div>
   )
 }
@@ -27,12 +37,12 @@ class Stimul extends React.Component {
   constructor (props) {
     super(props)
     this.state = window.localStorage.getItem('stimul-state') || {
-      screen: SCREENS.LOGIN,
+      screen: 'login',
       response: {}
     }
   }
 
-  update (request, nextScreen) {
+  update (nextScreen) {
     fetch('/graphql', {
       method: 'POST',
       headers: {
@@ -40,7 +50,7 @@ class Stimul extends React.Component {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        query: request,
+        query: screens[nextScreen].query,
         variables: null
       })
     }).then(response => {
@@ -54,24 +64,11 @@ class Stimul extends React.Component {
   }
 
   render () {
-    let screen
-    switch (this.state.screen) {
-      case SCREENS.MAIN:
-        screen = (
-          <MainScreen
-            response={this.state.response}
-            update={this.update.bind(this)}
-          />)
-        break
-      default:
-      case SCREENS.LOGIN:
-        screen = (
-          <LoginScreen
-            response={this.state.response}
-            update={this.update.bind(this)}
-          />)
-        break
+    const props = {
+      response: this.state.response,
+      update: this.update.bind(this)
     }
+    let screen = screens[this.state.screen].render(props)
 
     return (
       <div className='stimul'>
