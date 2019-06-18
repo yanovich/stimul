@@ -19,3 +19,16 @@ body {
 .stimul-info {
   margin: auto;
 }
+
+.auth{
+  padding: 20px;
+  border-radius: 6px;
+  width:300px;
+  max-width: 90%;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  align-items: center;
+  justify-content:center;
+  justify-items: center;
+}

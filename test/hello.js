@@ -31,7 +31,7 @@ describe('Stimul', function () {
     })
 
     it('respond to a greeting', function (done) {
-      browser.pressButton('Hello')
+      browser.pressButton('Вход')
       browser.once('response', (req, res) => {
         res._stream.once('end', () => {
           // response.json() is async and needs some time
