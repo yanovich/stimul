@@ -8,13 +8,10 @@
  * Stimul
  */
 
+const path = require('path')
+const fs = require('fs')
 const { buildSchema } = require('graphql')
 
-// Construct a schema, using GraphQL schema language
-const schema = buildSchema(`
-  type Query {
-    hello: String
-  }
-`)
+const schema = fs.readFileSync(path.join(__dirname, 'schema.graphql'), 'utf8')
 
-module.exports = schema
+module.exports = buildSchema(schema)
