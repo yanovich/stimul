@@ -1,46 +1,13 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
-import logo from './logo'
+
+import main from './main'
+import login from './login'
 
 const screens = {
-  'main': new MainScreen(),
-  'login': new LoginScreen()
-}
-
-function MainScreen () {
-}
-
-MainScreen.prototype.render = (props) => {
-  return (
-    <div className='stimul-info'>
-      <p>{props.response.hello}</p>
-    </div>
-  )
-}
-
-MainScreen.prototype.query = '{hello}'
-
-function LoginScreen () {
-}
-
-LoginScreen.prototype.render = (props) => {
-  return (
-    <div className='stimul-info'>
-      <div className='auth'>
-        <div className='logo'>
-          <img src={logo} alt='АО ГУОВ' />
-        </div>
-        <label className='LabelInputText'>
-          <input type='text' placeholder='Email' />
-        </label>
-        <label className='LabelInputText'>
-          <input type='password' placeholder='Пароль' />
-        </label>
-        <button onClick={() => props.update('main')}>Вход</button>
-      </div>
-    </div>
-  )
+  'main': main,
+  'login': login
 }
 
 class Stimul extends React.Component {

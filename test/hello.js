@@ -36,7 +36,7 @@ describe('Stimul', function () {
         res._stream.once('end', () => {
           // response.json() is async and needs some time
           setTimeout(() => {
-            browser.assert.element('p', 'Hello World!')
+            browser.assert.text('p', 'Hello world!')
             done()
           }, 5)
         })
