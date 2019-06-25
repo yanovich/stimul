@@ -1,0 +1,36 @@
+.stimul-main {
+  display: flex;
+  flex-flow: column nowrap;
+  height: 100%;
+  min-height: 100%;
+}
+
+.stimul-main > * {
+  padding: 10px;
+}
+
+header {
+  background: inherit; /* lawngreen; for debug */
+  font-weight: bold;
+}
+
+main {
+  text-align: left;
+  background: inherit; /* deepskyblue; for debug */
+  flex: 1 0px;
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+.info {
+  margin: auto;
+}
+
+#container {
+  flex: 1;
+}
+
+#map {
+  width: 800px;
+  height: 450px;
+}

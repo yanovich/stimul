@@ -45,13 +45,7 @@ class Stimul extends React.Component {
       response: this.state.response,
       update: this.update.bind(this)
     }
-    let screen = screens[this.state.screen].render(props)
-
-    return (
-      <div className='stimul'>
-        {screen}
-      </div>
-    )
+    return screens[this.state.screen].render(props)
   }
 }
 
