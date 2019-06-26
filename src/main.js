@@ -4,9 +4,10 @@ import React, { useEffect } from 'react'
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
 
-const tileUrl = navigator.userAgent.search('HeadlessChrome') !== -1
-  ? '/images/white-square.png'
-  : 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+const tileUrl =
+  navigator.userAgent.search('HeadlessChrome') !== -1
+    ? '/images/white-square.png'
+    : 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
 
 const mapAttribution = `&copy;
  <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors,
@@ -31,8 +32,10 @@ function Map (props) {
       id: 'osm'
     }).addTo(map)
 
-    props.markers.forEach((marker) => {
-      L.marker(marker.latlng).addTo(map).bindPopup(marker.name)
+    props.markers.forEach(marker => {
+      L.marker(marker.latlng)
+        .addTo(map)
+        .bindPopup(marker.name)
     })
 
     return () => {
@@ -49,7 +52,7 @@ function Map (props) {
 }
 
 const MainScreen = {
-  render: (props) => {
+  render: props => {
     return (
       <div className='stimul-main'>
         <header>Стимул</header>

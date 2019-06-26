@@ -6,8 +6,8 @@ import main from './main'
 import login from './login'
 
 const screens = {
-  'main': main,
-  'login': login
+  main: main,
+  login: login
 }
 
 class Stimul extends React.Component {
@@ -23,21 +23,23 @@ class Stimul extends React.Component {
     fetch('/graphql', {
       method: 'POST',
       headers: {
-        'Accept': 'application/json',
+        Accept: 'application/json',
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
         query: screens[nextScreen].query,
         variables: null
       })
-    }).then(response => {
-      return response.json()
-    }).then(response => {
-      this.setState({
-        screen: nextScreen,
-        response: response.data
-      })
     })
+      .then(response => {
+        return response.json()
+      })
+      .then(response => {
+        this.setState({
+          screen: nextScreen,
+          response: response.data
+        })
+      })
   }
 
   render () {

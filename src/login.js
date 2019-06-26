@@ -5,7 +5,7 @@ import React from 'react'
 import logo from './logo'
 
 const LoginScreen = {
-  render: (props) => {
+  render: props => {
     return (
       <div className='stimul-info'>
         <div className='auth'>

@@ -28,11 +28,13 @@ const config = configFactory('production')
 const browserslist = require('browserslist')
 if (browserslist.findConfig(paths.appPath) == null) {
   console.log(
-    chalk.red(
-      'As of react-scripts >=2 you must specify targeted browsers.'
-    ))
-  console.log(`Please add a ${chalk.underline('browserslist'
-  )} key to your ${chalk.bold('package.json')}.`)
+    chalk.red('As of react-scripts >=2 you must specify targeted browsers.')
+  )
+  console.log(
+    `Please add a ${chalk.underline('browserslist')} key to your ${chalk.bold(
+      'package.json'
+    )}.`
+  )
   process.exit(1)
 }
 

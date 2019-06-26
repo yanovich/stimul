@@ -77,8 +77,7 @@ Promise.resolve(true)
     const devSocket = {
       warnings: warnings =>
         devServer.sockWrite(devServer.sockets, 'warnings', warnings),
-      errors: errors =>
-        devServer.sockWrite(devServer.sockets, 'errors', errors)
+      errors: errors => devServer.sockWrite(devServer.sockets, 'errors', errors)
     }
     // Create a webpack compiler that is configured with custom messages.
     const compiler = createCompiler({
@@ -103,9 +102,9 @@ Promise.resolve(true)
         return console.log(err)
       }
       console.log(chalk.cyan('Starting the development server...\n'))
-    });
+    })
 
-    ['SIGINT', 'SIGTERM'].forEach(function (sig) {
+    ;['SIGINT', 'SIGTERM'].forEach(function (sig) {
       process.on(sig, function () {
         devServer.close()
         process.exit()

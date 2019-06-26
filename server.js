@@ -11,4 +11,6 @@
 const http = require('http')
 const app = require('./app')
 
-http.createServer(app).listen(app.get('port'), () => console.info('stimul: listening on port 3000'))
+http
+  .createServer(app)
+  .listen(app.get('port'), () => console.info('stimul: listening on port 3000'))
