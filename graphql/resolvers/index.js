@@ -8,10 +8,12 @@
  * Stimul
  */
 
-const root = {
+let root = {
   hello: () => {
     return 'Hello world!'
   }
 }
+
+require('./sites')(root)
 
 module.exports = root

@@ -1,3 +1,9 @@
 type Query {
   hello: String
+  sites: [Site]!
+}
+
+type Site {
+  name: String!
+  latlng: [Float!]!
 }

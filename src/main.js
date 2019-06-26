@@ -4,8 +4,8 @@ import React, { useEffect } from 'react'
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
 
-const tileUrl = navigator.appName === 'Zombie'
-  ? '/white-square.png'
+const tileUrl = navigator.userAgent.search('HeadlessChrome') !== -1
+  ? '/images/white-square.png'
   : 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
 
 const mapAttribution = `&copy;
@@ -23,6 +23,7 @@ function Map (props) {
   useEffect(() => {
     resizeMap()
     window.addEventListener('resize', resizeMap)
+    L.Icon.Default.imagePath = '/images/'
     const map = L.map('map').setView([55.761234, 37.563179], 16)
     L.tileLayer(tileUrl, {
       attribution: mapAttribution,
@@ -30,11 +31,15 @@ function Map (props) {
       id: 'osm'
     }).addTo(map)
 
+    props.markers.forEach((marker) => {
+      L.marker(marker.latlng).addTo(map).bindPopup(marker.name)
+    })
+
     return () => {
       window.removeEventListener('resize', resizeMap)
       map.remove()
     }
-  }, [])
+  }, [props.markers])
 
   return (
     <div id='container'>
@@ -52,13 +57,20 @@ const MainScreen = {
           <div className='info'>
             <p>{props.response.hello}</p>
           </div>
-          <Map />
+          <Map markers={props.response.sites} />
         </main>
       </div>
     )
   },
 
-  query: '{hello}'
+  query: `
+  {
+    hello
+    sites {
+      name
+      latlng
+    }
+  }`
 }
 
 export default MainScreen

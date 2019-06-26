@@ -50,6 +50,9 @@ describe('Stimul', function () {
               'Hello world!'
             )
             expect(await page.$('div#map')).to.be.ok()
+            expect(
+              (await page.$$('.leaflet-marker-pane > img')).length
+            ).to.equal(10)
             done()
           }, 10)
         })
