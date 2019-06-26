@@ -9,36 +9,49 @@
  */
 
 const expect = require('expect.js')
-const Browser = require('zombie')
 
-var browser
+let page
 
 describe('Stimul', function () {
-  beforeEach(function () {
-    browser = new Browser({ site: global.url })
+  function logger (message) {
+    console.log('client:', message.text())
+  }
+
+  beforeEach(async () => {
+    page = await browser.newPage()
+    page.on('console', logger)
+  })
+
+  afterEach(async () => {
+    page.off('console', logger)
+    await page.close()
   })
 
   describe('default page', function () {
-    beforeEach(function (done) {
-      browser.visit('/').then(done, done)
+    let response
+    beforeEach(async () => {
+      response = await page.goto(url)
     })
 
-    it('should render', function () {
-      expect(browser.statusCode).to.be(200)
-      expect(browser.text('title')).to.contain('Стимул')
-      browser.assert.element('#root')
-      browser.assert.element('.stimul-info')
+    it('should render', async function () {
+      expect(response.status()).to.be(200)
+      expect(await page.evaluate(() => document.title)).to.contain('Стимул')
+      expect(await page.$('#root')).to.be.ok()
+      expect(await page.$('.stimul-info')).to.be.ok()
     })
 
-    it('respond to a greeting', function (done) {
-      browser.pressButton('Вход')
-      browser.once('response', (req, res) => {
-        res._stream.once('end', () => {
+    it('should respond', function (done) {
+      expect(response.status()).to.be(304)
+      page.click('button').then(() => {
+        page.once('response', res => {
           // response.json() is async and needs some time
-          setTimeout(() => {
-            browser.assert.text('p', 'Hello world!')
+          setTimeout(async () => {
+            expect(await page.$eval('p', p => p.textContent)).to.equal(
+              'Hello world!'
+            )
+            expect(await page.$('div#map')).to.be.ok()
             done()
-          }, 5)
+          }, 10)
         })
       })
     })

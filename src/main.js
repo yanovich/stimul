@@ -18,7 +18,6 @@ function Map (props) {
     const width = document.getElementById('container').clientWidth
     document.getElementById('map').style.height = height + 'px'
     document.getElementById('map').style.width = width + 'px'
-    console.log('width: ', width, ', height: ', height)
   }
 
   useEffect(() => {

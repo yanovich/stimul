@@ -13,18 +13,23 @@ process.env.NODE_ENV = 'test'
 const http = require('http')
 const app = require('../../app')
 const server = http.createServer(app)
+const puppeteer = require('puppeteer')
 
 var port = app.get('port')
 
-before(() => {
+before(async () => {
   if (!port) {
     server.listen(app.get('port'))
     port = server.address().port
-
-    global.url = 'http://localhost:' + port
   }
+
+  global.url = 'http://localhost:' + port
+  global.browser = await puppeteer.launch({
+    args: ['--no-sandbox']
+  })
 })
 
-after(() => {
+after(async () => {
   server.close()
+  await global.browser.close()
 })
