@@ -37,7 +37,7 @@ if (config.isDevelopment) {
     logLevel: 'warn'
   }))
   app.use(webpackHotMiddleware(compiler))
-  app.use('/images', express.static(path.join(__dirname, 'public/images')))
+  app.use('/', express.static(path.join(__dirname, 'public')))
 } else if (config.isProduction) {
   if (!fs.existsSync(paths.appBuild + '/index.html')) {
     console.error('stimul: web app not present in production, exiting')
