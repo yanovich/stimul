@@ -87,6 +87,13 @@
     ]
   },
   "nodemonConfig": {
-    "ignore": "src"
+    "ignore": [
+      "src/",
+      "test/",
+      "build/"
+    ],
+    "ignoreRoot": [
+      ".git/"
+    ]
   }
 }
