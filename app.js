@@ -28,7 +28,14 @@ app.set('port', config.port)
 if (config.isDevelopment) {
   const config = require('./config/webpack.config')('development')
   const compiler = webpack(config)
-  app.use(webpackDevMiddleware(compiler, { color: true }))
+  compiler.hooks.invalid.tap('invalid', () => {
+    console.log(new Date().toTimeString())
+  })
+  console.log(new Date().toTimeString())
+  app.use(webpackDevMiddleware(compiler, {
+    color: true,
+    logLevel: 'warn'
+  }))
   app.use(webpackHotMiddleware(compiler))
   app.use('/images', express.static(path.join(__dirname, 'public/images')))
 } else if (config.isProduction) {
