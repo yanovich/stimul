@@ -46,14 +46,18 @@ describe('Stimul', function () {
         page.once('response', res => {
           // response.json() is async and needs some time
           setTimeout(async () => {
-            expect(await page.$eval('p', p => p.textContent)).to.equal(
-              'Hello world!'
-            )
-            expect(await page.$('div#map')).to.be.ok()
-            expect(
-              (await page.$$('.leaflet-marker-pane > img')).length
-            ).to.equal(10)
-            done()
+            try {
+              expect(await page.$eval('p', p => p.textContent)).to.equal(
+                'Hello world!'
+              )
+              expect(await page.$('div#map')).to.be.ok()
+              expect(
+                (await page.$$('.leaflet-marker-pane > img')).length
+              ).to.equal(10)
+              done()
+            } catch (e) {
+              done(e)
+            }
           }, 10)
         })
       })
