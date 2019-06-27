@@ -2,7 +2,10 @@ import './main.css'
 
 import React, { useEffect } from 'react'
 import 'leaflet/dist/leaflet.css'
+import 'leaflet.markercluster/dist/MarkerCluster.css'
+import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
 import L from 'leaflet'
+import LC from 'leaflet.markercluster' // eslint-disable-line
 
 const tileUrl =
   navigator.userAgent.search('HeadlessChrome') !== -1
@@ -32,11 +35,14 @@ function Map (props) {
       id: 'osm'
     }).addTo(map)
 
+    const cluster = L.markerClusterGroup()
+
     props.markers.forEach(marker => {
-      L.marker(marker.latlng)
-        .addTo(map)
-        .bindPopup(marker.name)
+      cluster.addLayer(L.marker(marker.latlng)
+        .bindPopup(marker.name))
     })
+
+    map.addLayer(cluster)
 
     return () => {
       window.removeEventListener('resize', resizeMap)

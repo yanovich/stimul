@@ -25,6 +25,8 @@ before(async () => {
 
   global.url = 'http://localhost:' + port
   global.browser = await puppeteer.launch({
+    headless: true,
+    slowMo: 0,
     args: ['--no-sandbox']
   })
 })

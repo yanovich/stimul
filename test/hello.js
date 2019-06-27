@@ -39,28 +39,66 @@ describe('Stimul', function () {
       expect(await page.$('#root')).to.be.ok()
       expect(await page.$('.stimul-info')).to.be.ok()
     })
+  })
 
-    it('should respond', function (done) {
-      expect(response.status()).to.be(304)
-      page.click('button').then(() => {
-        page.once('response', res => {
-          // response.json() is async and needs some time
-          setTimeout(async () => {
-            try {
-              expect(await page.$eval('p', p => p.textContent)).to.equal(
-                'Hello world!'
-              )
-              expect(await page.$('div#map')).to.be.ok()
-              expect(
-                (await page.$$('.leaflet-marker-pane > img')).length
-              ).to.equal(10)
-              done()
-            } catch (e) {
-              done(e)
-            }
-          }, 10)
+  describe('main page', function () {
+    beforeEach(done => {
+      function waitForGraphQL (res) {
+        if (res._url.search('/graphql') === -1) {
+          return
+        }
+
+        page.off('response', waitForGraphQL)
+        done()
+      }
+
+      page
+        .goto(url)
+        .then(() => {
+          page.on('response', waitForGraphQL)
+          page.click('button')
         })
-      })
+        .catch(e => done(e))
+    })
+
+    var wait = ms => new Promise((resolve, reject) => setTimeout(resolve, ms))
+
+    async function scrollMap (levels) {
+      for (let i = 0; i < levels && i < 4; i++) {
+        await page.evaluate(() => {
+          const map = document.getElementById('map')
+          const rect = map.getBoundingClientRect()
+          let e = new window.Event('wheel')
+          e.deltaX = 0
+          e.deltaY = 3
+          e.deltaZ = 0
+          e.deltaMode = 1
+          e.x = Math.floor(rect.x + rect.width / 2)
+          e.y = Math.floor(rect.y + rect.height / 2)
+          e.clientX = e.x
+          e.clientY = e.y
+          e.pageX = e.x
+          e.pageY = e.y
+          e.target = map
+          map.dispatchEvent(e)
+        })
+        await wait(300)
+      }
+    }
+
+    it('should show map', async () => {
+      expect(await page.$eval('p', p => p.textContent)).to.equal('Hello world!')
+      expect(await page.$('div#map')).to.be.ok()
+      expect((await page.$$('.leaflet-marker-pane > img')).length).to.equal(0)
+      await scrollMap(2)
+      expect((await page.$$('.leaflet-marker-pane > img')).length).to.equal(1)
+      await scrollMap(3)
+      expect((await page.$$('.leaflet-marker-pane > img')).length).to.equal(2)
+      await scrollMap(2)
+      await page.waitForSelector('.marker-cluster')
+      expect((await page.$$('.marker-cluster')).length).to.equal(1)
+      await scrollMap(1)
+      expect((await page.$$('.leaflet-marker-pane > img')).length).to.equal(1)
     })
   })
 })

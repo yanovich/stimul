@@ -1,1 +1,1 @@
---file test/support/server.js
+--file test/support/server.js --timeout 5000
