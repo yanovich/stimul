@@ -79,6 +79,7 @@
       "fetch",
       "browser",
       "url",
+      "wait",
       "describe",
       "it",
       "before",

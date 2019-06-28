@@ -25,10 +25,12 @@ before(async () => {
 
   global.url = 'http://localhost:' + port
   global.browser = await puppeteer.launch({
+    devtools: false,
     headless: true,
     slowMo: 0,
     args: ['--no-sandbox']
   })
+  global.wait = ms => new Promise((resolve, reject) => setTimeout(resolve, ms))
 })
 
 after(async () => {
