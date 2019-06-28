@@ -1,6 +1,9 @@
 import './main.css'
 
-import React, { useEffect } from 'react'
+import React, {
+  useLayoutEffect,
+  useEffect
+} from 'react'
 import 'leaflet/dist/leaflet.css'
 import 'leaflet.markercluster/dist/MarkerCluster.css'
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
@@ -24,17 +27,27 @@ function Map (props) {
     document.getElementById('map').style.width = width + 'px'
   }
 
-  useEffect(() => {
+  let map
+
+  useLayoutEffect(() => {
     resizeMap()
     window.addEventListener('resize', resizeMap)
     L.Icon.Default.imagePath = '/images/'
-    const map = L.map('map').setView([55.761234, 37.563179], 16)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    map = L.map('map').setView([55.761234, 37.563179], 9)
     L.tileLayer(tileUrl, {
       attribution: mapAttribution,
       maxZoom: 18,
       id: 'osm'
     }).addTo(map)
 
+    return () => {
+      window.removeEventListener('resize', resizeMap)
+      map.remove()
+    }
+  }, [])
+
+  useEffect(() => {
     const cluster = L.markerClusterGroup()
 
     props.markers.forEach(marker => {
@@ -45,10 +58,10 @@ function Map (props) {
     map.addLayer(cluster)
 
     return () => {
-      window.removeEventListener('resize', resizeMap)
-      map.remove()
+      cluster.clearLayers()
+      map.removeLayer(cluster)
     }
-  }, [props.markers])
+  }, [map, props.markers])
 
   return (
     <div id='container'>

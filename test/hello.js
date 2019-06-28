@@ -65,12 +65,12 @@ describe('Stimul', function () {
 
     async function scrollMap (levels) {
       for (let i = 0; i < levels && i < 4; i++) {
-        await page.evaluate(() => {
+        await page.evaluate((levels) => {
           const map = document.getElementById('map')
           const rect = map.getBoundingClientRect()
           let e = new window.Event('wheel')
           e.deltaX = 0
-          e.deltaY = 3
+          e.deltaY = 3 * levels
           e.deltaZ = 0
           e.deltaMode = 1
           e.x = Math.floor(rect.x + rect.width / 2)
@@ -81,24 +81,20 @@ describe('Stimul', function () {
           e.pageY = e.y
           e.target = map
           map.dispatchEvent(e)
-        })
-        await wait(300)
+        }, levels)
       }
+      await wait(300)
     }
 
     it('should show map', async () => {
       expect(await page.$eval('p', p => p.textContent)).to.equal('Hello world!')
       expect(await page.$('div#map')).to.be.ok()
-      expect((await page.$$('.leaflet-marker-pane > img')).length).to.equal(0)
-      await scrollMap(2)
-      expect((await page.$$('.leaflet-marker-pane > img')).length).to.equal(1)
-      await scrollMap(3)
-      expect((await page.$$('.leaflet-marker-pane > img')).length).to.equal(2)
-      await scrollMap(2)
-      await page.waitForSelector('.marker-cluster')
+      await page.waitForSelector('.marker-cluster', { timeout: 300 })
       expect((await page.$$('.marker-cluster')).length).to.equal(1)
-      await scrollMap(1)
       expect((await page.$$('.leaflet-marker-pane > img')).length).to.equal(1)
+      await scrollMap(1)
+      await wait(400)
+      expect((await page.$$('.leaflet-marker-pane > img')).length).to.equal(0)
     })
   })
 })
