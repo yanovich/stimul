@@ -34,3 +34,10 @@ main {
   width: 800px;
   height: 450px;
 }
+
+form.new-site-popup {
+  display: flex;
+  flex-flow: column nowrap;
+  align-content: center;
+  align-items: center;
+}

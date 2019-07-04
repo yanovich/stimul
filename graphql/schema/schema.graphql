@@ -3,7 +3,16 @@ type Query {
   sites: [Site]!
 }
 
+type Mutation {
+  newSite(site: SiteInput!): Site!
+}
+
 type Site {
+  name: String!
+  latlng: [Float!]!
+}
+
+input SiteInput {
   name: String!
   latlng: [Float!]!
 }

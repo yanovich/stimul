@@ -8,7 +8,7 @@
  * Stimul
  */
 
-const sites = [
+let sites = [
   {
     name: 'Хорошёвка',
     latlng: [55.776975, 37.537188]
@@ -58,6 +58,12 @@ function injectSites (root) {
 
   root.sites = () => {
     return sites
+  }
+
+  root.newSite = (data) => {
+    const { name, latlng } = data.site
+    const num = sites.push({ name, latlng }) - 1
+    return sites[num]
   }
 }
 

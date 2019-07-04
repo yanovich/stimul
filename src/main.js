@@ -28,6 +28,13 @@ function Map (props) {
   }
 
   let map
+  const cluster = L.markerClusterGroup()
+
+  function addMarker (data) {
+    const marker = L.marker(data.latlng).bindPopup(data.name)
+    cluster.addLayer(marker)
+    return marker
+  }
 
   useLayoutEffect(() => {
     resizeMap()
@@ -41,26 +48,78 @@ function Map (props) {
       id: 'osm'
     }).addTo(map)
 
+    let popup = L.popup()
+
+    function newSite (e) {
+      e.preventDefault()
+      const site = {
+        name: document.getElementById('new-site-name').value,
+        latlng: [popup.getLatLng().lat, popup.getLatLng().lng]
+      }
+      fetch('/graphql', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          query: `
+            mutation ($site: SiteInput!) {
+              newSite (site: $site) {
+                name
+                latlng
+              }
+            }
+          `,
+          variables: {
+            site
+          }
+        })
+      })
+        .then(response => {
+          return response.json()
+        })
+        .then(response => {
+          addMarker(response.data.newSite).openPopup()
+        })
+    }
+
+    function onMapClick (e) {
+      popup
+        .setLatLng(e.latlng)
+        .setContent(
+          '<form class="new-site-popup"">\n' +
+            '<input id="new-site-name" />\nКординаты: ' +
+            e.latlng.lat.toPrecision(8) +
+            ', ' +
+            e.latlng.lng.toPrecision(8) +
+            '<br />\n<button id="create-new-site">Создать</button>\n' +
+            '</form>'
+        )
+        .openOn(map)
+      document
+        .getElementsByClassName('new-site-popup')[0]
+        .addEventListener('submit', newSite)
+    }
+
+    map.on('click', onMapClick)
+
     return () => {
+      map.off('click', onMapClick)
       window.removeEventListener('resize', resizeMap)
       map.remove()
     }
   }, [])
 
   useEffect(() => {
-    const cluster = L.markerClusterGroup()
-
-    props.markers.forEach(marker => {
-      cluster.addLayer(L.marker(marker.latlng)
-        .bindPopup(marker.name))
-    })
-
+    props.markers.forEach(addMarker)
     map.addLayer(cluster)
 
     return () => {
       cluster.clearLayers()
       map.removeLayer(cluster)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [map, props.markers])
 
   return (
@@ -76,9 +135,6 @@ const MainScreen = {
       <div className='stimul-main'>
         <header>Стимул</header>
         <main>
-          <div className='info'>
-            <p>{props.response.hello}</p>
-          </div>
           <Map markers={props.response.sites} />
         </main>
       </div>
