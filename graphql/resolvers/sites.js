@@ -60,7 +60,7 @@ function injectSites (root) {
     return sites
   }
 
-  root.newSite = (data) => {
+  root.newSite = data => {
     const { name, latlng } = data.site
     const num = sites.push({ name, latlng }) - 1
     return sites[num]

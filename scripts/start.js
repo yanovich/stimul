@@ -103,7 +103,6 @@ Promise.resolve(true)
       }
       console.log(chalk.cyan('Starting the development server...\n'))
     })
-
     ;['SIGINT', 'SIGTERM'].forEach(function (sig) {
       process.on(sig, function () {
         devServer.close()

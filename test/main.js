@@ -52,7 +52,7 @@ describe('Main page', function () {
 
   describe('map', function () {
     async function scrollMap (levels) {
-      await page.evaluate((levels) => {
+      await page.evaluate(levels => {
         const map = document.getElementById('map')
         const rect = map.getBoundingClientRect()
         let e = new window.Event('wheel')
@@ -101,15 +101,20 @@ describe('Main page', function () {
         await page.click('a.leaflet-control-zoom-in')
         await page.click('div#map')
         await page.waitFor('#new-site-name', { timeout: 300 })
-        await page.$eval('#new-site-name', el => { el.value = 'Храм' })
+        await page.$eval('#new-site-name', el => {
+          el.value = 'Храм'
+        })
         await page.waitForSelector('button#create-new-site', { timeout: 300 })
         expect((await page.$$('.leaflet-marker-pane > img')).length).to.equal(3)
         await wait(80)
         await Promise.all([
-          page.waitForResponse(response => {
-            console.log(response.url())
-            return response.url().search('/graphql') !== -1
-          }, { timeout: 300 }),
+          page.waitForResponse(
+            response => {
+              console.log(response.url())
+              return response.url().search('/graphql') !== -1
+            },
+            { timeout: 300 }
+          ),
           page.click('button#create-new-site')
         ])
         await wait(20)

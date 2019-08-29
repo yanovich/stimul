@@ -32,10 +32,12 @@ if (config.isDevelopment) {
     console.log(new Date().toTimeString())
   })
   console.log(new Date().toTimeString())
-  app.use(webpackDevMiddleware(compiler, {
-    color: true,
-    logLevel: 'warn'
-  }))
+  app.use(
+    webpackDevMiddleware(compiler, {
+      color: true,
+      logLevel: 'warn'
+    })
+  )
   app.use(webpackHotMiddleware(compiler))
   app.use('/', express.static(path.join(__dirname, 'public')))
 } else if (config.isProduction) {
