@@ -10,9 +10,15 @@
 
 const expect = require('expect.js')
 
+const populateSites = require('./populate/sites')
+
 let page
 
 describe('Main page', function () {
+  before(done => {
+    populateSites(done)
+  })
+
   function logger (message) {
     console.log('client:', message.text())
   }
@@ -110,7 +116,6 @@ describe('Main page', function () {
         await Promise.all([
           page.waitForResponse(
             response => {
-              console.log(response.url())
               return response.url().search('/graphql') !== -1
             },
             { timeout: 300 }

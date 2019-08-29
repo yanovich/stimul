@@ -11,6 +11,7 @@
 process.env.NODE_ENV = 'test'
 
 const http = require('http')
+const mongoose = require('mongoose')
 const app = require('../../app')
 const server = http.createServer(app)
 const puppeteer = require('puppeteer')
@@ -22,6 +23,9 @@ before(async () => {
     server.listen(app.get('port'))
     port = server.address().port
   }
+
+  mongoose.set('useCreateIndex', true)
+  mongoose.connect(app.get('dbURL'), { useNewUrlParser: true })
 
   global.url = 'http://localhost:' + port
   global.browser = await puppeteer.launch({
@@ -35,5 +39,6 @@ before(async () => {
 
 after(async () => {
   server.close()
+  mongoose.connection.close()
   await global.browser.close()
 })

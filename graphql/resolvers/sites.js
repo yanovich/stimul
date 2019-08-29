@@ -8,48 +8,7 @@
  * Stimul
  */
 
-let sites = [
-  {
-    name: 'Хорошёвка',
-    latlng: [55.776975, 37.537188]
-  },
-  {
-    name: 'Левобережка',
-    latlng: [55.872715, 37.474561]
-  },
-  {
-    name: 'Синявинская',
-    latlng: [55.945084, 37.345524]
-  },
-  {
-    name: 'Чкаловск',
-    latlng: [54.769382, 20.414559]
-  },
-  {
-    name: 'Оленегорск',
-    latlng: [68.082598, 34.327618]
-  },
-  {
-    name: 'Протоки',
-    latlng: [68.109584, 33.925394]
-  },
-  {
-    name: '60/МПК',
-    latlng: [59.960467, 30.348203]
-  },
-  {
-    name: 'Бычий',
-    latlng: [59.977099, 30.228592]
-  },
-  {
-    name: 'Питреское НВМУ',
-    latlng: [59.955648, 30.332867]
-  },
-  {
-    name: 'Адмиралтейство',
-    latlng: [59.937991, 30.307734]
-  }
-]
+const Site = require('../models/site')
 
 function injectSites (root) {
   if (root.sites !== undefined) {
@@ -57,13 +16,14 @@ function injectSites (root) {
   }
 
   root.sites = () => {
-    return sites
+    return Site.find()
   }
 
-  root.newSite = data => {
+  root.newSite = async data => {
     const { name, latlng } = data.site
-    const num = sites.push({ name, latlng }) - 1
-    return sites[num]
+    const site = new Site({ name, latlng })
+    await site.save()
+    return site
   }
 }
 

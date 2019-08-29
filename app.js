@@ -24,6 +24,7 @@ const resolvers = require('./graphql/resolvers')
 const app = express()
 
 app.set('port', config.port)
+app.set('dbURL', config.dbURL)
 
 if (config.isDevelopment) {
   const config = require('./config/webpack.config')('development')
