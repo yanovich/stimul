@@ -140,7 +140,6 @@ const MainScreen = {
 
   query: `
   {
-    hello
     sites {
       name
       latlng
