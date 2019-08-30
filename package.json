@@ -91,6 +91,8 @@
   },
   "nodemonConfig": {
     "ignore": [
+      "public/",
+      "scripts/",
       "src/",
       "test/",
       "build/"
