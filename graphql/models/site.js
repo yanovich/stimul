@@ -19,12 +19,12 @@ const siteSchema = new mongoose.Schema({
   location: mongoose.Schema.Types.Mixed
 })
 
-siteSchema.virtual('latlng').get((val, v, doc) => {
-  return [doc.location.coordinates[1], doc.location.coordinates[0]]
+siteSchema.virtual('latlng').get(function () {
+  return [this.location.coordinates[1], this.location.coordinates[0]]
 })
 
-siteSchema.virtual('latlng').set((latlng, v, doc) => {
-  doc.location = {
+siteSchema.virtual('latlng').set(function (latlng) {
+  this.location = {
     type: 'Point',
     coordinates: [latlng[1], latlng[0]]
   }
