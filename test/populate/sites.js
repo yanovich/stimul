@@ -9,6 +9,8 @@
  */
 
 const Site = require('../../graphql/models/site')
+const queries = {}
+require('../../graphql/resolvers/sites')(queries)
 
 let populated = false
 
@@ -56,14 +58,13 @@ const sites = [
 ]
 
 module.exports = async done => {
-  if (populated.sites) {
-    return
+  if (populated) {
+    return done()
   }
 
   await Site.find().deleteMany()
   for (let i = 0; i < sites.length; i++) {
-    const site = new Site(sites[i])
-    await new Promise(resolve => site.save(resolve))
+    queries.newSite({site: sites[i]})
   }
 
   populated = true
