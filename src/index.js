@@ -14,36 +14,48 @@ class Stimul extends React.Component {
   constructor (props) {
     super(props)
     this.state = window.localStorage.getItem('stimul-state') || {
+      auth: {},
       screen: 'login',
       response: {}
     }
   }
 
-  update (nextScreen) {
+  authorize (auth) {
+    this.setState({ auth })
+  }
+
+  gql (query, variables, cb) {
     fetch('/graphql', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
+        Authorization: 'Bearer ' + this.state.auth.token,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        query: screens[nextScreen].query,
-        variables: null
+        query,
+        variables
       })
     })
       .then(response => {
         return response.json()
       })
-      .then(response => {
-        this.setState({
-          screen: nextScreen,
-          response: response.data
-        })
+      .then(cb)
+  }
+
+  update (nextScreen, variables) {
+    this.gql(screens[nextScreen].query, variables, response => {
+      this.setState({
+        screen: nextScreen,
+        response: response.data
       })
+    })
   }
 
   render () {
     const props = {
+      authorize: this.authorize.bind(this),
+      gql: this.gql.bind(this),
       response: this.state.response,
       update: this.update.bind(this)
     }

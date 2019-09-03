@@ -1,10 +1,12 @@
 type Query {
-  hello: String
   sites: [Site]!
+  users: [User]!
 }
 
 type Mutation {
   newSite(site: SiteInput!): Site!
+  newUser(site: UserInput!): User!
+  login(email: String!, password: String!): AuthPayload
 }
 
 type Site {
@@ -15,4 +17,20 @@ type Site {
 input SiteInput {
   name: String!
   latlng: [Float!]!
+}
+
+type User {
+  email: String!
+  hash: String!
+}
+
+input UserInput {
+  email: String!
+  password: String!
+  confirmation: String!
+}
+
+type AuthPayload {
+  token: String
+  user: User
 }

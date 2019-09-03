@@ -53,32 +53,17 @@ function Map (props) {
         name: document.getElementById('new-site-name').value,
         latlng: [popup.getLatLng().lat, popup.getLatLng().lng]
       }
-      fetch('/graphql', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          query: `
-            mutation ($site: SiteInput!) {
-              newSite (site: $site) {
-                name
-                latlng
-              }
-            }
-          `,
-          variables: {
-            site
+      const query = `
+        mutation ($site: SiteInput!) {
+          newSite (site: $site) {
+            name
+            latlng
           }
-        })
+        }
+      `
+      props.gql(query, { site }, response => {
+        addMarker(response.data.newSite).openPopup()
       })
-        .then(response => {
-          return response.json()
-        })
-        .then(response => {
-          addMarker(response.data.newSite).openPopup()
-        })
     }
 
     function onMapClick (e) {
@@ -132,7 +117,7 @@ const MainScreen = {
       <div className='stimul-main'>
         <header>Стимул</header>
         <main>
-          <Map markers={props.response.sites} />
+          <Map markers={props.response.sites} gql={props.gql} />
         </main>
       </div>
     )

@@ -11,12 +11,17 @@
 const expect = require('expect.js')
 
 const populateSites = require('./populate/sites')
+const populateUsers = require('./populate/users')
 
 let page
 
 describe('Main page', function () {
   before(done => {
     populateSites(done)
+  })
+
+  before(done => {
+    populateUsers(done)
   })
 
   function logger (message) {
@@ -34,8 +39,15 @@ describe('Main page', function () {
   })
 
   before(done => {
+    let count = 0
+
     function waitForGraphQL (res) {
       if (res._url.search('/graphql') === -1) {
+        return
+      }
+
+      ++count
+      if (count === 1) {
         return
       }
 
@@ -45,14 +57,19 @@ describe('Main page', function () {
 
     page
       .goto(url)
-      .then(() => {
+      .then(async () => {
         page.on('response', waitForGraphQL)
+        await page.click('#email')
+        await page.type('#email', 'admin-1@example.com')
+        await page.click('#password')
+        await page.type('#password', '111111111')
         page.click('button')
       })
       .catch(e => done(e))
   })
 
   it('should show map', async () => {
+    await page.waitForSelector('div#map', { timeout: 1500 })
     expect(await page.$('div#map')).to.be.ok()
   })
 

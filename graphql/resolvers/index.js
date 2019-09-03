@@ -15,5 +15,7 @@ let root = {
 }
 
 require('./sites')(root)
+require('./users')(root)
+require('./sessions')(root)
 
 module.exports = root

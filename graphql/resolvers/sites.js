@@ -9,17 +9,23 @@
  */
 
 const Site = require('../models/site')
+const { getUser } = require('../utils/auth')
 
 function injectSites (root) {
   if (root.sites !== undefined) {
     throw Error('sites resolver already defined')
   }
 
-  root.sites = () => {
+  root.sites = (date, req) => {
+    const user = getUser(req)
+
+    if (!user) {
+      return null
+    }
     return Site.find()
   }
 
-  root.newSite = async data => {
+  root.newSite = async (data, req) => {
     const { name, latlng } = data.site
     const site = new Site({ name, latlng })
     await site.save()

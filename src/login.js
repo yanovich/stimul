@@ -1,28 +1,66 @@
 import './login.css'
 
-import React from 'react'
+import React, { useState } from 'react'
 
 import logo from './logo'
 
-const LoginScreen = {
-  render: props => {
-    return (
-      <div className='stimul-info'>
-        <div className='auth'>
-          <div className='logo'>
-            <img src={logo} alt='АО ГУОВ' />
-          </div>
-          <label className='LabelInputText'>
-            <input type='text' placeholder='Email' />
-          </label>
-          <label className='LabelInputText'>
-            <input type='password' placeholder='Пароль' />
-          </label>
-          <button onClick={() => props.update('main')}>Вход</button>
-        </div>
-      </div>
-    )
+const login = `
+mutation($email: String!, $password: String!) {
+  login(email: $email, password: $password) {
+    token
+    user {
+      email
+    }
   }
+}`
+
+function LoginScreen (props) {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+
+  return (
+    <div className='stimul-info'>
+      <form
+        className='auth'
+        onSubmit={e => {
+          e.preventDefault()
+          props.gql(login, { email, password }, response => {
+            if (response.data.login) {
+              props.authorize(response.data.login)
+              props.update('main')
+            }
+          })
+        }}
+      >
+        <div className='logo'>
+          <img src={logo} alt='АО ГУОВ' />
+        </div>
+        <label className='LabelInputText'>
+          <input
+            id='email'
+            type='text'
+            placeholder='Email'
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+          />
+        </label>
+        <label className='LabelInputText'>
+          <input
+            id='password'
+            type='password'
+            placeholder='Пароль'
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+          />
+        </label>
+        <button type='submit'>Вход</button>
+      </form>
+    </div>
+  )
 }
 
-export default LoginScreen
+export default {
+  render: props => {
+    return <LoginScreen {...props} />
+  }
+}
