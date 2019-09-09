@@ -16,10 +16,14 @@ const users = require('../test/populate/users')
 const sites = require('../test/populate/sites')
 
 mongoose.set('useCreateIndex', true)
-mongoose.connect(app.get('dbURL'), { useNewUrlParser: true });
+mongoose.connect(app.get('dbURL'), { useNewUrlParser: true })
 
 mongoose.connection.on('connected', async () => {
-  await new Promise((resolve) => { users(resolve) })
-  await new Promise((resolve) => { sites(resolve) })
+  await new Promise(resolve => {
+    users(resolve)
+  })
+  await new Promise(resolve => {
+    sites(resolve)
+  })
   mongoose.connection.close()
 })
