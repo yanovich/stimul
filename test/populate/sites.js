@@ -64,7 +64,7 @@ module.exports = async done => {
 
   await Site.find().deleteMany()
   for (let i = 0; i < sites.length; i++) {
-    queries.newSite({ site: sites[i] })
+    await queries.newSite({ site: sites[i] })
   }
 
   populated = true

@@ -29,7 +29,7 @@ module.exports = async done => {
 
   await User.find().deleteMany()
   for (let i = 0; i < users.length; i++) {
-    queries.newUser({ user: users[i] })
+    await queries.newUser({ user: users[i] })
   }
 
   populated = true
