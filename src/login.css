@@ -1,3 +1,9 @@
+.logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 20vmin;
+  pointer-events: none;
+}
+
 .stimul-info {
   display: flex;
   height: 100%;

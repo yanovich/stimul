@@ -2,7 +2,7 @@ import './login.css'
 
 import React, { useState } from 'react'
 
-import logo from './logo'
+import logo from './logo.svg'
 
 const login = `
 mutation($email: String!, $password: String!) {
@@ -32,8 +32,8 @@ function LoginScreen (props) {
           })
         }}
       >
-        <div className='logo'>
-          <img src={logo} alt='АО ГУОВ' />
+        <div>
+          <img src={logo} className='logo' alt='Стимул' />
         </div>
         <label className='LabelInputText'>
           <input
