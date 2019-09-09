@@ -3,10 +3,12 @@ import ReactDOM from 'react-dom'
 import './index.css'
 
 import main from './main'
+import site from './site'
 import login from './login'
 
 const screens = {
   main: main,
+  site: site,
   login: login
 }
 

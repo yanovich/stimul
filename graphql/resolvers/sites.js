@@ -25,6 +25,15 @@ function injectSites (root) {
     return Site.find()
   }
 
+  root.site = ({ name }, req) => {
+    const user = getUser(req)
+
+    if (!user) {
+      return null
+    }
+    return Site.findOne({ name })
+  }
+
   root.newSite = async (data, req) => {
     const { name, latlng } = data.site
     const site = new Site({ name, latlng })
