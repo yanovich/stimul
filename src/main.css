@@ -9,12 +9,12 @@
   padding: 10px;
 }
 
-header {
+.stimul-main header {
   background: inherit; /* lawngreen; for debug */
   font-weight: bold;
 }
 
-main {
+.stimul-main main {
   text-align: left;
   background: inherit; /* deepskyblue; for debug */
   flex: 1 0px;
@@ -22,20 +22,17 @@ main {
   flex-flow: column nowrap;
 }
 
-.info {
-  margin: auto;
-}
-
-#container {
+.stimul-main #container {
   flex: 1;
 }
 
-#map {
-  width: 800px;
+.stimul-main #map {
+  width: 400px;
   height: 450px;
+  position: absolute;
 }
 
-form.new-site-popup {
+.stimul-main form.new-site-popup {
   display: flex;
   flex-flow: column nowrap;
   align-content: center;

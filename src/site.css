@@ -1,20 +1,20 @@
-.stimul-main {
+.stimul-site {
   display: flex;
   flex-flow: column nowrap;
   height: 100%;
   min-height: 100%;
 }
 
-.stimul-main > * {
+.stimul-site > * {
   padding: 10px;
 }
 
-header {
+.stimul-site header {
   background: inherit; /* lawngreen; for debug */
   font-weight: bold;
 }
 
-main {
+.stimul-site main {
   text-align: left;
   background: inherit; /* deepskyblue; for debug */
   flex: 1 0px;
@@ -22,31 +22,28 @@ main {
   flex-flow: row nowrap;
 }
 
-.sitePane {
+.stimul-site .sitePane {
   flex: 1;
   display: flex;
   flex-flow: column nowrap;
 }
 
-#container {
+.stimul-site #container {
   flex: 1;
 }
 
-.site {
+.stimul-site #map {
+  width: 200px;
+  height: 450px;
+  position: absolute;
+}
+
+.stimul-site .site {
   flex: 3;
   display: flex;
   flex-flow: column nowrap;
 }
 
-.objectsPane {
+.stimul-site .objectsPane {
   flex: 1;
-}
-
-.info {
-  margin: auto;
-}
-
-#map {
-  width: 200px;
-  height: 150px;
 }

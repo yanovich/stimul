@@ -79,7 +79,7 @@ function Map (props) {
 const SiteScreen = {
   render: props => {
     return (
-      <div className='stimul-main'>
+      <div className='stimul-site'>
         <header>Стимул</header>
         <main>
           <div className='sitePane'>
