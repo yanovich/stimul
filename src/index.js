@@ -12,6 +12,26 @@ const screens = {
   login: login
 }
 
+function Header (props) {
+  console.log(props)
+  if (props.screen === 'main') {
+    return <header>Стимул</header>
+  }
+  return (
+    <header>
+      <a
+        href='/'
+        onClick={e => {
+          e.preventDefault()
+          props.update('main')
+        }}
+      >
+        Стимул
+      </a>
+    </header>
+  )
+}
+
 function Stimul () {
   const [state, setState] = React.useState(() => {
     return window.localStorage.getItem('stimul-state') || {
@@ -63,10 +83,15 @@ function Stimul () {
     update
   }
 
+  const screenProps = {
+    screen: state.screen,
+    update
+  }
+
   return (
     <React.Fragment>
-      { (state.screen !== 'login') && <header>Стимул</header> }
-      { screens[state.screen].render(props) }
+      {state.screen !== 'login' && <Header {...screenProps} />}
+      {screens[state.screen].render(props)}
     </React.Fragment>
   )
 }

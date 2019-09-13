@@ -22,3 +22,8 @@ main.map {
   align-content: center;
   align-items: center;
 }
+
+.leaflet-popup-content a {
+  text-decoration: underline;
+  cursor: pointer;
+}
