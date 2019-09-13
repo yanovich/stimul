@@ -49,13 +49,24 @@ if (config.isDevelopment) {
   app.use(express.static(path.join(__dirname, 'build/')))
 }
 
-app.use(
+app.post(
   '/graphql',
   graphqlMiddleware({
     schema: schema,
     rootValue: resolvers,
-    graphiql: config.isDevelopment
+    graphiql: false
   })
 )
+
+if (config.isDevelopment) {
+  app.get(
+    '/graphql',
+    graphqlMiddleware({
+      schema: schema,
+      rootValue: resolvers,
+      graphiql: true
+    })
+  )
+}
 
 module.exports = app
