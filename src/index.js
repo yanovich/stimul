@@ -12,26 +12,27 @@ const screens = {
   login: login
 }
 
-class Stimul extends React.Component {
-  constructor (props) {
-    super(props)
-    this.state = window.localStorage.getItem('stimul-state') || {
+function Stimul () {
+  const [state, setState] = React.useState(() => {
+    return window.localStorage.getItem('stimul-state') || {
       auth: {},
       screen: 'login',
       response: {}
     }
+  })
+
+  function authorize (auth) {
+    const newState = state
+    state.auth = auth
+    setState(newState)
   }
 
-  authorize (auth) {
-    this.setState({ auth })
-  }
-
-  gql (query, variables, cb) {
+  function gql (query, variables, cb) {
     fetch('/graphql', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
-        Authorization: 'Bearer ' + this.state.auth.token,
+        Authorization: 'Bearer ' + state.auth.token,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
@@ -45,24 +46,25 @@ class Stimul extends React.Component {
       .then(cb)
   }
 
-  update (nextScreen, variables) {
-    this.gql(screens[nextScreen].query, variables, response => {
-      this.setState({
+  function update (nextScreen, variables) {
+    gql(screens[nextScreen].query, variables, response => {
+      setState({
+        auth: state.auth,
         screen: nextScreen,
         response: response.data
       })
     })
   }
 
-  render () {
-    const props = {
-      authorize: this.authorize.bind(this),
-      gql: this.gql.bind(this),
-      response: this.state.response,
-      update: this.update.bind(this)
-    }
-    return screens[this.state.screen].render(props)
+  const props = {
+    authorize,
+    gql,
+    response: state.response,
+    update
   }
+
+  console.log(state)
+  return screens[state.screen].render(props)
 }
 
 // ========================================
