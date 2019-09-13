@@ -79,27 +79,24 @@ function Map (props) {
 const SiteScreen = {
   render: props => {
     return (
-      <div className='stimul-site'>
-        <header>Стимул</header>
-        <main>
-          <div className='sitePane'>
-            <Map
-              markers={[props.response.site]}
-              gql={props.gql}
-              update={props.update}
-            />
-            <div className='site'>
-              <label>Кодовое имя:</label>
-              <label>{props.response.site.name}</label>
-              <label>Координаты:</label>
-              <input value={props.response.site.latlng} />
-            </div>
+      <main className='site'>
+        <div className='sitePane'>
+          <Map
+            markers={[props.response.site]}
+            gql={props.gql}
+            update={props.update}
+          />
+          <div className='site'>
+            <label>Кодовое имя:</label>
+            <label>{props.response.site.name}</label>
+            <label>Координаты:</label>
+            <input value={props.response.site.latlng} />
           </div>
-          <div className='objectsPane'>
-            <label>Объекты строительства</label>
-          </div>
-        </main>
-      </div>
+        </div>
+        <div className='objectsPane'>
+          <label>Объекты строительства</label>
+        </div>
+      </main>
     )
   },
 

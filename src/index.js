@@ -63,7 +63,12 @@ function Stimul () {
     update
   }
 
-  return screens[state.screen].render(props)
+  return (
+    <React.Fragment>
+      { (state.screen !== 'login') && <header>Стимул</header> }
+      { screens[state.screen].render(props) }
+    </React.Fragment>
+  )
 }
 
 // ========================================

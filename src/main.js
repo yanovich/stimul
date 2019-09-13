@@ -121,16 +121,13 @@ function Map (props) {
 const MainScreen = {
   render: props => {
     return (
-      <div className='stimul-main'>
-        <header>Стимул</header>
-        <main>
-          <Map
-            markers={props.response.sites}
-            gql={props.gql}
-            update={props.update}
-          />
-        </main>
-      </div>
+      <main className='map'>
+        <Map
+          markers={props.response.sites}
+          gql={props.gql}
+          update={props.update}
+        />
+      </main>
     )
   },
 

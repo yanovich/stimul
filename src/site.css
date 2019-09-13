@@ -1,20 +1,4 @@
-.stimul-site {
-  display: flex;
-  flex-flow: column nowrap;
-  height: 100%;
-  min-height: 100%;
-}
-
-.stimul-site > * {
-  padding: 10px;
-}
-
-.stimul-site header {
-  background: inherit; /* lawngreen; for debug */
-  font-weight: bold;
-}
-
-.stimul-site main {
+main.site {
   text-align: left;
   background: inherit; /* deepskyblue; for debug */
   flex: 1 0px;
@@ -22,28 +6,28 @@
   flex-flow: row nowrap;
 }
 
-.stimul-site .sitePane {
+main.site .sitePane {
   flex: 1;
   display: flex;
   flex-flow: column nowrap;
 }
 
-.stimul-site #container {
+main.site #container {
   flex: 1;
 }
 
-.stimul-site #map {
+main.site #map {
   width: 200px;
   height: 450px;
   position: absolute;
 }
 
-.stimul-site .site {
+main.site .site {
   flex: 3;
   display: flex;
   flex-flow: column nowrap;
 }
 
-.stimul-site .objectsPane {
+main.site .objectsPane {
   flex: 1;
 }
