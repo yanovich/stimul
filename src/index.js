@@ -63,7 +63,6 @@ function Stimul () {
     update
   }
 
-  console.log(state)
   return screens[state.screen].render(props)
 }
 
