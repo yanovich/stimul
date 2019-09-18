@@ -13,7 +13,6 @@ const screens = {
 }
 
 function Header (props) {
-  console.log(props)
   if (props.screen === 'main') {
     return <header>Стимул</header>
   }
@@ -34,11 +33,13 @@ function Header (props) {
 
 function Stimul () {
   const [state, setState] = React.useState(() => {
-    return window.localStorage.getItem('stimul-state') || {
-      auth: {},
-      screen: 'login',
-      response: {}
-    }
+    return (
+      window.localStorage.getItem('stimul-state') || {
+        auth: {},
+        screen: 'login',
+        response: {}
+      }
+    )
   })
 
   function authorize (auth) {
