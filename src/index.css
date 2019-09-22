@@ -16,7 +16,14 @@ html, body {
 header {
   padding: 10px;
   background: inherit; /* lawngreen; for debug */
+}
+
+header .location {
   font-weight: bold;
+}
+
+header a.location {
+  color: black;
 }
 
 main {

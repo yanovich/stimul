@@ -14,11 +14,16 @@ const screens = {
 
 function Header (props) {
   if (props.screen === 'main') {
-    return <header>Стимул</header>
+    return (
+      <header>
+        <span className='location'>Стимул</span>
+      </header>
+    )
   }
   return (
     <header>
       <a
+        className='location'
         href='/'
         onClick={e => {
           e.preventDefault()
