@@ -12,6 +12,22 @@ const screens = {
   login: login
 }
 
+function Logout (props) {
+  return (
+      <a
+        className='location'
+        href='/'
+        onClick={e => {
+          e.preventDefault()
+          props.authorize({})
+          props.update('login')
+        }}
+      >
+        Выход
+      </a>
+  )
+}
+
 function Header (props) {
   let location
   if (props.screen === 'main') {
@@ -30,7 +46,12 @@ function Header (props) {
       </a>
     )
   }
-  return <header>{location}</header>
+  return (
+    <header>
+      {location}
+      <Logout {...props} />
+    </header>
+  )
 }
 
 function Stimul () {
@@ -87,6 +108,7 @@ function Stimul () {
   }
 
   const screenProps = {
+    authorize,
     screen: state.screen,
     update
   }
