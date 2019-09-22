@@ -13,15 +13,11 @@ const screens = {
 }
 
 function Header (props) {
+  let location
   if (props.screen === 'main') {
-    return (
-      <header>
-        <span className='location'>Стимул</span>
-      </header>
-    )
-  }
-  return (
-    <header>
+    location = <span className='location'>Стимул</span>
+  } else {
+    location = (
       <a
         className='location'
         href='/'
@@ -32,8 +28,9 @@ function Header (props) {
       >
         Стимул
       </a>
-    </header>
-  )
+    )
+  }
+  return <header>{location}</header>
 }
 
 function Stimul () {
