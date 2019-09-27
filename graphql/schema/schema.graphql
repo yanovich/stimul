@@ -4,6 +4,8 @@ type Query {
   users: [User]!
   regions: [Region]!
   region(osmId: String, statName: String): Region
+  indicators: [Indicator]!
+  indicator(id: String, name: String): Indicator
 }
 
 type Mutation {
@@ -11,6 +13,7 @@ type Mutation {
   newUser(site: UserInput!): User!
   login(email: String!, password: String!): AuthPayload
   newRegion(region: RegionInput!): Region!
+  newIndicator(indicator: IndicatorInput!): Indicator!
 }
 
 type Site {
@@ -47,4 +50,14 @@ type Region {
 input RegionInput {
   osmId: String!
   statName: String!
+}
+
+type Indicator {
+  id: String!
+  name: String!
+}
+
+input IndicatorInput {
+  id: String!
+  name: String!
 }

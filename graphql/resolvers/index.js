@@ -18,5 +18,6 @@ require("./sites")(root);
 require("./users")(root);
 require("./sessions")(root);
 require("./regions")(root);
+require("./indicators")(root);
 
 module.exports = root;
