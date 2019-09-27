@@ -18,6 +18,8 @@ const mapAttribution = `&copy;
  <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>`;
 
 function Map(props) {
+  const { values } = props;
+
   function resizeMap() {
     const height = document.getElementById("container").clientHeight;
     const width = document.getElementById("container").clientWidth;
@@ -42,11 +44,22 @@ function Map(props) {
   }
 
   useLayoutEffect(() => {
+    const { min, max } = values.reduce(
+      (acc, current) => {
+        return {
+          min: Math.min(acc.min, current.value),
+          max: Math.max(acc.max, current.value)
+        };
+      },
+      { min: Infinity, max: -Infinity }
+    );
+    const avg = values.find(v => v.osmId == 60189).value;
+
     resizeMap();
     window.addEventListener("resize", resizeMap);
     L.Icon.Default.imagePath = "/images/";
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    map = L.map("map").setView([55.761234, 37.563179], 9);
+    map = L.map("map").setView([68.192424, 105.306383], 3);
     L.tileLayer(tileUrl, {
       attribution: mapAttribution,
       maxZoom: 18,
@@ -100,7 +113,7 @@ function Map(props) {
           color: "#F50",
           fillColor: "#FD6",
           opacity: 1,
-          fillOpacity: 0.1,
+          fillOpacity: 0.4,
           weight: 2
         };
       },
@@ -114,10 +127,31 @@ function Map(props) {
       var regLeaf = osme.toLeaflet(regions);
       borderLayer.addData(regLeaf.geoJSON);
       borderLayer.setStyle(function(feature) {
-        console.log(feature);
+        const osmId = feature.properties.osmId;
+        const value = values.find(v => v.osmId === osmId);
+        const colors = [
+          "#d73027",
+          "#fc8d59",
+          "#fee08b",
+          "#ffffbf",
+          "#d9ef8b",
+          "#91cf60",
+          "#1a9850"
+        ];
+        let c;
+
+        if (value.value > avg) {
+          let y = (max - avg) / 3.5;
+          c = Math.round((value.value - avg) / y) + 3;
+        } else {
+          let z = (avg - min) / 3.5;
+          c = Math.round((value.value - avg) / z) + 3;
+        }
+
+        console.log(osmId, value.value, c);
 
         return {
-          fillColor: feature.properties.osmId === "145729" ? "green" : "red"
+          fillColor: colors[c]
         };
       });
     });
@@ -155,6 +189,7 @@ const MainScreen = {
           markers={props.response.sites}
           gql={props.gql}
           update={props.update}
+          values={props.response.values}
         />
       </main>
     );
@@ -162,11 +197,18 @@ const MainScreen = {
 
   query: `
   {
-    sites {
+    values(indicatorId: "55376", year: 2018){
+      indicatorId
+      osmId
+      year
+      value
+    }
+    sites{
       name
       latlng
     }
-  }`
+  }  
+  `
 };
 
 export default MainScreen;
