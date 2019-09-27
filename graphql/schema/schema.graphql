@@ -2,12 +2,15 @@ type Query {
   sites: [Site]!
   site(name: String!): Site!
   users: [User]!
+  regions: [Region]!
+  region(osmId: String, statName: String): Region
 }
 
 type Mutation {
   newSite(site: SiteInput!): Site!
   newUser(site: UserInput!): User!
   login(email: String!, password: String!): AuthPayload
+  newRegion(region: RegionInput!): Region!
 }
 
 type Site {
@@ -34,4 +37,14 @@ input UserInput {
 type AuthPayload {
   token: String
   user: User
+}
+
+type Region {
+  osmId: String!
+  statName: String!
+}
+
+input RegionInput {
+  osmId: String!
+  statName: String!
 }

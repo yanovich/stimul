@@ -8,22 +8,26 @@
  * Stimul
  */
 
-process.env.NODE_ENV = 'test'
+process.env.NODE_ENV = "test";
 
-const mongoose = require('mongoose')
-const app = require('../app')
-const users = require('../test/populate/users')
-const sites = require('../test/populate/sites')
+const mongoose = require("mongoose");
+const app = require("../app");
+const users = require("../test/populate/users");
+const sites = require("../test/populate/sites");
+const regions = require("../test/populate/regions");
 
-mongoose.set('useCreateIndex', true)
-mongoose.connect(app.get('dbURL'), { useNewUrlParser: true })
+mongoose.set("useCreateIndex", true);
+mongoose.connect(app.get("dbURL"), { useNewUrlParser: true });
 
-mongoose.connection.on('connected', async () => {
+mongoose.connection.on("connected", async () => {
   await new Promise(resolve => {
-    users(resolve)
-  })
+    users(resolve);
+  });
   await new Promise(resolve => {
-    sites(resolve)
-  })
-  mongoose.connection.close()
-})
+    sites(resolve);
+  });
+  await new Promise(resolve => {
+    regions(resolve);
+  });
+  mongoose.connection.close();
+});

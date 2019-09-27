@@ -10,12 +10,13 @@
 
 let root = {
   hello: () => {
-    return 'Hello world!'
+    return "Hello world!";
   }
-}
+};
 
-require('./sites')(root)
-require('./users')(root)
-require('./sessions')(root)
+require("./sites")(root);
+require("./users")(root);
+require("./sessions")(root);
+require("./regions")(root);
 
-module.exports = root
+module.exports = root;

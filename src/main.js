@@ -100,10 +100,12 @@ function Map(props) {
           color: "#F50",
           fillColor: "#FD6",
           opacity: 1,
-          fillOpacity: 0.1
+          fillOpacity: 0.1,
+          weight: 2
         };
       },
       filter: function(feature, layer) {
+        // 3 - federal
         return feature.properties.level === 4;
       }
     }).addTo(map);
