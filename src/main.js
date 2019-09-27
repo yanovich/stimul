@@ -113,7 +113,7 @@ function Map(props) {
           color: "#F50",
           fillColor: "#FD6",
           opacity: 1,
-          fillOpacity: 0.4,
+          fillOpacity: 0.6,
           weight: 2
         };
       },
