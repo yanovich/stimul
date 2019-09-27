@@ -16,6 +16,7 @@ const users = require("../test/populate/users");
 const sites = require("../test/populate/sites");
 const regions = require("../test/populate/regions");
 const indicators = require("../test/populate/indicators");
+const values = require("../test/populate/values");
 
 mongoose.set("useCreateIndex", true);
 mongoose.connect(app.get("dbURL"), { useNewUrlParser: true });
@@ -32,6 +33,9 @@ mongoose.connection.on("connected", async () => {
   });
   await new Promise(resolve => {
     indicators(resolve);
+  });
+  await new Promise(resolve => {
+    values(resolve);
   });
   mongoose.connection.close();
 });
