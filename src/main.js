@@ -102,6 +102,9 @@ function Map(props) {
           opacity: 1,
           fillOpacity: 0.1
         };
+      },
+      filter: function(feature, layer) {
+        return feature.properties.level === 4;
       }
     }).addTo(map);
 
