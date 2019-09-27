@@ -113,6 +113,13 @@ function Map(props) {
     osme.geoJSON("RU", { lang: "ru" }).then(regions => {
       var regLeaf = osme.toLeaflet(regions);
       borderLayer.addData(regLeaf.geoJSON);
+      borderLayer.setStyle(function(feature) {
+        console.log(feature);
+
+        return {
+          fillColor: feature.properties.osmId === "145729" ? "green" : "red"
+        };
+      });
     });
 
     return () => {
