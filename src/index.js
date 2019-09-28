@@ -24,6 +24,7 @@ function Logout(props) {
       onClick={e => {
         e.preventDefault();
         props.authorize({});
+        localStorage.clear();
         props.update("login");
       }}
     >
