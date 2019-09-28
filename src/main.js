@@ -1,12 +1,33 @@
-import "./main.css";
-
-import React, { useLayoutEffect, useEffect } from "react";
-import "leaflet/dist/leaflet.css";
+import { Slider } from "antd";
+import L from "leaflet";
 import "leaflet.markercluster/dist/MarkerCluster.css";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
-import L from "leaflet";
-import LC from "leaflet.markercluster"; // eslint-disable-line
+import "leaflet/dist/leaflet.css";
 import osme from "osme";
+import React, { useCallback, useEffect, useState } from "react";
+import Curved from "./Curved";
+import "./main.css";
+
+const query = `
+  query($at: Int) {
+    values(indicatorId: "0", year: [$at]){
+      indicatorId
+      osmId
+      region {
+        statName
+        level
+      }
+      year
+      value
+    }
+    sites(at: $at) {
+      name
+      latlng
+      year
+      address
+    }
+  }  
+  `;
 
 const tileUrl =
   navigator.userAgent.search("HeadlessChrome") !== -1
@@ -18,6 +39,18 @@ const mapAttribution = `&copy;
  <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>`;
 
 function Map(props) {
+  let [map, setMap] = useState();
+
+  const createMap = useCallback(node => {
+    if (node === null) {
+      return;
+    }
+
+    resizeMap();
+
+    const newMap = L.map(node).setView([68.192424, 105.306383], 3);
+    setMap(newMap);
+  }, []);
   const { values } = props;
 
   function resizeMap() {
@@ -27,16 +60,15 @@ function Map(props) {
     document.getElementById("map").style.width = width + "px";
   }
 
-  let map;
   const cluster = L.markerClusterGroup();
 
   function escapeHtml(unsafe) {
     return unsafe
-         .replace(/&/g, "&amp;")
-         .replace(/</g, "&lt;")
-         .replace(/>/g, "&gt;")
-         .replace(/"/g, "&quot;")
-         .replace(/'/g, "&#039;");
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
   }
 
   function showSite(name) {
@@ -45,14 +77,30 @@ function Map(props) {
 
   function addMarker(data) {
     const marker = L.marker(data.latlng).bindPopup(
-      "<a onclick=\"L.showSite('" + escapeHtml(data.name) + "')\">" + data.name + "</a>"
+      "<a onclick=\"L.showSite('" +
+        escapeHtml(data.name) +
+        "')\">" +
+        data.name +
+        "</a>"
     );
     L.showSite = showSite;
     cluster.addLayer(marker);
     return marker;
   }
 
-  useLayoutEffect(() => {
+  useEffect(() => {
+    if (map === undefined) return;
+    window.addEventListener("resize", resizeMap);
+    L.Icon.Default.imagePath = "/images/";
+    L.tileLayer(tileUrl, {
+      attribution: mapAttribution,
+      maxZoom: 18,
+      id: "osm"
+    }).addTo(map);
+
+    props.markers.forEach(addMarker);
+    map.addLayer(cluster);
+
     const { min, max } = values.reduce(
       (acc, current) => {
         if (!current || !current.region || current.region.level !== 4) {
@@ -65,23 +113,12 @@ function Map(props) {
       },
       { min: Infinity, max: -Infinity }
     );
-    const avgValue = values.find(v => v.osmId === "60189")
-    let avg = ( avgValue || { value: (min + max) / 2 }).value;
+    const avgValue = values.find(v => v.osmId === "60189");
+    let avg = (avgValue || { value: (min + max) / 2 }).value;
     if (avg > max || avg < min) {
       avg = avg / values.length;
     }
-    console.log(min, avg, max);
-
-    resizeMap();
-    window.addEventListener("resize", resizeMap);
-    L.Icon.Default.imagePath = "/images/";
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    map = L.map("map").setView([68.192424, 105.306383], 3);
-    L.tileLayer(tileUrl, {
-      attribution: mapAttribution,
-      maxZoom: 18,
-      id: "osm"
-    }).addTo(map);
+    // console.log(min, avg, max);
 
     // L.tileLayer(
     //   "http://vec{s}.maps.yandex.net/tiles?l=map&v=4.55.2&z={z}&x={x}&y={y}&scale=2&lang=ru_RU",
@@ -209,61 +246,73 @@ function Map(props) {
     });
 
     return () => {
-      window.removeEventListener("resize", resizeMap);
-      map.remove();
-    };
-  }, []);
-
-  useEffect(() => {
-    props.markers.forEach(addMarker);
-    map.addLayer(cluster);
-
-    return () => {
-      cluster.clearLayers();
       map.removeLayer(cluster);
+      map.removeLayer(borderLayer);
+      cluster.clearLayers();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [map, props.markers]);
+  });
 
   return (
     <div id="container">
-      <div id="map" />
+      <div id="map" ref={createMap} />
     </div>
+  );
+}
+
+function range(start, end) {
+  return Array(end - start + 1)
+    .fill()
+    .map((_, idx) => start + idx);
+}
+
+function Main(props) {
+  const { gql } = props;
+  const [year, setYear] = useState(2018);
+  const [response, setResponse] = useState({});
+
+  useEffect(() => {
+    gql(query, { at: year }, response => {
+      setResponse(response.data);
+    });
+  }, [gql, year]);
+
+  return (
+    <main className="map">
+      <div id="statistics">
+        <Curved />
+      </div>
+
+      <div id="map-container">
+        <Slider
+          min={2009}
+          max={2019}
+          marks={range(2009, 2019).reduce(
+            (acc, cur) => ({ ...acc, [cur]: cur }),
+            {}
+          )}
+          value={year}
+          onChange={value => {
+            // props.update("main", { at: value });
+            setYear(value);
+          }}
+        />
+        {response.sites && response.values && (
+          <Map
+            markers={response.sites}
+            gql={props.gql}
+            update={props.update}
+            values={response.values}
+          />
+        )}
+      </div>
+    </main>
   );
 }
 
 const MainScreen = {
   render: props => {
-    return (
-      <main className="map">
-        <Map
-          markers={props.response.sites}
-          gql={props.gql}
-          update={props.update}
-          values={props.response.values}
-        />
-      </main>
-    );
-  },
-
-  query: `
-  {
-    values(indicatorId: "0", year: 2018){
-      indicatorId
-      osmId
-      region {
-        statName
-        level
-      }
-      year
-      value
-    }
-    sites{
-      name
-      latlng
-    }
-  }  
-  `
+    return <Main {...props} />;
+  }
 };
 
 export default MainScreen;
