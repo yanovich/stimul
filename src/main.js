@@ -87,25 +87,28 @@ function Map(props) {
       });
     }
 
-    function onMapClick(e) {
+    function onMapClick(e, feature) {
+      const { osmId } = feature.properties;
       popup
         .setLatLng(e.latlng)
         .setContent(
-          '<form class="new-site-popup"">\n' +
-            '<input id="new-site-name" />\nКординаты: ' +
-            e.latlng.lat.toPrecision(8) +
-            ", " +
-            e.latlng.lng.toPrecision(8) +
-            '<br />\n<button id="create-new-site">Создать</button>\n' +
-            "</form>"
+          `
+            <form class="new-site-popup">
+              <input id="new-site-name" />
+                Кординаты: ${e.latlng.lat.toPrecision(
+                  8
+                )}, ${e.latlng.lng.toPrecision(8)},
+                osmId: ${osmId}
+              <br />
+              <button id="create-new-site">Создать</button>
+            </form>
+          `
         )
         .openOn(map);
       document
         .getElementsByClassName("new-site-popup")[0]
         .addEventListener("submit", newSite);
     }
-
-    map.on("click", onMapClick);
 
     var borderLayer = L.geoJSON(null, {
       style: function(feature) {
@@ -120,12 +123,23 @@ function Map(props) {
       filter: function(feature, layer) {
         // 3 - federal
         return feature.properties.level === 4;
+      },
+      onEachFeature: function(feature, layer) {
+        layer.on({
+          mouseover: event => console.log(event),
+          // mouseout: resetHighlight,
+          click: e => onMapClick(e, feature)
+        });
       }
     }).addTo(map);
 
     osme.geoJSON("RU", { lang: "ru", quality: 2 }).then(regions => {
       var regLeaf = osme.toLeaflet(regions);
-      borderLayer.addData(regLeaf.geoJSON);
+
+      let collection = regLeaf.geoJSON;
+
+      borderLayer.addData(collection);
+
       borderLayer.setStyle(function(feature) {
         const osmId = feature.properties.osmId;
         const value = values.find(v => v.osmId === osmId);
@@ -138,24 +152,28 @@ function Map(props) {
           "#91cf60",
           "#1a9850"
         ];
+
         let c;
 
         if (value && value.value > avg) {
           let y = (max - avg) / 3.5;
           c = Math.round((value.value - avg) / y) + 3;
-        } else {
+        } else if (value) {
           let z = (avg - min) / 3.5;
           c = Math.round((value.value - avg) / z) + 3;
+        } else {
+          console.error(feature.properties.osmId);
         }
 
         return {
           fillColor: colors[c]
         };
       });
+
+      // regLeaf.addEvent("click", e => console.log(e));
     });
 
     return () => {
-      map.off("click", onMapClick);
       window.removeEventListener("resize", resizeMap);
       map.remove();
     };
