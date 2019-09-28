@@ -3,11 +3,21 @@ main.map {
   background: inherit; /* deepskyblue; for debug */
   flex: 1 0px;
   display: flex;
-  flex-flow: column nowrap;
+  flex-flow: row nowrap;
 }
 
 .map #container {
   flex: 1;
+}
+
+.map #map-container {
+  flex: 1;
+  display: flex;
+  flex-flow: column;
+}
+
+.map #statistics {
+  flex: 0.5;
 }
 
 .map #map {
