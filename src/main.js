@@ -233,7 +233,7 @@ function Map(props) {
           console.error(feature.properties.osmId);
         }
         if (value && value.region) {
-          console.log(value.region.statName, value.value, c);
+          // console.log(value.region.statName, value.value, c);
         }
 
         return {
@@ -279,7 +279,7 @@ function Main(props) {
   return (
     <main className="map">
       <div id="statistics">
-        <Curved />
+        <Curved gql={gql} osmId={"102269"} />
       </div>
 
       <div id="map-container">
