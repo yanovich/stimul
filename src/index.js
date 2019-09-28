@@ -5,6 +5,7 @@ import "./index.css";
 import main from "./main";
 import site from "./site";
 import login from "./login";
+import { SearchBox } from "./SearchBox";
 
 const screens = {
   main: main,
@@ -48,6 +49,7 @@ function Header(props) {
   }
   return (
     <header>
+      <SearchBox></SearchBox>
       {location}
       <Logout {...props} />
     </header>

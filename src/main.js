@@ -53,7 +53,7 @@ function Map(props) {
       },
       { min: Infinity, max: -Infinity }
     );
-    const avg = values.find(v => v.osmId == 60189).value;
+    const avg = values.find(v => v.osmId === "60189").value;
 
     resizeMap();
     window.addEventListener("resize", resizeMap);
@@ -147,8 +147,6 @@ function Map(props) {
           let z = (avg - min) / 3.5;
           c = Math.round((value.value - avg) / z) + 3;
         }
-
-        console.log(osmId, value.value, c);
 
         return {
           fillColor: colors[c]

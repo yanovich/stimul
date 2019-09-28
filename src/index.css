@@ -1,4 +1,5 @@
-html, body {
+html,
+body {
   font: 14px "Century Gothic", Futura, sans-serif;
   height: 100%;
   margin: 0;
@@ -29,4 +30,8 @@ header a.location {
 main {
   padding: 10px;
   padding-top: 0px;
+}
+
+.search {
+  display: inline;
 }
