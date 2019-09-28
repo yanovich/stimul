@@ -19,7 +19,8 @@ function injectValues(root) {
     let query = { indicatorId };
     if (Array.isArray(osmId)) query.osmId = osmId;
     if (Array.isArray(year)) query.year = year;
-    return Value.find(query);
+    let values = Value.find(query);
+    return values;
   };
 
   root.newValue = async (data, req) => {

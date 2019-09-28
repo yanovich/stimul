@@ -53,7 +53,7 @@ function Map(props) {
       },
       { min: Infinity, max: -Infinity }
     );
-    const avg = values.find(v => v.osmId === "60189").value;
+    const avg = (values.find(v => v.osmId === "60189") || { value: 0 }).value;
 
     resizeMap();
     window.addEventListener("resize", resizeMap);
@@ -140,7 +140,7 @@ function Map(props) {
         ];
         let c;
 
-        if (value.value > avg) {
+        if (value && value.value > avg) {
           let y = (max - avg) / 3.5;
           c = Math.round((value.value - avg) / y) + 3;
         } else {
@@ -195,7 +195,7 @@ const MainScreen = {
 
   query: `
   {
-    values(indicatorId: "55376", year: 2018){
+    values(indicatorId: "0", year: 2018){
       indicatorId
       osmId
       year
