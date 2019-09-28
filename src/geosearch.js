@@ -16,11 +16,13 @@ const mapAttribution = `&copy;
 
 function Map(props) {
   let [map, setMap] = useState();
-  console.log({ map });
 
   const createMap = useCallback(node => {
+    if (node === null) {
+      return;
+    }
+
     resizeMap();
-    console.log("create map");
 
     const newMap = L.map(node).setView([68.192424, 105.306383], 3);
     setMap(newMap);
@@ -28,7 +30,6 @@ function Map(props) {
   function resizeMap() {
     const height = document.getElementById("container").clientHeight;
     const width = document.getElementById("container").clientWidth;
-    console.log(width, height);
 
     document.getElementById("map").style.height = height + "px";
     document.getElementById("map").style.width = width + "px";
@@ -40,11 +41,50 @@ function Map(props) {
     props.update("site", { name });
   }
 
+  function newSite(e) {
+    e.preventDefault();
+
+    let values = {};
+
+    e.target.childNodes.forEach(el => {
+      values[el.id] = el.value;
+    });
+
+    const site = {
+      name: values["new-site-name"],
+      latlng: [
+        parseFloat(values["new-site-lat"]),
+        parseFloat(values["new-site-lng"])
+      ]
+    };
+    const query = `
+      mutation ($site: SiteInput!) {
+        newSite (site: $site) {
+          name
+          latlng
+        }
+      }
+    `;
+    props.gql(query, { site }, response => {
+      props.update("main");
+    });
+  }
+  window.newSite = newSite;
+
   const addMarker = data => {
     const marker = L.marker(data.latlng).bindPopup(
-      "<a onclick=\"L.showSite('" + data.name + "')\">" + data.name + "</a>"
+      `
+        <form class="new-site-popup" onsubmit="return newSite(event)  ">
+          <input id="new-site-name" placeholder="Название" />
+          <input id="new-site-adress" value="${data.address}" />
+          <input id="new-site-lat" value="${data.latlng[0]}">
+          <input id="new-site-lng" value="${data.latlng[1]}">
+          <button id="create-new-site">Добавить</button>
+        </form>
+      `
     );
-    L.showSite = showSite;
+
+    window.showSite = showSite;
     cluster.addLayer(marker);
     return marker;
   };
@@ -62,25 +102,6 @@ function Map(props) {
 
     let popup = L.popup();
 
-    function newSite(e) {
-      e.preventDefault();
-      const site = {
-        name: document.getElementById("new-site-name").value,
-        latlng: [popup.getLatLng().lat, popup.getLatLng().lng]
-      };
-      const query = `
-        mutation ($site: SiteInput!) {
-          newSite (site: $site) {
-            name
-            latlng
-          }
-        }
-      `;
-      props.gql(query, { site }, response => {
-        addMarker(response.data.newSite).openPopup();
-      });
-    }
-
     function onMapClick(e) {
       popup
         .setLatLng(e.latlng)
@@ -94,23 +115,18 @@ function Map(props) {
             "</form>"
         )
         .openOn(map);
-      document
-        .getElementsByClassName("new-site-popup")[0]
-        .addEventListener("submit", newSite);
     }
 
-    map.on("click", onMapClick);
+    // map.on("click", onMapClick);
 
     props.markers.forEach(addMarker);
     map.addLayer(cluster);
 
     return () => {
-      console.log("unmounting");
       map.removeLayer(cluster);
       cluster.clearLayers();
-      map.off("click", onMapClick);
+      // map.off("click", onMapClick);
       window.removeEventListener("resize", resizeMap);
-      console.log("removing map");
       //   map.remove();
     };
   });

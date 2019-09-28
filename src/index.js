@@ -111,7 +111,7 @@ function Stimul() {
   function geosearch(searchText) {
     geocoder(searchText).then(features => {
       const sites = features.map(f => ({
-        name: f.properties.geocoding.label,
+        address: f.properties.geocoding.label,
         latlng: f.geometry.coordinates.reverse()
       }));
       const newState = {
