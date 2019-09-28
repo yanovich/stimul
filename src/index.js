@@ -9,12 +9,14 @@ import login from "./login";
 import { SearchBox } from "./SearchBox";
 import geosearch from "./geosearch";
 import geocoder from "./geocoder";
+import ImportSites from "./ImportSites";
 
 const screens = {
   main: main,
   site: site,
   login: login,
-  geosearch
+  geosearch,
+  import: null
 };
 
 function Logout(props) {
@@ -64,9 +66,9 @@ function Header(props) {
 function Stimul() {
   const [state, setState] = React.useState(() => {
     return (
-      JSON.parse(window.localStorage.getItem("stimul-state")) || {
+      !JSON.parse(window.localStorage.getItem("stimul-state")) || {
         auth: {},
-        screen: "login",
+        screen: "import",
         response: {}
       }
     );
@@ -139,6 +141,7 @@ function Stimul() {
     update
   };
   console.log(state.screen);
+  if (state.screen === "import") return <ImportSites />;
   return (
     <React.Fragment>
       {state.screen !== "login" && <Header {...screenProps} />}
