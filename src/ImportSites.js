@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import TextArea from "antd/lib/input/TextArea";
 import { Table } from "antd";
-import geocoder, { yandex } from "./geocoder";
+import { yandex } from "./geocoder";
 
 const tmpInput = `
 osmId	name	year	address
