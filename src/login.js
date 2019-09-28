@@ -18,18 +18,20 @@ function LoginScreen(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const { gql, authorize, update } = props;
+
   useEffect(() => {
-    props.gql(
+    gql(
       login,
       { email: "admin-1@example.com", password: "111111111" },
       response => {
         if (response.data.login) {
-          props.authorize(response.data.login);
-          props.update("main");
+          authorize(response.data.login);
+          update("main");
         }
       }
     );
-  }, []);
+  }, [gql, authorize, update]);
 
   return (
     <div className="stimul-info">
@@ -37,10 +39,10 @@ function LoginScreen(props) {
         className="auth"
         onSubmit={e => {
           e.preventDefault();
-          props.gql(login, { email, password }, response => {
+          gql(login, { email, password }, response => {
             if (response.data.login) {
-              props.authorize(response.data.login);
-              props.update("main");
+              authorize(response.data.login);
+              update("main");
             }
           });
         }}
