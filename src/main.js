@@ -175,7 +175,9 @@ function Map(props) {
     };
 
     const onRegionMouseOver = feature => event => {
-      // console.log(e)
+      // console.log(event, feature);
+      if (feature && feature.properties)
+        props.setActiveRegion(feature.properties.osmId);
     };
 
     var borderLayer = L.geoJSON(null, {
@@ -269,6 +271,7 @@ function Main(props) {
   const { gql } = props;
   const [year, setYear] = useState(2018);
   const [response, setResponse] = useState({});
+  const [activeRegion, setActiveRegion] = useState("102269");
 
   useEffect(() => {
     gql(query, { at: year }, response => {
@@ -279,7 +282,7 @@ function Main(props) {
   return (
     <main className="map">
       <div id="statistics">
-        <Curved gql={gql} osmId={"102269"} />
+        <Curved gql={gql} osmId={activeRegion} />
       </div>
 
       <div id="map-container">
@@ -302,6 +305,7 @@ function Main(props) {
             gql={props.gql}
             update={props.update}
             values={response.values}
+            setActiveRegion={setActiveRegion}
           />
         )}
       </div>
