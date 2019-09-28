@@ -25,7 +25,7 @@ function Regions({ gql }) {
   }, [gql]);
   return (
     <>
-      <Table dataSource={regions} columns={columns}></Table>
+      <Table dataSource={regions} columns={columns} rowKey="osmId"></Table>
     </>
   );
 }
