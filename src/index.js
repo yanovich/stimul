@@ -6,11 +6,14 @@ import main from "./main";
 import site from "./site";
 import login from "./login";
 import { SearchBox } from "./SearchBox";
+import geosearch from "./geosearch";
+import geocoder from "./geocoder";
 
 const screens = {
   main: main,
   site: site,
-  login: login
+  login: login,
+  geosearch
 };
 
 function Logout(props) {
@@ -49,7 +52,7 @@ function Header(props) {
   }
   return (
     <header>
-      <SearchBox></SearchBox>
+      <SearchBox geosearch={props.geosearch}></SearchBox>
       {location}
       <Logout {...props} />
     </header>
@@ -105,6 +108,21 @@ function Stimul() {
     });
   }
 
+  function geosearch(searchText) {
+    geocoder(searchText).then(features => {
+      const sites = features.map(f => ({
+        name: f.properties.geocoding.label,
+        latlng: f.geometry.coordinates.reverse()
+      }));
+      const newState = {
+        auth: state.auth,
+        screen: "geosearch",
+        response: { sites }
+      };
+      setState(newState);
+    });
+  }
+
   const props = {
     authorize,
     gql,
@@ -114,6 +132,7 @@ function Stimul() {
 
   const screenProps = {
     authorize,
+    geosearch,
     screen: state.screen,
     update
   };

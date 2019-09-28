@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import geocoder from "./geocoder";
+import { Input } from "antd";
 
 window.geocoder = geocoder;
 export function SearchBox(props) {
@@ -8,15 +9,14 @@ export function SearchBox(props) {
     <form
       onSubmit={e => {
         e.preventDefault();
-        console.log(e);
-        geocoder(searchText).then();
+        props.geosearch(searchText);
       }}
       className="search"
     >
-      <input
+      <Input
         value={searchText}
         onChange={e => setSearchText(e.target.value)}
-      ></input>
+      ></Input>
       <button type="submit">Поиск</button>
     </form>
   );
