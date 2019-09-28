@@ -24,16 +24,6 @@ module.exports = async done => {
   await Value.find().deleteMany();
   for (let i = 0; i < values.length; i++) {
     let value = values[i];
-
-    value.indicatorId = "55376";
-    let region = regions.find(r => r.statName === value.statName);
-    console.log(value.statName);
-
-    value.osmId = regions.find(r => r.statName === value.statName).osmId;
-
-    delete value.statName;
-    // console.log(value);
-
     await queries.newValue({ value });
   }
 
