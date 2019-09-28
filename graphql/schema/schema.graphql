@@ -1,5 +1,5 @@
 type Query {
-  sites: [Site]!
+  sites(at: Int): [Site]!
   site(name: String!): Site!
   users: [User]!
   regions: [Region]!

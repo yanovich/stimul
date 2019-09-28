@@ -16,13 +16,10 @@ function injectSites(root) {
     throw Error("sites resolver already defined");
   }
 
-  root.sites = (date, req) => {
-    // const user = getUser(req);
-
-    // if (!user) {
-    // return null
-    // }
-    return Site.find();
+  root.sites = ({ at }, req) => {
+    let query = {};
+    if (at) query.year = { $lt: at };
+    return Site.find(query);
   };
 
   root.site = ({ name }, req) => {
@@ -35,8 +32,8 @@ function injectSites(root) {
   };
 
   root.newSite = async (data, req) => {
-    const { name, latlng } = data.site;
-    const site = new Site({ name, latlng });
+    const { name, latlng, year, address } = data.site;
+    const site = new Site({ name, latlng, year, address });
     await site.save();
     return site;
   };
