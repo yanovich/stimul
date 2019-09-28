@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import TextArea from "antd/lib/input/TextArea";
 import { Table } from "antd";
+import geocoder, { yandex } from "./geocoder";
 
 const tmpInput = `
 osmId	name	year	address
@@ -21,7 +22,9 @@ function useCsv(source = "") {
       let cells = line.split("\t");
       //   console.log(cells);
       if (l === 0) {
-        titles = cells;
+        titles = [...cells];
+        if (titles.includes("address"))
+          titles.push("lat", "lng", "real_address");
         setColumns(titles.map(t => ({ title: t, key: t, dataIndex: t })));
       } else {
         let obj = {};
@@ -29,12 +32,38 @@ function useCsv(source = "") {
           obj[titles[i]] = cells[i];
         }
         obj.key = cells.join("");
+
         arr.push(obj);
       }
     }
-    // console.log(arr);
-
     setData(arr);
+    if (titles.includes("address")) {
+      async function load() {
+        let dataWithCoordinates = await Promise.all(
+          arr.map(async row => {
+            const d = await yandex(row.address);
+            // console.log(d);
+
+            let coordinates = d.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos.split(
+              " "
+            );
+            let label =
+              d.response.GeoObjectCollection.featureMember[0].GeoObject
+                .metaDataProperty.GeocoderMetaData.text;
+            return {
+              ...row,
+              lat: coordinates[0],
+              lng: coordinates[1],
+              real_address: label
+            };
+          })
+        );
+        console.log({ dataWithCoordinates });
+
+        setData(dataWithCoordinates);
+      }
+      load();
+    }
   }, [source]);
   return { data, columns };
 }
@@ -43,7 +72,7 @@ export default function ImportSites(props) {
   const [source, setSource] = useState(tmpInput);
 
   const { data, columns } = useCsv(source);
-  console.log({ data, columns });
+  //   console.log({ data, columns });
 
   return (
     <main>

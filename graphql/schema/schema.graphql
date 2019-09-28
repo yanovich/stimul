@@ -21,6 +21,8 @@ type Mutation {
 type Site {
   name: String!
   latlng: [Float!]!
+  address: String!
+  year: Int!
 }
 
 input SiteInput {

@@ -66,6 +66,16 @@ function Map(props) {
       id: "osm"
     }).addTo(map);
 
+    // L.tileLayer(
+    //   "http://vec{s}.maps.yandex.net/tiles?l=map&v=4.55.2&z={z}&x={x}&y={y}&scale=2&lang=ru_RU",
+    //   {
+    //     subdomains: ["01", "02", "03", "04"],
+    //     attribution: '<a http="yandex.ru" target="_blank">Яндекс</a>',
+    //     reuseTiles: true,
+    //     updateWhenIdle: false
+    //   }
+    // ).addTo(map);
+
     let popup = L.popup();
 
     function newSite(e) {

@@ -66,7 +66,7 @@ function Header(props) {
 function Stimul() {
   const [state, setState] = React.useState(() => {
     return (
-      !JSON.parse(window.localStorage.getItem("stimul-state")) || {
+      JSON.parse(window.localStorage.getItem("stimul-state")) || {
         auth: {},
         screen: "import",
         response: {}
