@@ -123,7 +123,7 @@ function Map(props) {
       }
     }).addTo(map);
 
-    osme.geoJSON("RU", { lang: "ru" }).then(regions => {
+    osme.geoJSON("RU", { lang: "ru", quality: 2 }).then(regions => {
       var regLeaf = osme.toLeaflet(regions);
       borderLayer.addData(regLeaf.geoJSON);
       borderLayer.setStyle(function(feature) {
