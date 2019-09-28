@@ -19,8 +19,11 @@ function injectRegions(root) {
     return Region.find();
   };
 
-  root.region = ({ name }, req) => {
-    return Region.findOne({ name });
+  root.region = ({ statName, osmId }, req) => {
+    let query = {};
+    if (statName) query.statName = statName;
+    if (osmId) query.osmId = osmId;
+    return Region.findOne(query);
   };
 
   root.newRegion = async (data, req) => {

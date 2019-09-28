@@ -3,10 +3,10 @@ type Query {
   site(name: String!): Site!
   users: [User]!
   regions: [Region]!
-  region(osmId: String, statName: String, level: Int): Region
+  region(osmId: String, statName: String): Region
   indicators: [Indicator]!
   indicator(id: String, name: String): Indicator
-  values(indicatorId: String!, osmId: [Int], year: [Int]): [Value]!
+  values(indicatorId: String!, osmId: [String], year: [Int]): [Value]!
 }
 
 type Mutation {
