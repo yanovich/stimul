@@ -23,6 +23,14 @@ function injectValues(root) {
     return values;
   };
 
+  root.valuesByOsmId = ({ indicatorId, osmId, year }, req) => {
+    let query = { osmId };
+    if (Array.isArray(indicatorId)) query.indicatorId = indicatorId;
+    if (Array.isArray(year)) query.year = year;
+    let values = Value.find(query);
+    return values;
+  };
+
   root.newValue = async (data, req) => {
     const { indicatorId, osmId, year, value } = data.value;
     const indicator = new Value({ indicatorId, osmId, year, value });

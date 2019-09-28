@@ -7,6 +7,7 @@ type Query {
   indicators: [Indicator]!
   indicator(id: String, name: String): Indicator
   values(indicatorId: String!, osmId: [String], year: [Int]): [Value]!
+  valuesByOsmId(indicatorId: [String]!, osmId: String!, year: [Int]): [Value]!
 }
 
 type Mutation {
@@ -69,6 +70,7 @@ input IndicatorInput {
 }
 type Value {
   indicatorId: String!
+  indicator: Indicator
   osmId: String!
   region: Region!
   year: Int!

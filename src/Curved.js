@@ -2,13 +2,17 @@ import { Axis, Chart, Geom, Legend, Tooltip } from "bizcharts";
 import React, { useState, useEffect } from "react";
 
 const query = `
-query ($osmId: String) {
+query ($osmId: String!, $indicatorId: [String]!) {
   region(osmId: $osmId) {
     statName
     osmId
   }
-  values(indicatorId: "0", osmId: [$osmId]) {
+  values: valuesByOsmId(indicatorId: $indicatorId, osmId: $osmId) {
     indicatorId
+    indicator{
+      id
+      name
+    }
     year
     value
   }
@@ -16,12 +20,18 @@ query ($osmId: String) {
 `;
 
 function Curved({ osmId, gql }) {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState({ values: [] });
   // console.log(data);
 
   useEffect(() => {
-    gql(query, { osmId }, response => {
-      setData(response.data.values);
+    gql(query, { osmId, indicatorId: "0" }, response => {
+      setData({
+        ...response.data,
+        values: response.data.values.map(v => ({
+          ...v,
+          indicatorName: v.indicator.name
+        }))
+      });
     });
   }, [osmId, gql]);
 
@@ -31,7 +41,8 @@ function Curved({ osmId, gql }) {
   // return null;
   return (
     <div>
-      <Chart height={400} data={data} scale={cols} forceFit>
+      <h2>{data.region && data.region.statName}</h2>
+      <Chart height={400} data={data.values} scale={cols} forceFit>
         <Legend />
         <Axis name="year" />
         <Axis name="value" />
@@ -44,7 +55,7 @@ function Curved({ osmId, gql }) {
           type="line"
           position="year*value"
           size={2}
-          color={"indicatorId"}
+          color={"indicatorName"}
           shape={"smooth"}
         />
         <Geom
@@ -52,7 +63,7 @@ function Curved({ osmId, gql }) {
           position="year*value"
           size={4}
           shape={"circle"}
-          color={"indicatorId"}
+          color={"indicatorName"}
         />
       </Chart>
     </div>
