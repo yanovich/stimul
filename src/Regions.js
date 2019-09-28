@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Table, Input } from "antd";
+import { Table } from "antd";
 
 const columns = [
   { title: "Название", key: "statName", dataIndex: "statName" },
-  { title: "Идентификатор", key: "osmId", dataIndex: "osmId" }
+  { title: "Идентификатор", key: "osmId", dataIndex: "osmId" },
   { title: "Уровень", key: "level", dataIndex: "level" }
 ];
 
