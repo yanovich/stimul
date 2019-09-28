@@ -30,13 +30,22 @@ function Map(props) {
   let map;
   const cluster = L.markerClusterGroup();
 
+  function escapeHtml(unsafe) {
+    return unsafe
+         .replace(/&/g, "&amp;")
+         .replace(/</g, "&lt;")
+         .replace(/>/g, "&gt;")
+         .replace(/"/g, "&quot;")
+         .replace(/'/g, "&#039;");
+  }
+
   function showSite(name) {
     props.update("site", { name });
   }
 
   function addMarker(data) {
     const marker = L.marker(data.latlng).bindPopup(
-      "<a onclick=\"L.showSite('" + data.name + "')\">" + data.name + "</a>"
+      "<a onclick=\"L.showSite('" + escapeHtml(data.name) + "')\">" + data.name + "</a>"
     );
     L.showSite = showSite;
     cluster.addLayer(marker);
