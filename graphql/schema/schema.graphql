@@ -70,6 +70,7 @@ input IndicatorInput {
 type Value {
   indicatorId: String!
   osmId: String!
+  region: Region!
   year: Int!
   value: Float!
 }

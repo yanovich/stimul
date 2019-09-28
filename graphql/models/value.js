@@ -9,6 +9,7 @@
  */
 
 const mongoose = require("mongoose");
+const Region = require("./region");
 
 const valueSchema = new mongoose.Schema({
   indicatorId: {
@@ -28,6 +29,10 @@ const valueSchema = new mongoose.Schema({
     required: true
   }
 });
+
+valueSchema.virtual("region").get(async function () {
+  return await Region.findOne({osmId: this.osmId});
+})
 
 valueSchema.index({ indicatorId: 1, osmId: 1, year: 1 });
 
