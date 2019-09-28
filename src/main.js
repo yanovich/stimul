@@ -55,6 +55,9 @@ function Map(props) {
   useLayoutEffect(() => {
     const { min, max } = values.reduce(
       (acc, current) => {
+        if (!current || !current.region || current.region.level !== 4) {
+          return acc;
+        }
         return {
           min: Math.min(acc.min, current.value),
           max: Math.max(acc.max, current.value)
@@ -62,7 +65,12 @@ function Map(props) {
       },
       { min: Infinity, max: -Infinity }
     );
-    const avg = (values.find(v => v.osmId === "60189") || { value: 0 }).value;
+    const avgValue = values.find(v => v.osmId === "60189")
+    let avg = ( avgValue || { value: (min + max) / 2 }).value;
+    if (avg > max || avg < min) {
+      avg = avg / values.length;
+    }
+    console.log(min, avg, max);
 
     resizeMap();
     window.addEventListener("resize", resizeMap);
@@ -179,16 +187,20 @@ function Map(props) {
         let c;
 
         if (value && value.value > avg) {
-          let y = (max - avg) / 3.5;
+          let y = (max - avg) / 3.4;
           c = Math.round((value.value - avg) / y) + 3;
         } else if (value) {
-          let z = (avg - min) / 3.5;
+          let z = (avg - min) / 3.4;
           c = Math.round((value.value - avg) / z) + 3;
         } else {
           console.error(feature.properties.osmId);
         }
+        if (value && value.region) {
+          console.log(value.region.statName, value.value, c);
+        }
 
         return {
+          color: colors[c],
           fillColor: colors[c]
         };
       });
@@ -239,6 +251,10 @@ const MainScreen = {
     values(indicatorId: "0", year: 2018){
       indicatorId
       osmId
+      region {
+        statName
+        level
+      }
       year
       value
     }
