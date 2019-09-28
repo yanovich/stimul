@@ -57,7 +57,18 @@ function Header(props) {
   return (
     <header>
       <SearchBox geosearch={props.geosearch}></SearchBox>
-      {location}
+      {location}&nbsp;
+      <a
+        className="location"
+        href="#1"
+        onClick={e => {
+          e.preventDefault();
+          props.go("import");
+        }}
+      >
+        Импорт объектов
+      </a>
+      &nbsp;
       <Logout {...props} />
     </header>
   );
@@ -112,6 +123,14 @@ function Stimul() {
     });
   }
 
+  function go(screen) {
+    setState(prevState => {
+      let newState = { ...prevState, screen };
+      window.localStorage.setItem("stimul-state", JSON.stringify(newState));
+      return newState;
+    });
+  }
+
   function geosearch(searchText) {
     geocoder(searchText).then(features => {
       const sites = features.map(f => ({
@@ -138,10 +157,17 @@ function Stimul() {
     authorize,
     geosearch,
     screen: state.screen,
-    update
+    update,
+    go
   };
   console.log(state.screen);
-  if (state.screen === "import") return <ImportSites />;
+  if (state.screen === "import")
+    return (
+      <>
+        <Header {...screenProps} />
+        <ImportSites />
+      </>
+    );
   return (
     <React.Fragment>
       {state.screen !== "login" && <Header {...screenProps} />}
