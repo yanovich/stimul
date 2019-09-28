@@ -100,25 +100,6 @@ function Map(props) {
       id: "osm"
     }).addTo(map);
 
-    let popup = L.popup();
-
-    function onMapClick(e) {
-      popup
-        .setLatLng(e.latlng)
-        .setContent(
-          '<form class="new-site-popup"">\n' +
-            '<input id="new-site-name" />\nКординаты: ' +
-            e.latlng.lat.toPrecision(8) +
-            ", " +
-            e.latlng.lng.toPrecision(8) +
-            '<br />\n<button id="create-new-site">Создать</button>\n' +
-            "</form>"
-        )
-        .openOn(map);
-    }
-
-    // map.on("click", onMapClick);
-
     props.markers.forEach(addMarker);
     map.addLayer(cluster);
 
