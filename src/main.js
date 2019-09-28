@@ -87,17 +87,17 @@ function Map(props) {
       });
     }
 
-    function onMapClick(e, feature) {
+    const onRegionClick = feature => event => {
       const { osmId } = feature.properties;
       popup
-        .setLatLng(e.latlng)
+        .setLatLng(event.latlng)
         .setContent(
           `
             <form class="new-site-popup">
               <input id="new-site-name" />
-                Кординаты: ${e.latlng.lat.toPrecision(
+                Кординаты: ${event.latlng.lat.toPrecision(
                   8
-                )}, ${e.latlng.lng.toPrecision(8)},
+                )}, ${event.latlng.lng.toPrecision(8)},
                 osmId: ${osmId}
               <br />
               <button id="create-new-site">Создать</button>
@@ -108,7 +108,11 @@ function Map(props) {
       document
         .getElementsByClassName("new-site-popup")[0]
         .addEventListener("submit", newSite);
-    }
+    };
+
+    const onRegionMouseOver = feature => event => {
+      // console.log(e)
+    };
 
     var borderLayer = L.geoJSON(null, {
       style: function(feature) {
@@ -126,9 +130,9 @@ function Map(props) {
       },
       onEachFeature: function(feature, layer) {
         layer.on({
-          mouseover: event => console.log(event),
+          mouseover: onRegionMouseOver(feature),
           // mouseout: resetHighlight,
-          click: e => onMapClick(e, feature)
+          click: e => onRegionClick(e, feature)
         });
       }
     }).addTo(map);
