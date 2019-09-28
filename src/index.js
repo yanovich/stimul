@@ -10,13 +10,15 @@ import { SearchBox } from "./SearchBox";
 import geosearch from "./geosearch";
 import geocoder from "./geocoder";
 import ImportSites from "./ImportSites";
+import { regionsScreen } from "./Regions";
 
 const screens = {
   main: main,
   site: site,
   login: login,
   geosearch,
-  import: null
+  import: null,
+  regions: regionsScreen
 };
 
 function Logout(props) {
@@ -67,6 +69,16 @@ function Header(props) {
         }}
       >
         Импорт объектов
+      </a>
+      <a
+        className="location"
+        href="#1"
+        onClick={e => {
+          e.preventDefault();
+          props.go("regions");
+        }}
+      >
+        Регионы
       </a>
       &nbsp;
       <Logout {...props} />
