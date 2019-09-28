@@ -19,6 +19,10 @@ const regionSchema = new mongoose.Schema({
   statName: {
     type: String,
     required: true
+  },
+  level: {
+    type: Number,
+    required: true
   }
 });
 

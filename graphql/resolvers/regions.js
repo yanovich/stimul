@@ -24,8 +24,8 @@ function injectRegions(root) {
   };
 
   root.newRegion = async (data, req) => {
-    const { osmId, statName } = data.region;
-    const region = new Region({ osmId, statName });
+    const { osmId, statName, level } = data.region;
+    const region = new Region({ osmId, statName, level });
     await region.save();
     return region;
   };

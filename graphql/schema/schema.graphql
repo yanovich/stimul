@@ -3,7 +3,7 @@ type Query {
   site(name: String!): Site!
   users: [User]!
   regions: [Region]!
-  region(osmId: String, statName: String): Region
+  region(osmId: String, statName: String, level: Int): Region
   indicators: [Indicator]!
   indicator(id: String, name: String): Indicator
   values(indicatorId: String!, osmId: [Int], year: [Int]): [Value]!
@@ -49,11 +49,13 @@ type AuthPayload {
 type Region {
   osmId: String!
   statName: String!
+  level: Int!
 }
 
 input RegionInput {
   osmId: String!
   statName: String!
+  level: Int!
 }
 
 type Indicator {

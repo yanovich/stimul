@@ -4,6 +4,7 @@ import { Table, Input } from "antd";
 const columns = [
   { title: "Название", key: "statName", dataIndex: "statName" },
   { title: "Идентификатор", key: "osmId", dataIndex: "osmId" }
+  { title: "Уровень", key: "level", dataIndex: "level" }
 ];
 
 function Regions({ gql }) {
@@ -14,6 +15,7 @@ function Regions({ gql }) {
       regions {
         statName
         osmId
+        level
       }
     }
   `;
