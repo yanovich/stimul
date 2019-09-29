@@ -188,6 +188,7 @@ function Map(props) {
 
     const onRegionMouseOver = feature => event => {
       // console.log(event, feature);
+      event.target.setStyle({ fillOpacity: 0.9 });
       if (feature && feature.properties)
         props.setActiveRegion(feature.properties.osmId);
     };
@@ -198,7 +199,7 @@ function Map(props) {
           color: "#F50",
           fillColor: "#FD6",
           opacity: 1,
-          fillOpacity: 0.6,
+          fillOpacity: 0.5,
           weight: 2
         };
       },
