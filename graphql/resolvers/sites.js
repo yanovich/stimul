@@ -18,7 +18,7 @@ function injectSites(root) {
 
   root.sites = ({ at }, req) => {
     let query = {};
-    if (at) query.year = { $lt: at };
+    if (at) query.year = { $lte: at };
     return Site.find(query);
   };
 

@@ -73,6 +73,7 @@ input IndicatorInput {
 type Value {
   indicatorId: String!
   indicator: Indicator
+  targetCount: Int
   osmId: String!
   region: Region!
   year: Int!

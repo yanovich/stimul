@@ -35,14 +35,14 @@ function Curved({ osmId, gql, indicatorId }) {
     });
   }, [osmId, gql, indicatorId]);
 
-  const cols = {
+  const scale = {
     year: {}
   };
   // return null;
   return (
     <div style={{ flex: 1 }}>
       <h2>{data.region && data.region.statName}</h2>
-      <Chart height={400} data={data.values} scale={cols} forceFit>
+      <Chart height={400} data={data.values} scale={scale} forceFit>
         <Legend />
         <Axis name="year" />
         <Axis name="value" />
