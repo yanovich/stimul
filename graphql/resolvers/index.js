@@ -20,5 +20,6 @@ require("./sessions")(root);
 require("./regions")(root);
 require("./indicators")(root);
 require("./values")(root);
+require("./correllations")(root);
 
 module.exports = root;

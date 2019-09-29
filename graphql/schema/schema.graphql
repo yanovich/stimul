@@ -8,6 +8,7 @@ type Query {
   indicator(id: String, name: String): Indicator
   values(indicatorId: String!, osmId: [String], year: [Int]): [Value]!
   valuesByOsmId(indicatorId: [String]!, osmId: String!, year: [Int]): [Value]!
+  correllations(indicatorId: String!, osmId: [String]): [Correllation]
 }
 
 type Mutation {
@@ -91,4 +92,13 @@ input ValueInput {
   osmId: String!
   year: Int!
   value: Float!
+}
+
+type Correllation {
+  osmId: String!
+  region: Region
+  indicatorId: String!
+  indicator: Indicator
+  r: Float
+  m: Float
 }
