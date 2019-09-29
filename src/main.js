@@ -8,6 +8,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import Curved from "./Curved";
 import "./main.css";
 import RadioIndicator from "./RadioIndicator";
+import CurvedRate from "./CurvedRate";
 
 const query = `
 query($at: Int, $indicatorId: String!) {
@@ -284,7 +285,8 @@ function Main(props) {
   const [response, setResponse] = useState({});
   const [activeRegion, setActiveRegion] = useState("102269");
   const [indicators, setIndicators] = useState([]);
-  const [indicatorId, setIndicatorId] = useState("0");
+  const [indicatorId, setIndicatorId] = useState("1");
+  const [dataType, setDataType] = useState("relative");
 
   useEffect(() => {
     gql(query, { at: year, indicatorId }, response => {
@@ -298,6 +300,8 @@ function Main(props) {
     });
   }, [gql]);
 
+  console.log(dataType);
+
   return (
     <main className="map">
       <div id="statistics" style={{ display: "flex", flexDirection: "column" }}>
@@ -306,9 +310,26 @@ function Main(props) {
             indicators={indicators}
             onChange={setIndicatorId}
             value={indicatorId}
+            dataType={dataType}
+            onChangeDataType={setDataType}
           />
         </div>
-        <Curved gql={gql} osmId={activeRegion} indicatorId={indicatorId} />
+        {dataType === "absolute" ? (
+          // @TODO fix it
+          <Curved
+            gql={gql}
+            osmId={activeRegion}
+            indicatorId={indicatorId}
+            dataType={dataType}
+          />
+        ) : (
+          <CurvedRate
+            gql={gql}
+            osmId={activeRegion}
+            indicatorId={indicatorId}
+            dataType={dataType}
+          />
+        )}
       </div>
 
       <div id="map-container">

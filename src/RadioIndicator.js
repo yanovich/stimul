@@ -9,14 +9,26 @@ const radioStyle = {
   lineHeight: "30px"
 };
 
-export default function RadioIndicator({ indicators, onChange, value }) {
+export default function RadioIndicator({
+  indicators,
+  onChange,
+  value,
+  dataType,
+  onChangeDataType
+}) {
   return (
     <>
       <h2>Показатели</h2>
-      <Radio.Group defaultValue="a" buttonStyle="solid">
-        <Radio.Button value="a">Абсолютные</Radio.Button>
-        <Radio.Button value="b">Относительные</Radio.Button>
-        <Radio.Button value="c">Корреляция</Radio.Button>
+      <Radio.Group
+        value={dataType}
+        buttonStyle="solid"
+        onChange={e => onChangeDataType(e.target.value)}
+      >
+        <Radio.Button value="absolute">Абсолютные</Radio.Button>
+        <Radio.Button value="relative">Относительные</Radio.Button>
+        <Radio.Button disabled value="correlation">
+          Корреляция
+        </Radio.Button>
       </Radio.Group>
       <Radio.Group onChange={e => onChange(e.target.value)} value={value}>
         {indicators.map(indicator => (
