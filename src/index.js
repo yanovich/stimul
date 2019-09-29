@@ -80,6 +80,9 @@ function Header(props) {
       >
         Регионы
       </a>
+      <a href="correllation.htm" className="location">
+        Коррелляция
+      </a>
       &nbsp;
       <Logout {...props} />
     </header>
