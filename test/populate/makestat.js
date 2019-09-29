@@ -13,19 +13,23 @@ for (let v of values) {
   valArr[v.indicatorId][v.year][v.osmId] = v.value;
 }
 
-//Make decomposed centers-years table
-var sitesAtYear = [];
-
-for (let year = 2009; year < 2019; year++) {
-  sitesAtYear[year] = [];
-  for (let r of regions) {
-    let say = sites.reduce(
-      (cnt, s) => (cnt += s.year <= year && s.osmId == r.osmId ? 1 : 0),
-      0
-    );
-    sitesAtYear[year][r.osmId] = say;
+function getSitesAtYear(regions, sites) {
+  var sitesAtYear = [];
+  for (let year = 2009; year < 2019; year++) {
+    sitesAtYear[year] = [];
+    for (let r of regions) {
+      let say = sites.reduce(
+        (cnt, s) => (cnt += s.year <= year && s.osmId == r.osmId ? 1 : 0),
+        0
+      );
+      sitesAtYear[year][r.osmId] = say;
+    }
   }
+  return sitesAtYear;
 }
+
+//Make decomposed centers-years table
+var sitesAtYear = getSitesAtYear(regions, sites);
 
 var deaths7D_PerBirth = [];
 var deaths1Y_PerBirth = [];
