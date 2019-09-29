@@ -14,13 +14,11 @@ function useCsv(source = "") {
   const [columns, setColumns] = useState([]);
   useEffect(() => {
     const lines = source.split("\n").filter(Boolean);
-    // console.log(lines);
     let titles = [];
     let arr = [];
     for (let l = 0; l < lines.length; l++) {
       const line = lines[l];
       let cells = line.split("\t");
-      //   console.log(cells);
       if (l === 0) {
         titles = [...cells];
         if (titles.includes("address"))
@@ -42,7 +40,6 @@ function useCsv(source = "") {
         let dataWithCoordinates = await Promise.all(
           arr.map(async row => {
             const d = await yandex(row.address);
-            // console.log(d);
 
             let coordinates = d.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos.split(
               " "
@@ -58,7 +55,6 @@ function useCsv(source = "") {
             };
           })
         );
-        console.log({ dataWithCoordinates });
 
         setData(dataWithCoordinates);
       }
@@ -72,7 +68,6 @@ export default function ImportSites(props) {
   const [source, setSource] = useState(tmpInput);
 
   const { data, columns } = useCsv(source);
-  //   console.log({ data, columns });
 
   return (
     <main>

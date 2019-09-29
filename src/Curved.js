@@ -45,14 +45,12 @@ function correlation(values) {
   );
   const r = dxdy / Math.sqrt(dx2 * dy2);
   const m = (1 - r * r) / (l > 30 ? Math.sqrt(l) : Math.sqrt(l - 1));
-  console.log(r, m);
 
   return { r, m };
 }
 
 function Curved({ osmId, gql, indicatorId }) {
   const [data, setData] = useState({ values: [] });
-  // console.log(data);
 
   useEffect(() => {
     gql(query, { osmId, indicatorId }, response => {

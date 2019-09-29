@@ -130,7 +130,6 @@ function Map(props) {
     if (avg > max || avg < min) {
       avg = avg / values.length;
     }
-    // console.log(min, avg, max);
 
     // L.tileLayer(
     //   "http://vec{s}.maps.yandex.net/tiles?l=map&v=4.55.2&z={z}&x={x}&y={y}&scale=2&lang=ru_RU",
@@ -187,7 +186,6 @@ function Map(props) {
     };
 
     const onRegionMouseOver = feature => event => {
-      // console.log(event, feature);
       event.target.setStyle({ fillOpacity: 0.9 });
       if (feature && feature.properties)
         props.setActiveRegion(feature.properties.osmId);
