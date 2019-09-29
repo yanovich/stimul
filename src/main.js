@@ -7,27 +7,36 @@ import osme from "osme";
 import React, { useCallback, useEffect, useState } from "react";
 import Curved from "./Curved";
 import "./main.css";
+import RadioIndicator from "./RadioIndicator";
 
 const query = `
-  query($at: Int) {
-    values(indicatorId: "0", year: [$at]){
-      indicatorId
-      osmId
-      region {
-        statName
-        level
-      }
-      year
-      value
+query($at: Int, $indicatorId: String!) {
+  values(indicatorId: $indicatorId, year: [$at]){
+    indicatorId
+    osmId
+    region {
+      statName
+      level
     }
-    sites(at: $at) {
-      name
-      latlng
-      year
-      address
-    }
-  }  
+    year
+    value
+  }
+  sites(at: $at) {
+    name
+    latlng
+    year
+    address
+  }
+}  
   `;
+const queryIndicators = `
+{
+  indicators {
+    id
+    name
+  }
+}
+`;
 
 const tileUrl =
   navigator.userAgent.search("HeadlessChrome") !== -1
@@ -272,17 +281,32 @@ function Main(props) {
   const [year, setYear] = useState(2018);
   const [response, setResponse] = useState({});
   const [activeRegion, setActiveRegion] = useState("102269");
+  const [indicators, setIndicators] = useState([]);
+  const [indicatorId, setIndicatorId] = useState("0");
 
   useEffect(() => {
-    gql(query, { at: year }, response => {
+    gql(query, { at: year, indicatorId }, response => {
       setResponse(response.data);
     });
-  }, [gql, year]);
+  }, [gql, year, indicatorId]);
+
+  useEffect(() => {
+    gql(queryIndicators, {}, response => {
+      setIndicators(response.data.indicators);
+    });
+  }, [gql]);
 
   return (
     <main className="map">
-      <div id="statistics">
-        <Curved gql={gql} osmId={activeRegion} />
+      <div id="statistics" style={{ display: "flex", flexDirection: "column" }}>
+        <div style={{ flex: 1 }}>
+          <RadioIndicator
+            indicators={indicators}
+            onChange={setIndicatorId}
+            value={indicatorId}
+          />
+        </div>
+        <Curved gql={gql} osmId={activeRegion} indicatorId={indicatorId} />
       </div>
 
       <div id="map-container">

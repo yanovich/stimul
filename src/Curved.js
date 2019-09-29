@@ -19,12 +19,12 @@ query ($osmId: String!, $indicatorId: [String]!) {
 }
 `;
 
-function Curved({ osmId, gql }) {
+function Curved({ osmId, gql, indicatorId }) {
   const [data, setData] = useState({ values: [] });
   // console.log(data);
 
   useEffect(() => {
-    gql(query, { osmId, indicatorId: "0" }, response => {
+    gql(query, { osmId, indicatorId }, response => {
       setData({
         ...response.data,
         values: response.data.values.map(v => ({
@@ -33,14 +33,14 @@ function Curved({ osmId, gql }) {
         }))
       });
     });
-  }, [osmId, gql]);
+  }, [osmId, gql, indicatorId]);
 
   const cols = {
     year: {}
   };
   // return null;
   return (
-    <div>
+    <div style={{ flex: 1 }}>
       <h2>{data.region && data.region.statName}</h2>
       <Chart height={400} data={data.values} scale={cols} forceFit>
         <Legend />
