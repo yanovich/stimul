@@ -58,13 +58,7 @@ function Curved({ osmId, gql, indicatorId }) {
             type: "y"
           }}
         />
-        <Geom
-          type="interval"
-          position="year*targetCount"
-          color={"targetCountTitle"}
-          max={10}
-          shape={"smooth"}
-        />
+
         <Geom
           type="line"
           position="year*value"
@@ -78,6 +72,13 @@ function Curved({ osmId, gql, indicatorId }) {
           size={4}
           shape={"circle"}
           color={"indicatorName"}
+        />
+        <Geom
+          type="interval"
+          position="year*targetCount"
+          color={"targetCountTitle"}
+          max={10}
+          shape={"smooth"}
         />
       </Chart>
     </div>
