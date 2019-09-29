@@ -13,6 +13,9 @@ const query = `
 query($at: Int, $indicatorId: String!) {
   values(indicatorId: $indicatorId, year: [$at]){
     indicatorId
+    indicator {
+      isPositive
+    }
     osmId
     region {
       statName
@@ -243,8 +246,8 @@ function Map(props) {
         } else {
           console.error(feature.properties.osmId);
         }
-        if (value && value.region) {
-          // console.log(value.region.statName, value.value, c);
+        if (value && value.indicator && !value.indicator.isPositive) {
+          c = 6 - c;
         }
 
         return {
