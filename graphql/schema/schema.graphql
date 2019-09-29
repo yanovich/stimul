@@ -24,6 +24,8 @@ type Site {
   latlng: [Float!]!
   address: String!
   year: Int!
+  osmId: String!
+  region: Region!
 }
 
 input SiteInput {

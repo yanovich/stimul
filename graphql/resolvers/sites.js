@@ -32,8 +32,8 @@ function injectSites(root) {
   };
 
   root.newSite = async (data, req) => {
-    const { name, latlng, year, address } = data.site;
-    const site = new Site({ name, latlng, year, address });
+    const { name, latlng, year, address, osmId } = data.site;
+    const site = new Site({ name, latlng, year, address, osmId });
     await site.save();
     return site;
   };
