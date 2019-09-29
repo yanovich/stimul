@@ -41,7 +41,7 @@ function Logout(props) {
 function Header(props) {
   let location;
   if (props.screen === "main") {
-    location = <span className="location">Стимул</span>;
+    location = <span className="location">Главная</span>;
   } else {
     location = (
       <a
@@ -52,7 +52,7 @@ function Header(props) {
           props.update("main");
         }}
       >
-        Стимул
+        Главная
       </a>
     );
   }
