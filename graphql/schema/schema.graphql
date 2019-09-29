@@ -65,6 +65,8 @@ type Indicator {
   id: String!
   name: String!
   isPositive: Boolean!
+  baseIndicatorId: String
+  baseIndicator: Indicator
 }
 
 input IndicatorInput {

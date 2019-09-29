@@ -24,8 +24,8 @@ function injectIndicators(root) {
   };
 
   root.newIndicator = async (data, req) => {
-    const { id, name, isPositive } = data.indicator;
-    const indicator = new Indicator({ id, name, isPositive });
+    const { id, name, isPositive, baseIndicatorId } = data.indicator;
+    const indicator = new Indicator({ id, name, isPositive, baseIndicatorId });
     await indicator.save();
     return indicator;
   };

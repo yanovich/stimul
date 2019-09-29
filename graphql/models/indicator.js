@@ -23,7 +23,15 @@ const indicatorSchema = new mongoose.Schema({
   isPositive: {
     type: Boolean,
     required: true
+  },
+  baseIndicatorId: {
+    type: String,
+    required: false
   }
+});
+
+indicatorSchema.virtual("baseIndicator").get(async function() {
+  return await module.exports.findOne({ id: this.baseIndicatorId });
 });
 
 indicatorSchema.index({ id: 1 });
