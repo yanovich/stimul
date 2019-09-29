@@ -62,11 +62,13 @@ input RegionInput {
 type Indicator {
   id: String!
   name: String!
+  isPositive: Boolean!
 }
 
 input IndicatorInput {
   id: String!
   name: String!
+  isPositive: Boolean!
 }
 type Value {
   indicatorId: String!
