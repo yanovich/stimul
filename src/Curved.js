@@ -8,6 +8,7 @@ query ($osmId: String!, $indicatorId: [String]!) {
     osmId
   }
   values: valuesByOsmId(indicatorId: $indicatorId, osmId: $osmId) {
+    targetCount
     indicatorId
     indicator{
       id
@@ -29,14 +30,19 @@ function Curved({ osmId, gql, indicatorId }) {
         ...response.data,
         values: response.data.values.map(v => ({
           ...v,
-          indicatorName: v.indicator.name
+          indicatorName: v.indicator.name,
+          targetCountTitle: "Действующие ПЦ"
         }))
       });
     });
   }, [osmId, gql, indicatorId]);
 
   const scale = {
-    year: {}
+    year: {},
+    value: {},
+    targetCount: {
+      max: 10
+    }
   };
   // return null;
   return (
@@ -46,10 +52,18 @@ function Curved({ osmId, gql, indicatorId }) {
         <Legend />
         <Axis name="year" />
         <Axis name="value" />
+        <Axis name="targetCount" grid={null} />
         <Tooltip
           crosshairs={{
             type: "y"
           }}
+        />
+        <Geom
+          type="interval"
+          position="year*targetCount"
+          color={"targetCountTitle"}
+          max={10}
+          shape={"smooth"}
         />
         <Geom
           type="line"
