@@ -78,8 +78,6 @@ function Curved({ osmId, gql, indicatorId }) {
     <div style={{ flex: 1 }}>
       <h2>{data.region && data.region.statName}</h2>
       {data.correlation &&
-        !isNaN(data.correlation.r) &&
-        !isNaN(data.correlation.m) &&
         `Корреляция: ${data.correlation.r}, средняя ошибка: ${data.correlation.m}`}
       <Chart height={400} data={data.values} scale={scale} forceFit>
         <Legend />
