@@ -24,6 +24,7 @@ query($at: Int, $indicatorId: String!) {
     }
     year
     value
+    rate
   }
   sites(at: $at) {
     name
@@ -290,17 +291,22 @@ function Main(props) {
 
   useEffect(() => {
     gql(query, { at: year, indicatorId }, response => {
+      if (dataType === "relative") {
+        response.data.values = response.data.values.map(v => ({
+          ...v,
+          value: v.rate
+        }));
+      }
+
       setResponse(response.data);
     });
-  }, [gql, year, indicatorId]);
+  }, [gql, year, indicatorId, dataType]);
 
   useEffect(() => {
     gql(queryIndicators, {}, response => {
       setIndicators(response.data.indicators);
     });
   }, [gql]);
-
-  console.log(dataType);
 
   return (
     <main className="map">
@@ -341,10 +347,7 @@ function Main(props) {
             {}
           )}
           value={year}
-          onChange={value => {
-            // props.update("main", { at: value });
-            setYear(value);
-          }}
+          onChange={setYear}
         />
         {response.sites && response.values && (
           <Map
@@ -353,6 +356,7 @@ function Main(props) {
             update={props.update}
             values={response.values}
             setActiveRegion={setActiveRegion}
+            dataType={dataType}
           />
         )}
       </div>
