@@ -45,7 +45,6 @@ valueSchema.virtual("targetCount").get(async function() {
     year: { $lte: this.year },
     osmId: this.osmId
   });
-  console.log(this.year, this.osmId, sites);
 
   return sites.length;
 });
