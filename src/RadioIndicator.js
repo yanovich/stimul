@@ -11,12 +11,20 @@ const radioStyle = {
 
 export default function RadioIndicator({ indicators, onChange, value }) {
   return (
-    <Radio.Group onChange={e => onChange(e.target.value)} value={value}>
-      {indicators.map(indicator => (
-        <Radio style={radioStyle} key={indicator.id} value={indicator.id}>
-          {indicator.name}
-        </Radio>
-      ))}
-    </Radio.Group>
+    <>
+      <h2>Показатели</h2>
+      <Radio.Group defaultValue="a" buttonStyle="solid">
+        <Radio.Button value="a">Абсолютные</Radio.Button>
+        <Radio.Button value="b">Относительные</Radio.Button>
+        <Radio.Button value="c">Корреляция</Radio.Button>
+      </Radio.Group>
+      <Radio.Group onChange={e => onChange(e.target.value)} value={value}>
+        {indicators.map(indicator => (
+          <Radio style={radioStyle} key={indicator.id} value={indicator.id}>
+            {indicator.name}
+          </Radio>
+        ))}
+      </Radio.Group>
+    </>
   );
 }
