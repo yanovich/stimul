@@ -50,6 +50,31 @@ valueSchema.virtual("targetCount").get(async function() {
   return sites.length;
 });
 
+valueSchema.virtual("baseValue").get(async function() {
+  const indicator = await Indicator.findOne({ id: this.indicatorId });
+  if (!indicator || !indicator.baseIndicatorId) return null;
+  const baseValue = await module.exports.findOne({
+    indicatorId: indicator.baseIndicatorId,
+    osmId: this.osmId,
+    year: this.year
+  });
+
+  return baseValue;
+});
+
+valueSchema.virtual("rate").get(async function() {
+  const indicator = await Indicator.findOne({ id: this.indicatorId });
+  if (!indicator || !indicator.baseIndicatorId) return null;
+  const baseValue = await module.exports.findOne({
+    indicatorId: indicator.baseIndicatorId,
+    osmId: this.osmId,
+    year: this.year
+  });
+  if (!baseValue) return null;
+  if (baseValue.value === 0) return NaN;
+  return this.value / baseValue.value;
+});
+
 valueSchema.index({ indicatorId: 1, osmId: 1, year: 1 });
 
 module.exports = mongoose.model("Value", valueSchema);

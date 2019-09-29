@@ -82,6 +82,8 @@ type Value {
   region: Region!
   year: Int!
   value: Float!
+  baseValue: Value
+  rate: Float
 }
 
 input ValueInput {
